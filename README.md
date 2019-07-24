@@ -1,6 +1,7 @@
 # timecalc-bootstrap
-I recently started learning about bootstrap and jQuery, and thought I'd experiment with it using the time calculator that I previously made
+I recently started learning about bootstrap and jQuery, and thought I'd experiment with it using the time calculator that I previously made.
 
+Description from other project (which does the same thing)
 The website allows users to choose a "from" and "to" date/time using HTML input. 
 The amount of time between these two dates is then calculated using Javascript.
 The format of the result is in days, hours, minutes. 
