@@ -5,12 +5,9 @@ The website allows users to choose a "from" and "to" date/time using HTML input.
 The amount of time between these two dates is then calculated using Javascript.
 The format of the result is in days, hours, minutes. 
 
-# Web-based Time calculator #
-
-
 
 ## Questions/thoughts ##
-
+A lot of bad coding habits/practices in the code right now, such as no comments and that one very long function. Also noticed that the spacing of each line changed after I uploaded the files. I'll work on changing these in future commits.
 
 ## Credits ##
 * Jacob Lee - [wonton-noodles](https://github.com/wonton-noodles)
