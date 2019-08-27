@@ -11,4 +11,4 @@ The format of the result is in days, hours, minutes.
 A lot of bad coding habits/practices in the code right now, such as no comments and one very long function. Also noticed that the spacing of each line changed after I uploaded the files. I'll work on changing these in future commits.
 
 ## Credits ##
-* Jacob Lee - [wonton-noodles](https://github.com/wonton-noodles)
+* Jacob Lee - [jlee115](https://github.com/jlee115)
