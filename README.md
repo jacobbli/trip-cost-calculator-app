@@ -13,7 +13,7 @@ Clone the repository.
     python server.py
     ```
 
-2. Visit the app using a browser:
+2. Visit the app via internet browser:
     ```
     localhost:8080
     ```
