@@ -1,5 +1,3 @@
-
-
 var gst=document.getElementById("GST").value/100;
 var pst=document.getElementById("PST").value/100;
 
@@ -20,6 +18,12 @@ var test = function(){
 
   if(document.getElementById("accessFeeCheck").checked == true){
     accessFee = 1;
+   /* document.getElementById("displayAFTax").style.display = "block";
+    document.getElementById("displayAF").style.display = "block";
+  }
+  else{
+    document.getElementById("displayAFTax").style.display = "none";
+    document.getElementById("displayAF").style.display = "none";*/
   }
   accessFeeWTax = accessFee * (1+gst+pst);
 
@@ -108,7 +112,7 @@ var test = function(){
     daysPassed = Math.floor(hoursPassed/24);
     hoursPassed = Math.floor(hoursPassed%24);
 
-    document.getElementById("dates").innerHTML = fromMonth +"/"+ fromDay+ "/"+fromYear  + " to " + toMonth +"/" + toDay +"/" + toYear + "<br\>";
+    /*document.getElementById("dates").innerHTML = fromMonth +"/"+ fromDay+ "/"+fromYear + " to " + toMonth +"/" + toDay +"/" + toYear + "<br\>";*/
     document.getElementById("difference").innerHTML = "Duration: " +daysPassed + " day(s) " + hoursPassed + " hour(s) "+ minutesPassed + " minute(s)";
 
 

@@ -2,107 +2,97 @@
 <html>
 	<head>
 	   <title>Time Calculator</title>
-
-	</head>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  	<link rel="stylesheet" type="text/css" href="resources/css/stylesheet.css">
+	</head>
 	<body>
-  <div class="background">
-<div class="content container-fluid">
-
-			<div class="grid-container">
-        <div class="row">
-					<div class="col-lg-4 col-md-4 item1">
-							<ul id="navbar">
-									<li><a href="">Future nav bar?</a></li>
-									<li><a href="https://nimble-arithmetics.jlee93115.repl.co">Time calc</a></li>
-									<li><a href="https://nimble-arithmetics-1.jlee93115.repl.co">Adjustments</a></li>
-									<li>placeholder</li>
-								</ul>
-					</div>
-					<div class="col-lg-8 col-md-8 item2">
-					<h1>Time Calculator</h1>
-          <h2>"We do what we can!" - Auldry</h2>
-				</div>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
         </div>
-        <div class="row">
-					<div class="col-lg-6 col-md-6 item3">
-            <table>
-              <tr>
-                <td>
-						Minute rate: <input type="number" id="minRate" value=.41><br>
-						Hour rate: <input type="number" id="hourRate" value =14.99><br>
-						Day rate: <input type="number" id="dayRate" value=89.99><br>
-                </td>
-                <td>
-                  GST: <input type="number" id="GST" value=5>%<br>
-                  PST: <input type="number" id="PST" value=7>%<br>
-                </td>
-            </tr>
-            <tr>
-              <td>
-              Include access fee? <input type="checkbox" id="accessFeeCheck" checked>
-              </td>
-            </tr>
-            </table>
-					</div>					
-					<div class="col-lg-6 col-md-6 item4">
-						<div id="calculator">
-							<table>
+        <ul class="nav navbar-nav" id="navbar">
+          <li><a href="./index.html">Trip Cost</a></li>
+          <li><a href="./adjustments.html">Adjustments</a></li>
+          <li><a href="./map.html">Parking</a></li>
+        </ul>
+      </div>
+    </nav>
+
+  <div class="calculator">
+    <h1 class="text-center">Time Calculator</h1>
+    <div class="content container-fluid">
+          <div class="row">
+            <div class="col-lg-8 col-md-8 well item4">
+							<table id="calculator">
 								<tr>
-									<td>From date:  <input type ="date" name="fdate" id="fdate"></td>
-									<td>From time:  <input type ="time" name="ftime" id="ftime"></td>
+									<th>From date:</th><td><input type ="date" name="fdate" id="fdate"></td>
+									<th>From time:</th><td><input type ="time" name="ftime" id="ftime"></td>
 								</tr>
 								<tr>
-									<td>To Date: <input type="date" name="tdate" id="tdate"></td>
-									<td>To time:  <input type ="time" name="ttime" id="ttime"></td>
+									<th>To Date:</th><td><input type="date" name="tdate" id="tdate"></td>
+									<th>To time:</th><td><input type ="time" name="ttime" id="ttime"></td>
 								</tr>
 							</table>
-					
-							<p id="dates"></p>
-							<p id = "difference"></p>
-							<script type="text/javascript" src="setup.js"></script>
-					
-							</div>
-						</div>
-            </div>
-            <div class="row">
-						<div class="col-lg-12 col-md-12 item5">
-              <table class="table">
+							<script type="text/javascript" src="resources/js/time_calc/setup.js"></script>
+              <br>
+              <p id="dates"></p>
+							<p id ="difference"></p>
+              <br>
+              <table id="costTable" class="table-striped table-hover">
                 <tr>
-                <th>Cost Before Additions:</th> 
-                <td id="cost"></td>
+                  <th>Cost Before Additions:</th> 
+                  <td id="cost"></td>
                 </tr> 
                 <tr>
-                <th>Tax on Cost:</th>
-                <td id="taxOCost"></td>
+                  <th>Tax on Cost:</th>
+                  <td id="taxOCost"></td>
                 </tr>
                 <tr>
-                <th>Subtotal:</th> 
-                <td id="subtotal"></td>
+                  <th>Subtotal:</th> 
+                  <td id="subtotal"></td>
                 </tr> 
                 <tr>
-                <th>PVRT:</th> 
-                <td id="pvrt"></td>
+                  <th>PVRT:</th> 
+                  <td id="pvrt"></td>
                 </tr> 
                 <tr>
-                <th>Tax on PVRT:</th> 
-                <p id="taxPVRT"></p></td>
+                  <th>Tax on PVRT:</th> 
+                  <td id="taxPVRT"></td>
+                </tr> 
+                <tr id="displayAF">
+                  <th>Access Fee:</th>
+                  <td id="accessFeeCost"></td>
+                </tr> 
+                <tr id="displayAFTax">
+                  <th>Tax on Access Fee:</th> 
+                  <td id="taxAF"></td>
                 </tr> 
                 <tr>
-                <th>Access Fee: <p id="accessFeeCost"></p></td>
-                </tr> 
-                <tr>
-                <th>Tax on Access Fee: <p id="taxAF"></p></td>
-                </tr> 
-                <tr>
-                <th>Total Cost: <p id="totalCost"></p></td>
+                  <th>Total Cost:</th> 
+                  <td id="totalCost"></td>
                 </tr> 
               </table>
 						</div>
-						<script type="text/javascript" src="getdates.js"></script>
-            </div>
-            </div>
+					<div class="col-lg-4 col-md-4 well item3">
+            <table>
+              <tr><th>Minute rate:</th><td><input type="number" id="minRate" value=.41></td></tr>
+              <tr><th>Hour rate:</th><td><input type="number" id="hourRate" value =14.99></td></tr>
+              <tr><th>Day rate:</th><td><input type="number" id="dayRate" value=89.99></td></tr>
+              <tr><td><br></td></tr>
+              <tr><th>GST:</th><td><input type="number" id="GST" value=5>%</td></tr>
+              <tr><th>PST:</th><td><input type="number" id="PST" value=7>%</td></tr>
+              <tr><td><br></td></tr>
+
+              <tr><th>Include access fee?</th><td><input type="checkbox" id="accessFeeCheck" checked></td></tr>
+            </table>
+
+            <script type="text/javascript" src="resources/js/time_calc/getdates.js"></script>
+					</div>
+        </div>					
+      </div>
+    
+    </div>
 	</body>
 </html>

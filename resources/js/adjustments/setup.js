@@ -14,8 +14,10 @@ var currentMin = ''+date.getMinutes();
 
 var currentTime = currentHour+":"+currentMin;
 
-document.getElementById('fdate').valueAsDate = new Date();
-document.getElementById('tdate').valueAsDate = new Date();
-document.getElementById('ftime').value = currentTime;
-document.getElementById('ttime').value = currentTime;
+document.getElementById('origDate').valueAsDate = new Date();
+document.getElementById('adjDate').valueAsDate = new Date();
+document.getElementById('startDate').valueAsDate = new Date();
 
+document.getElementById('origTime').value = currentTime;
+document.getElementById('adjTime').value = currentTime;
+document.getElementById('startTime').value = currentTime;
