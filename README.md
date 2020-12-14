@@ -1,14 +1,20 @@
-# timecalc-bootstrap
-I recently started learning about bootstrap and jQuery, and thought I'd experiment with it using the time calculator that I previously made.
+# Trip Calculator
 
-Description from other project (which does the same thing)
-The website allows users to choose a "from" and "to" date/time using HTML input. 
-The amount of time between these two dates is then calculated using Javascript.
-The format of the result is in days, hours, minutes. 
+Allows users to calculate the cost of a car share rental based on the rates of Evo car share in Vancouver. Please note that the rates used in this app are from ~2018 and may be out of date.
 
+# Installation
 
-## Questions/thoughts ##
-A lot of bad coding habits/practices in the code right now, such as no comments and one very long function. Also noticed that the spacing of each line changed after I uploaded the files. I'll work on changing these in future commits.
+Clone the repository.
 
-## Credits ##
-* Jacob Lee - [jlee115](https://github.com/jlee115)
+# Usage
+
+1. Start the python server:
+    ```
+    python server.py
+    ```
+
+2. Visit the app using a browser:
+    ```
+    localhost:8080
+    ```
+
