@@ -11,6 +11,6 @@
     margin:auto;
   }
   
-  #difference{
+  #difference, #origDifference, #adjDifference{
     text-align:center;
   }
