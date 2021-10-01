@@ -18,7 +18,6 @@
       </el-menu>
     </div>
     <el-card>
-      <el-header><h3 style="text-align:center">Please direct feedback to RT or AC (ie. two pages vs one, color scheme, functions, etc.)</h3></el-header>
       <el-container>
         <el-main>
           <router-view/>

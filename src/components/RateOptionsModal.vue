@@ -87,13 +87,13 @@ export default {
   data: function() {
     return {
       form: {
-        gst: 5,
-        pst: 7,
-        minuteRate: 0.41,
-        hourRate: 14.99,
-        dayRate: 89.99,
-        pvrt: 1.50,
-        accessFee: 1.00
+        gst: parseFloat(process.env.VUE_APP_DEFAULT_GST),
+        pst: parseFloat(process.env.VUE_APP_DEFAULT_PST),
+        minuteRate: parseFloat(process.env.VUE_APP_DEFAULT_MINUTE_RATE),
+        hourRate: parseFloat(process.env.VUE_APP_DEFAULT_HOUR_RATE),
+        dayRate: parseFloat(process.env.VUE_APP_DEFAULT_DAY_RATE),
+        pvrt: parseFloat(process.env.VUE_APP_DEFAULT_PVRT),
+        accessFee: parseFloat(process.env.VUE_APP_DEFAULT_ACCESS_FEE)
       }
     }
   },

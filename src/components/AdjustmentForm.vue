@@ -174,13 +174,13 @@ export default {
     this.setToCurrentTime('original');
     this.setToCurrentTime('adjusted');
 
-    this.gst = 5;
-    this.pst = 7;
-    this.minuteRate = 0.41;
-    this.hourRate = 14.99;
-    this.dayRate = 89.99;
-    this.pvrt = 1.50;
-    this.accessFee = 1.00;
+    this.gst = parseFloat(process.env.VUE_APP_DEFAULT_GST);
+    this.pst = parseFloat(process.env.VUE_APP_DEFAULT_PST);
+    this.minuteRate = parseFloat(process.env.VUE_APP_DEFAULT_MINUTE_RATE);
+    this.hourRate = parseFloat(process.env.VUE_APP_DEFAULT_HOUR_RATE);
+    this.dayRate = parseFloat(process.env.VUE_APP_DEFAULT_DAY_RATE);
+    this.pvrt = parseFloat(process.env.VUE_APP_DEFAULT_PVRT);
+    this.accessFee = parseFloat(process.env.VUE_APP_DEFAULT_ACCESS_FEE);
 
     this.$root.$on('changeValues', data => {
       this.gst = data.gst;
@@ -352,7 +352,7 @@ export default {
           name: 'Total Cost After Adjustment',
           value: '$' + adjustedTripCost
         }, {
-          name: 'Difference',
+          name: 'Adjustment',
           value: '$' + (adjustedTripCost - originalTripCost).toFixed(2)
         }]
 
