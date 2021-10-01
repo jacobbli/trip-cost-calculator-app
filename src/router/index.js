@@ -8,7 +8,7 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/calculator',
+    path: '/',
     name: 'CalculatorDashboard',
     component: CalculatorDashboard
   },
@@ -30,8 +30,9 @@ const router = new VueRouter({
   routes
 })
 
-router.beforeEach(() => {
+router.beforeEach((to, from, next) => {
   document.title = 'Trip Cost Calculator';
+  next();
 });
 
 export default router
