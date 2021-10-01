@@ -1,7 +1,7 @@
 <template>
   <el-card class="box-card">
     <div slot="header" class="clearfix">
-      <h2>Calculat Trip Cost</h2>
+      <h2>Calculate Trip Cost</h2>
     </div>
     <el-form
       ref="form"
