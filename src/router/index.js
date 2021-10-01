@@ -30,4 +30,8 @@ const router = new VueRouter({
   routes
 })
 
+router.beforeEach(() => {
+  document.title = 'Trip Cost Calculator';
+});
+
 export default router
