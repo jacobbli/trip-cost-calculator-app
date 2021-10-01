@@ -1,7 +1,7 @@
 <template>
   <el-card class="box-card">
     <div slot="header" class="clearfix">
-      <span>Trip Cost</span>
+      <h2>Calculat Trip Cost</h2>
     </div>
     <el-form
       ref="form"
@@ -284,6 +284,9 @@ export default {
 </script>
 
 <style>
+h2 {
+  margin: 0;
+}
 
 .time-input input{
   font-family: inherit;
