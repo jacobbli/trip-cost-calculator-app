@@ -22,6 +22,11 @@ import {
   Row
 } from 'element-ui';
 
+import lang from 'element-ui/lib/locale/lang/en'
+import locale from 'element-ui/lib/locale'
+
+locale.use(lang)
+
 Vue.config.productionTip = false
 
 Vue.use(Form);
