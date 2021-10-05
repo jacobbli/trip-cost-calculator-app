@@ -224,7 +224,8 @@ export default {
 
     calculatePvrt(startDate, endDate, tripDuration) {
       let pvrt = 0;
-      if (tripDuration.hours >= 8) {
+      console.log(tripDuration)
+      if (tripDuration.hours >= 8 || tripDuration.days > 0) {
         let tempStartDate = new Date(startDate)
         tempStartDate.setHours(0, 0, 0);
 
@@ -232,6 +233,7 @@ export default {
         tempEndDate.setHours(0, 0, 0);
 
         let dayDifference = Math.floor((tempEndDate - tempStartDate) / 86400000)
+        console.log(dayDifference)
         pvrt = (dayDifference + 1) * this.pvrt
       } else {
         pvrt = 0;
