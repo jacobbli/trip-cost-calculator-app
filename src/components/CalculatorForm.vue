@@ -172,7 +172,7 @@ export default {
     },
 
     calculatePvrt() {
-      if (this.tripDuration.hours >= 8) {
+      if (this.tripDuration.hours >= 8 || this.tripDuration.days > 0) {
         let tempStartDate = new Date(this.form.startDate)
         tempStartDate.setHours(0, 0, 0);
 
