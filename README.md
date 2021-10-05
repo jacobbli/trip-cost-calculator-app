@@ -1,10 +1,12 @@
 # Trip Calculator
 
-Allows users to calculate the cost of a car share rental based on the rates of a Vancouver based car share company. Please note that the rates used in this app are from ~2018 and may be out of date.
+Allows users to calculate the cost of a car share rental based on the rates of a car share company. 
 
-The 'Adjustments' page is for calculating the dollar value of adjustments/refunds in case of open rentals, disputes, etc.
+The 'Adjustments' calculator is for calculating the dollar value of adjustments/refunds in case of open rentals, disputes, etc.
 
-Please note that this application was built solely as a beginner web development project and is not affiliated with any Vancouver based car share companies in any way.
+This application is not affiliated with any car share company.
+
+*Rates are up-to-date as of October 1, 2021.
 
 # Installation
 
