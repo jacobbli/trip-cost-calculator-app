@@ -70,7 +70,7 @@
     <el-divider></el-divider>
 
     <div id='cost-breakdown-header'>
-      <h3>Cost Breakdown</h3>
+      <h3>Breakdown</h3>
     </div>
     
     <el-descriptions class="margin-top" :column="1" size="medium" border>

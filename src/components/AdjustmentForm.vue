@@ -99,7 +99,7 @@
     <el-divider></el-divider>
 
     <div id='adjustment-breakdown-header'>
-      <h3>Cost Breakdown</h3>
+      <h3>Details</h3>
       <el-button 
         style="float: right; padding: 3px 0" 
         type="text"
