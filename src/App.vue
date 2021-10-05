@@ -20,34 +20,77 @@
     <el-card>
       <el-container>
         <el-main>
-          <router-view/>
+            <el-row>
+            <el-col 
+              :span="8"
+              :offset="2">
+                <calculator-form
+                  v-bind:rates='rates'
+                  v-bind:taxes='taxes'>
+                </calculator-form>
+            </el-col>
+
+            <el-col 
+            :span="8"
+            :offset="2">
+              <adjustment-form
+                v-bind:rates='rates'
+                v-bind:taxes='taxes'>
+              </adjustment-form>
+            </el-col>
+            </el-row>
         </el-main>
       </el-container>
     </el-card>
     <rate-options-modal
      :isVisible="settingDialogIsVisible"
-     @closeDialog="settingDialogIsVisible = false"></rate-options-modal>
+     v-bind:rates='rates'
+     v-bind:taxes='taxes'
+     @closeDialog="settingDialogIsVisible = false"
+     @updateRates='updateRates'></rate-options-modal>
   </div>
 </template>
 
 <script>
 import RateOptionsModal from './components/RateOptionsModal.vue'
+import CalculatorForm from './components/CalculatorForm.vue'
+import AdjustmentForm from './components/AdjustmentForm.vue'
 
 export default {
   name: 'App',
   components: {
-    RateOptionsModal
+    RateOptionsModal,
+    CalculatorForm,
+    AdjustmentForm
   },
 
   data: function() {
     return {
-      settingDialogIsVisible: false
+      settingDialogIsVisible: false,
+
+      taxes: {
+        gst: parseFloat(process.env.VUE_APP_DEFAULT_GST),
+        pst: parseFloat(process.env.VUE_APP_DEFAULT_PST)
+      },
+
+      rates: {
+        minuteRate: parseFloat(process.env.VUE_APP_DEFAULT_MINUTE_RATE),
+        hourRate: parseFloat(process.env.VUE_APP_DEFAULT_HOUR_RATE),
+        dayRate: parseFloat(process.env.VUE_APP_DEFAULT_DAY_RATE),
+        pvrtRate: parseFloat(process.env.VUE_APP_DEFAULT_PVRT),
+        accessFee: parseFloat(process.env.VUE_APP_DEFAULT_ACCESS_FEE)
+      }
     }
   },
 
   methods: {
     openSettingsDialog() {
       this.settingDialogIsVisible = true;
+    },
+
+    updateRates(data) {
+      this.taxes = data.taxes;
+      this.rates = data.rates;
     }
   }
 }

@@ -8,9 +8,11 @@
       <el-row type="flex" class="row-bg" justify="center">
         <el-form 
           ref="form" 
+          id='rates-form'
           :model="form" 
           label-width="180px"
           label-position="left">
+          <h3>Rates</h3>
           <el-form-item label="Minute Rate">
             <el-col :span="11">
               <el-input-number 
@@ -35,6 +37,26 @@
                 :step="0.01"></el-input-number>
             </el-col>
           </el-form-item>
+          <el-form-item label="PVRT">
+            <el-col :span="11">
+              <el-input-number 
+                v-model="form.pvrtRate" 
+                :precision="2"
+                :step="0.1"></el-input-number>
+            </el-col>
+          </el-form-item>
+          <el-form-item label="Access Fee">
+            <el-col :span="11">
+              <el-input-number 
+                v-model="form.accessFee" 
+                :precision="2"
+                :step="0.1"></el-input-number>
+            </el-col>
+          </el-form-item>
+
+          <el-divider></el-divider>
+          
+          <h3>Taxes</h3>
           <el-form-item label="GST">
             <el-col :span="11">
               <el-input-number 
@@ -47,22 +69,6 @@
             <el-col :span="11">
               <el-input-number 
                 v-model="form.pst" 
-                :precision="2"
-                :step="0.1"></el-input-number>
-            </el-col>
-          </el-form-item>
-          <el-form-item label="PVRT">
-            <el-col :span="11">
-              <el-input-number 
-                v-model="form.pvrt" 
-                :precision="2"
-                :step="0.1"></el-input-number>
-            </el-col>
-          </el-form-item>
-          <el-form-item label="Access Fee">
-            <el-col :span="11">
-              <el-input-number 
-                v-model="form.accessFee" 
                 :precision="2"
                 :step="0.1"></el-input-number>
             </el-col>
@@ -81,19 +87,30 @@
 export default {
   name: 'RateOptionsModal',
   props: {
-    isVisible: Boolean
+    isVisible: Boolean,
+    rates: {
+        minuteRate: Number,
+        hourRate: Number,
+        dayRate: Number,
+        pvrtRate: Number,
+        accessFee: Number
+    },
+    taxes: {
+      gst: Number,
+      pst: Number
+    }
   },
 
   data: function() {
     return {
       form: {
-        gst: parseFloat(process.env.VUE_APP_DEFAULT_GST),
-        pst: parseFloat(process.env.VUE_APP_DEFAULT_PST),
-        minuteRate: parseFloat(process.env.VUE_APP_DEFAULT_MINUTE_RATE),
-        hourRate: parseFloat(process.env.VUE_APP_DEFAULT_HOUR_RATE),
-        dayRate: parseFloat(process.env.VUE_APP_DEFAULT_DAY_RATE),
-        pvrt: parseFloat(process.env.VUE_APP_DEFAULT_PVRT),
-        accessFee: parseFloat(process.env.VUE_APP_DEFAULT_ACCESS_FEE)
+        gst: this.taxes.gst,
+        pst: this.taxes.pst,
+        minuteRate: this.rates.minuteRate,
+        hourRate: this.rates.hourRate,
+        dayRate: this.rates.dayRate,
+        pvrtRate: this.rates.pvrtRate,
+        accessFee: this.rates.accessFee
       }
     }
   },
@@ -104,21 +121,26 @@ export default {
     },
 
     confirm() {
-      const payload = {
-        gst: this.form.gst,
-        pst: this.form.pst,
-        minuteRate: this.form.minuteRate,
-        hourRate: this.form.hourRate,
-        dayRate: this.form.dayRate,
-        pvrt: this.form.pvrt,
-        accessFee: this.form.accessFee
-      }
-      this.$root.$emit('changeValues', payload)
+      this.updateRates();
       this.$emit('closeDialog');
     },
 
-    changeValue(payload) {
-      this.$root.$emit('changeValue', payload)
+    updateRates() {
+      const data = {
+        taxes: {
+          gst: this.form.gst,
+          pst: this.form.pst,
+        },
+        
+        rates: {
+          minuteRate: this.form.minuteRate,
+          hourRate: this.form.hourRate,
+          dayRate: this.form.dayRate,
+          pvrtRate: this.form.pvrtRate,
+          accessFee: this.form.accessFee
+        }
+      }
+      this.$emit('updateRates', data)
     }
   }
 }

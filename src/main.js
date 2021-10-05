@@ -19,7 +19,10 @@ import {
   Dialog,
   Button,
   Card,
-  Row
+  Row,
+  Divider,
+  Descriptions,
+  DescriptionsItem
 } from 'element-ui';
 
 import lang from 'element-ui/lib/locale/lang/en'
@@ -47,6 +50,9 @@ Vue.use(Dialog);
 Vue.use(Button);
 Vue.use(Card);
 Vue.use(Row);
+Vue.use(Divider);
+Vue.use(Descriptions);
+Vue.use(DescriptionsItem);
 
 new Vue({
   router,
