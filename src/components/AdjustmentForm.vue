@@ -295,15 +295,15 @@ export default {
       if (dateCategory == 'start') {
         this.form.startTime = `${hours}:${minutes}`
         this.form.startDate = Date()
-        this.getTripCost(this.startDate, this.originalEndDate, this.originalTripDuration);
+        this.getTripCost(this.form.startDate, this.form.originalEndDate, this.originalTripDuration);
       } else if (dateCategory == 'original') {
         this.form.originalEndTime = `${hours}:${minutes}`
         this.form.originalEndDate = Date()
-        this.getTripCost(this.startDate, this.originalEndDate, this.originalTripDuration);
+        this.getTripCost(this.form.startDate, this.form.originalEndDate, this.originalTripDuration);
       } else if (dateCategory == 'adjusted') {
         this.form.adjustedEndTime = `${hours}:${minutes}`
         this.form.adjustedEndDate = Date()
-        this.getTripCost(this.startDate, this.originalEndDate, this.adjustedTripDuration);
+        this.getTripCost(this.form.startDate, this.form.originalEndDate, this.adjustedTripDuration);
       }
     },
 
@@ -343,8 +343,8 @@ export default {
     },
 
     tableData: function() {
-      let originalTripCost =  this.getTripCost(this.startDate, this.originalEndDate, this.originalTripDuration);
-      let adjustedTripCost = this.getTripCost(this.startDate, this.originalEndDate, this.adjustedTripDuration);
+      let originalTripCost =  this.getTripCost(this.form.startDate, this.form.originalEndDate, this.originalTripDuration);
+      let adjustedTripCost = this.getTripCost(this.form.startDate, this.form.originalEndDate, this.adjustedTripDuration);
       let tableData = [{
           name: 'Total Cost Before Adjustment',
           value: '$' + originalTripCost
