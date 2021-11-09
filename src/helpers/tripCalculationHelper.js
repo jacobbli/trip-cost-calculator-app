@@ -23,7 +23,7 @@ function calculateTripCost(rates, taxes, startDate, startTime, endDate, endTime)
 
   const pvrtCost = calculatePvrt(rates, tripDuration, startDate, endDate);
   const taxOnTripCost = calculateTax(tripCost, [taxes.pst, taxes.gst]);
-  const taxOnPVRT = calculateTax(pvrtCost, [taxes.pst]);
+  const taxOnPVRT = calculateTax(pvrtCost, [taxes.gst]);
   const taxOnAccessFee = calculateTax(accessFeeCost, [taxes.pst, taxes.gst]);
 
   const totalCost = {
