@@ -2,11 +2,11 @@
   <div id="app">
     <el-container id="calculator-container">
       <el-main>
-        <el-tabs 
+        <el-tabs
           v-model="activeTab"
           :before-leave='savePreviousTab'>
           <el-tab-pane label="Trip Cost" name="tripCost">
-            <span slot="label"><i class="el-icon-date"></i> Trip Cost</span>            
+            <span slot="label"><i class="el-icon-date"></i> Trip Cost</span>
             <calculator-form
               v-bind:rates='rates'
               v-bind:taxes='taxes'>
@@ -20,7 +20,7 @@
             </adjustment-form>
           </el-tab-pane>
           <el-tab-pane label="Rate Settings" name="rateOptions">
-            <span slot="label"><i class="el-icon-setting"></i> Rate Settings</span>            
+            <span slot="label"><i class="el-icon-setting"></i> Rate Settings</span>
             <rate-form
               v-bind:rates='rates'
               v-bind:taxes='taxes'
@@ -97,8 +97,6 @@ export default {
   margin-right: auto;
 }
 
-
-
 @media only screen and (min-width: 900px) {
   #calculator-container {
     width: 60%;
@@ -110,7 +108,6 @@ export default {
     width: 50%;
   }
 }
-
 
 .setting-button {
   outline: none;

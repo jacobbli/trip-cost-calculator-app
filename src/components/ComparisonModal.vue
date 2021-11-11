@@ -1,5 +1,5 @@
 <template>
-  <el-dialog 
+  <el-dialog
     :visible.sync="isVisible"
     :before-close="handleClose">
     <comparison-table :tableData="tableData" />
@@ -73,11 +73,11 @@ export default {
                     name: 'Trip Cost',
                     original: this.originalCosts.tripCost > 0 ? '$' + this.originalCosts.tripCost.toFixed(2) : '$0.00',
                     adjusted: this.adjustedCosts.tripCost > 0 ? '$' + this.adjustedCosts.tripCost.toFixed(2) : '$0.00',
-                    originalTooltip: 
+                    originalTooltip:
                     `${this.originalDuration.days} day(s) x $${this.rates.dayRate}
                     + ${this.originalDuration.hours} hour(s) x $${this.rates.hourRate}
                     + ${this.originalDuration.minutes} minute(s) x $${this.rates.minuteRate}`,
-                    adjustedTooltip: 
+                    adjustedTooltip:
                     `${this.adjustedDuration.days} day(s) x $${this.rates.dayRate}
                     + ${this.adjustedDuration.hours} hour(s) x $${this.rates.hourRate}
                     + ${this.adjustedDuration.minutes} minute(s) x $${this.rates.minuteRate}`
@@ -87,10 +87,10 @@ export default {
                     name: 'Tax on Trip Cost',
                     original: this.originalCosts.tripCost > 0 ? '$' + this.originalCosts.taxOnTripCost.toFixed(2) : '$0.00',
                     adjusted: this.adjustedCosts.tripCost > 0 ? '$' + this.adjustedCosts.taxOnTripCost.toFixed(2) : '$0.00',
-                    originalTooltip: 
+                    originalTooltip:
                     `$${(this.originalCosts.tripCost * (this.taxes.gst / 100)).toFixed(2)} GST
                     + $${(this.originalCosts.tripCost * (this.taxes.pst / 100)).toFixed(2)} PST`,
-                    adjustedTooltip: 
+                    adjustedTooltip:
                     `$${(this.adjustedCosts.tripCost * (this.taxes.gst / 100)).toFixed(2)} GST
                     + $${(this.adjustedCosts.tripCost * (this.taxes.pst / 100)).toFixed(2)} PST`
                 },
@@ -135,19 +135,19 @@ export default {
                     + $${(this.originalCosts.accessFeeCost * (this.taxes.pst / 100)).toFixed(2)} PST`,
                     adjustedTooltip:
                     `$${(this.originalCosts.accessFeeCost * (this.taxes.gst / 100)).toFixed(2)} GST
-                    + $${(this.adjustedCosts.accessFeeCost * (this.taxes.pst / 100)).toFixed(2)} PST`                    
+                    + $${(this.adjustedCosts.accessFeeCost * (this.taxes.pst / 100)).toFixed(2)} PST`
                 },
                 {
                     id: 7,
                     name: 'Total Cost',
                     original: (
-                        this.originalCosts.tripCost > 0 
-                        ? '$' + Object.values(this.originalCosts).reduce((a, b) => a + b).toFixed(2) 
+                        this.originalCosts.tripCost > 0
+                        ? '$' + Object.values(this.originalCosts).reduce((a, b) => a + b).toFixed(2)
                         : '$0.00'
                     ),
                     adjusted: (
-                        this.adjustedCosts.tripCost > 0 
-                        ? '$' + Object.values(this.adjustedCosts).reduce((a, b) => a + b).toFixed(2) 
+                        this.adjustedCosts.tripCost > 0
+                        ? '$' + Object.values(this.adjustedCosts).reduce((a, b) => a + b).toFixed(2)
                         : '$0.00'
                     )
                 }

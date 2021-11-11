@@ -4,69 +4,69 @@
         Don't forget to click "Save changes" to apply any changes you've made to the rates!
       </div>
       <el-row type="flex" class="row-bg">
-        <el-form 
-          ref="form" 
+        <el-form
+          ref="form"
           id='rates-form'
-          :model="form" 
+          :model="form"
           label-width="180px"
           label-position="left">
           <h3>Rates</h3>
           <el-form-item label="Minute Rate">
             <el-col :span="11">
-              <el-input-number 
-                v-model="form.minuteRate" 
+              <el-input-number
+                v-model="form.minuteRate"
                 :precision="2"
                 :step="0.01"></el-input-number>
             </el-col>
           </el-form-item>
           <el-form-item label="Hourly Rate">
             <el-col :span="11">
-              <el-input-number 
-                v-model="form.hourRate" 
+              <el-input-number
+                v-model="form.hourRate"
                 :precision="2"
                 :step="0.01"></el-input-number>
             </el-col>
           </el-form-item>
           <el-form-item label="Daily Rate">
             <el-col :span="11">
-              <el-input-number 
-                v-model="form.dayRate" 
+              <el-input-number
+                v-model="form.dayRate"
                 :precision="2"
                 :step="0.01"></el-input-number>
             </el-col>
           </el-form-item>
           <el-form-item label="PVRT">
             <el-col :span="11">
-              <el-input-number 
-                v-model="form.pvrtRate" 
+              <el-input-number
+                v-model="form.pvrtRate"
                 :precision="2"
                 :step="0.1"></el-input-number>
             </el-col>
           </el-form-item>
           <el-form-item label="Access Fee">
             <el-col :span="11">
-              <el-input-number 
-                v-model="form.accessFee" 
+              <el-input-number
+                v-model="form.accessFee"
                 :precision="2"
                 :step="0.1"></el-input-number>
             </el-col>
           </el-form-item>
 
           <el-divider></el-divider>
-          
+
           <h3>Taxes</h3>
           <el-form-item label="GST (%)">
             <el-col :span="11">
-              <el-input-number 
-                v-model="form.gst" 
+              <el-input-number
+                v-model="form.gst"
                 :precision="2"
                 :step="0.1"></el-input-number>
             </el-col>
           </el-form-item>
           <el-form-item label="PST (%)">
             <el-col :span="11">
-              <el-input-number 
-                v-model="form.pst" 
+              <el-input-number
+                v-model="form.pst"
                 :precision="2"
                 :step="0.1"></el-input-number>
             </el-col>
@@ -133,7 +133,7 @@ export default {
           gst: this.form.gst,
           pst: this.form.pst,
         },
-        
+
         rates: {
           minuteRate: this.form.minuteRate,
           hourRate: this.form.hourRate,
@@ -157,5 +157,7 @@ export default {
   border-radius: 4px;
   border-left: 5px solid #50bfff;
   margin-bottom: 15px;
+
+  font-size: 14px;
 }
 </style>

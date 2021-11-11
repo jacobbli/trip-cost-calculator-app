@@ -17,13 +17,13 @@
             style="width: 100%;"
             @change='updateCosts'>
           </el-date-picker>
-          <el-button 
+          <el-button
             type="text"
             @click="resetTime('start')">
             Set To Current Date/Time
           </el-button>
         </el-col>
-        <el-col 
+        <el-col
           :span="11"
           :offset="1">
           <el-input
@@ -45,13 +45,13 @@
             style="width: 100%;"
             @change='updateCosts'>
           </el-date-picker>
-          <el-button 
+          <el-button
             type="text"
             @click="resetTime('original')">
             Set To Current Date/Time
           </el-button>
         </el-col>
-        <el-col 
+        <el-col
           :span="11"
           :offset="1">
           <el-input
@@ -74,7 +74,7 @@
             style="width: 100%;"
             @change='updateCosts'>
           </el-date-picker>
-          <el-button 
+          <el-button
             type="text"
             @click="resetTime('adjusted')">
             Set To Current Date/Time
@@ -102,19 +102,19 @@
       <h3>Details</h3>
       <div id="action-buttons">
         <el-tooltip
-          effect="dark" 
-          content="View detailed cost breakdown" 
+          effect="dark"
+          content="View detailed cost breakdown"
           placement="top">
-          <el-button 
+          <el-button
             icon="el-icon-view"
             @click="openModal">
           </el-button>
         </el-tooltip>
         <el-tooltip
-          effect="dark" 
-          content="Copy information for ticket" 
+          effect="dark"
+          content="Copy information for ticket"
           placement="top">
-          <el-button 
+          <el-button
             icon="el-icon-document-copy"
             @click="copyTicketInfo">
           </el-button>
@@ -127,9 +127,9 @@
           <i class="el-icon-time"></i>
           Original Duration
         </template>
-        {{ 
-          originalTripDuration.days + (originalTripDuration.days == 1 ? ' Day, ' : ' Days, ') + 
-          originalTripDuration.hours + (originalTripDuration.hours == 1 ? ' Hour, ' : ' Hours, ') + 
+        {{
+          originalTripDuration.days + (originalTripDuration.days == 1 ? ' Day, ' : ' Days, ') +
+          originalTripDuration.hours + (originalTripDuration.hours == 1 ? ' Hour, ' : ' Hours, ') +
           originalTripDuration.minutes + (originalTripDuration.minutes == 1 ? ' Minute' : ' Minutes')
         }}
       </el-descriptions-item>
@@ -138,9 +138,9 @@
           <i class="el-icon-time"></i>
           Adjusted Duration
         </template>
-        {{ 
-          adjustedTripDuration.days + (adjustedTripDuration.days == 1 ? ' Day, ' : ' Days, ') + 
-          adjustedTripDuration.hours + (adjustedTripDuration.hours == 1 ? ' Hour, ' : ' Hours, ') + 
+        {{
+          adjustedTripDuration.days + (adjustedTripDuration.days == 1 ? ' Day, ' : ' Days, ') +
+          adjustedTripDuration.hours + (adjustedTripDuration.hours == 1 ? ' Hour, ' : ' Hours, ') +
           adjustedTripDuration.minutes + (adjustedTripDuration.minutes == 1 ? ' Minute' : ' Minutes')
         }}
       </el-descriptions-item>
@@ -159,7 +159,7 @@
         align="right">
       </el-table-column>
     </el-table>
-    <comparison-modal 
+    <comparison-modal
       :isVisible="modalIsVisible"
       :originalCosts="originalTotalCost"
       :originalDuration="originalTripDuration"
@@ -194,7 +194,7 @@ export default {
       pst: Number
     }
   },
-  watch: { 
+  watch: {
     rates: function() {
       this.updateCosts();
     }
@@ -260,7 +260,7 @@ export default {
 
 
       this.adjustedTotalCost = calculateTripCost(this.rates, this.taxes, this.form.startDate, this.form.startTime, this.form.adjustedEndDate, this.form.adjustedEndTime);
-      
+
     },
     highlightTotals({rowIndex}) {
       if (rowIndex === 2) {
@@ -335,7 +335,7 @@ h3 {
 }
 
 #action-buttons {
-  float: right; 
+  float: right;
   padding: 3px 0;
   margin-bottom: 10px;
 }

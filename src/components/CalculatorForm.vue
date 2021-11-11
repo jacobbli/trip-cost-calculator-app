@@ -17,13 +17,13 @@
             style="width: 100%;"
             @change='getTripCost'>
           </el-date-picker>
-          <el-button 
+          <el-button
             type="text"
             @click="resetTime('start')">
             Set To Current Date/Time
           </el-button>
         </el-col>
-        <el-col 
+        <el-col
           :span="11"
           :offset="1">
           <el-input
@@ -45,13 +45,13 @@
             style="width: 100%;"
             @change='getTripCost'>
           </el-date-picker>
-          <el-button 
+          <el-button
             type="text"
             @click="resetTime('end')">
             Set To Current Date/Time
           </el-button>
         </el-col>
-        <el-col 
+        <el-col
           :span="11"
           :offset="1">
           <el-input
@@ -72,17 +72,17 @@
     <div id='cost-breakdown-header'>
       <h3>Breakdown</h3>
     </div>
-    
+
     <el-descriptions class="margin-top" :column="1" size="medium" border>
       <el-descriptions-item>
         <template slot="label">
           <i class="el-icon-time"></i>
           Trip Duration
         </template>
-        {{ 
-          tripDuration.days + (tripDuration.days == 1 ? ' Day, ' : ' Days, ') + 
-          tripDuration.hours + (tripDuration.hours == 1 ? ' Hour, ' : ' Hours, ') + 
-          tripDuration.minutes + (tripDuration.minutes == 1 ? ' Minute' : ' Minutes') 
+        {{
+          tripDuration.days + (tripDuration.days == 1 ? ' Day, ' : ' Days, ') +
+          tripDuration.hours + (tripDuration.hours == 1 ? ' Hour, ' : ' Hours, ') +
+          tripDuration.minutes + (tripDuration.minutes == 1 ? ' Minute' : ' Minutes')
         }}
       </el-descriptions-item>
     </el-descriptions>
@@ -112,12 +112,12 @@ export default {
       pst: Number
     }
   },
-  watch: { 
+  watch: {
     rates: function() {
       this.totalCost = calculateTripCost(this.rates, this.taxes, this.form.startDate, this.form.startTime, this.form.endDate, this.form.endTime);
     }
   },
-      
+
   data() {
     return {
       showHeader: false,
@@ -181,7 +181,7 @@ export default {
             id: 0,
             name: 'Trip Cost',
             value: this.totalCost.tripCost > 0 ? '$' + this.totalCost.tripCost.toFixed(2) : '$0.00',
-            tooltip: 
+            tooltip:
               `${this.tripDuration.days} day(s) x $${this.rates.dayRate}
               + ${this.tripDuration.hours} hour(s) x $${this.rates.hourRate}
               + ${this.tripDuration.minutes} minute(s) x $${this.rates.minuteRate}`
@@ -190,7 +190,7 @@ export default {
             id: 1,
             name: 'Tax on Trip Cost',
             value: this.totalCost.tripCost > 0 ? '$' + this.totalCost.taxOnTripCost.toFixed(2) : '$0.00',
-            tooltip: 
+            tooltip:
               `$${(this.totalCost.tripCost * (this.taxes.gst / 100)).toFixed(2)} GST
               + $${(this.totalCost.tripCost * (this.taxes.pst / 100)).toFixed(2)} PST`
           },
@@ -229,8 +229,8 @@ export default {
             id: 7,
             name: 'Total Cost',
             value: (
-              this.totalCost.tripCost > 0 
-              ? '$' + Object.values(this.totalCost).reduce((a, b) => a + b).toFixed(2) 
+              this.totalCost.tripCost > 0
+              ? '$' + Object.values(this.totalCost).reduce((a, b) => a + b).toFixed(2)
               : '$0.00'
             )
           }

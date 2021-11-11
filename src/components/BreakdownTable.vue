@@ -1,50 +1,44 @@
 <template>
   <table id="breakdown-table">
     <template v-for="row in tableData" >
-      <el-tooltip
-        v-if="row.tooltip"
-        :key="row.id" 
-        effect="dark" 
-        :content="row.tooltip" 
-        placement="top">
-        <template v-if="row.name=='Subtotal'">
-          <tr class="subtotal-row">
-            <td>{{ row.name }}</td>
-            <td>{{ row.value }}</td>
-          </tr>          
-        </template>
-        <template v-else-if="row.name=='Total Cost'">
-          <tr class="total-row">
-            <td>{{ row.name }}</td>
-            <td>{{ row.value }}</td>
-          </tr>          
-        </template>
-        <template v-else>
-          <tr>
-            <td>{{ row.name }}</td>
-            <td>{{ row.value }}</td>
+      <template v-if="row.name=='Subtotal'">
+        <tr class="subtotal-row" :key="row.id" >
+          <td>{{ row.name }}</td>
+          <el-tooltip
+            v-if="row.tooltip"
+            effect="dark"
+            :content="row.tooltip"
+            placement="top">
+          <td>{{ row.value }}</td>
+          </el-tooltip>
+          <td v-else>{{ row.value }}</td>
+        </tr>
+      </template>
+      <template v-else-if="row.name=='Total Cost'">
+        <tr class="total-row" :key="row.id" >
+          <td>{{ row.name }}</td>
+          <el-tooltip
+            v-if="row.tooltip"
+            effect="dark"
+            :content="row.tooltip"
+            placement="top">
+          <td>{{ row.value }}</td>
+          </el-tooltip>
+          <td v-else>{{ row.value }}</td>
           </tr>
-        </template>
-      </el-tooltip>
+      </template>
       <template v-else>
-        <template v-if="row.name=='Subtotal'">
-          <tr class="subtotal-row" :key="row.id">
-            <td>{{ row.name }}</td>
-            <td>{{ row.value }}</td>
-          </tr>          
-        </template>
-        <template v-else-if="row.name=='Total Cost'">
-          <tr class="total-row" :key="row.id">
-            <td>{{ row.name }}</td>
-            <td>{{ row.value }}</td>
-          </tr>          
-        </template>
-        <template v-else>
-          <tr :key="row.id">
-            <td>{{ row.name }}</td>
-            <td>{{ row.value }}</td>
-          </tr>
-        </template>
+        <tr :key="row.id" >
+          <td>{{ row.name }}</td>
+            <el-tooltip
+            v-if="row.tooltip"
+            effect="dark"
+            :content="row.tooltip"
+            placement="top">
+          <td>{{ row.value }}</td>
+          </el-tooltip>
+          <td v-else>{{ row.value }}</td>
+        </tr>
       </template>
     </template>
   </table>
@@ -71,7 +65,7 @@ export default {
 }
 
 #breakdown-table td:nth-child(2) {
-  text-align: right;
+  text-align: center;
 }
 
 #breakdown-table tr {
