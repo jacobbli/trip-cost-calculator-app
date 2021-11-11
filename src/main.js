@@ -22,7 +22,11 @@ import {
   Row,
   Divider,
   Descriptions,
-  DescriptionsItem
+  DescriptionsItem,
+  Tabs,
+  TabPane,
+  Message,
+  Tooltip
 } from 'element-ui';
 
 import lang from 'element-ui/lib/locale/lang/en'
@@ -53,6 +57,11 @@ Vue.use(Row);
 Vue.use(Divider);
 Vue.use(Descriptions);
 Vue.use(DescriptionsItem);
+Vue.use(Tabs);
+Vue.use(TabPane);
+Vue.use(Tooltip);
+
+Vue.prototype.$message = Message;
 
 new Vue({
   router,

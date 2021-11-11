@@ -21,7 +21,7 @@ function calculateTripCost(rates, taxes, startDate, startTime, endDate, endTime)
     accessFeeCost = rates.accessFee;
   }
 
-  const pvrtCost = calculatePvrt(rates, tripDuration, startDate, endDate);
+  const pvrtCost = calculatePvrt(rates, tripDuration);
   const taxOnTripCost = calculateTax(tripCost, [taxes.pst, taxes.gst]);
   const taxOnPVRT = calculateTax(pvrtCost, [taxes.gst]);
   const taxOnAccessFee = calculateTax(accessFeeCost, [taxes.pst, taxes.gst]);
@@ -38,8 +38,14 @@ function calculateTripCost(rates, taxes, startDate, startTime, endDate, endTime)
   return totalCost;
 }
 
-function calculatePvrt(rates, tripDuration, startDate, endDate) {
-  let pvrtCost = 0
+function calculatePvrt(rates, tripDuration) {
+  const pvrtCost = tripDuration.pvrtDays * rates.pvrtRate;
+
+  return pvrtCost;
+}
+
+function calculatePvrtDays(tripDuration, startDate, endDate) {
+  let pvrtDays = 0
   if (tripDuration.hours >= 8 || tripDuration.days > 0) {
     let tempStartDate = new Date(startDate)
     tempStartDate.setHours(0, 0, 0);
@@ -48,10 +54,10 @@ function calculatePvrt(rates, tripDuration, startDate, endDate) {
     tempEndDate.setHours(0, 0, 0);
 
     let dayDifference = Math.floor((tempEndDate - tempStartDate) / 86400000)
-    pvrtCost = (dayDifference + 1) * rates.pvrtRate
+    pvrtDays = (dayDifference + 1)
   }
 
-  return pvrtCost;
+  return pvrtDays;
 }
 
 function calculateTax(costBeforeTaxes, applicableTaxes) {
@@ -76,6 +82,11 @@ function calculateTripDuration(startDate, startTime, endDate, endTime) {
     hours: hourDifference,
     minutes: minuteDifference
   }
+
+  let pvrtDays = calculatePvrtDays(tripDuration, startDate, endDate)
+
+  tripDuration['pvrtDays'] = pvrtDays;
+
   return tripDuration;
 }
 

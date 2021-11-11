@@ -100,12 +100,26 @@
 
     <div id='adjustment-breakdown-header'>
       <h3>Details</h3>
-      <el-button 
-        style="float: right; padding: 3px 0" 
-        type="text"
-        @click="copyTicketInfo">
-          Copy Ticket Information
-      </el-button>
+      <div id="action-buttons">
+        <el-tooltip
+          effect="dark" 
+          content="View detailed cost breakdown" 
+          placement="top">
+          <el-button 
+            icon="el-icon-view"
+            @click="openModal">
+          </el-button>
+        </el-tooltip>
+        <el-tooltip
+          effect="dark" 
+          content="Copy information for ticket" 
+          placement="top">
+          <el-button 
+            icon="el-icon-document-copy"
+            @click="copyTicketInfo">
+          </el-button>
+        </el-tooltip>
+      </div>
     </div>
     <el-descriptions class="margin-top" :column="1" size="medium" border>
       <el-descriptions-item>
@@ -131,7 +145,6 @@
         }}
       </el-descriptions-item>
     </el-descriptions>
-
     <el-table
       :data="tableData"
       class="cost-table"
@@ -146,15 +159,28 @@
         align="right">
       </el-table-column>
     </el-table>
+    <comparison-modal 
+      :isVisible="modalIsVisible"
+      :originalCosts="originalTotalCost"
+      :originalDuration="originalTripDuration"
+      :adjustedCosts="adjustedTotalCost"
+      :adjustedDuration="adjustedTripDuration"
+      :rates="rates"
+      :taxes="taxes"
+      @closeModal="closeModal" />
   </el-card>
 </template>
 
 <script>
 import { calculateTripCost, calculateTripDuration } from '../helpers/tripCalculationHelper';
 import { copyText } from '../helpers/ticketHelper';
+import ComparisonModal from './ComparisonModal.vue'
 
 export default {
   name: 'AdjustmentForm',
+  components: {
+    ComparisonModal
+  },
   props: {
     rates: {
       minuteRate: Number,
@@ -178,6 +204,8 @@ export default {
     return {
       showHeader: false,
 
+      modalIsVisible: false,
+
       form: {
         startDate: Date(),
         startTime: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
@@ -187,12 +215,35 @@ export default {
         adjustedEndTime: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       },
 
-      originalTotalCost: 0.0,
-      adjustedTotalCost: 0.0
+      originalTotalCost: {
+        tripCost: 0,
+        taxOnTripCost: 0,
+        pvrtCost: 0,
+        taxOnPvrt: 0,
+        accessFeeCost: 0,
+        taxOnAccessFee: 0,
+      },
+
+      adjustedTotalCost: {
+        tripCost: 0,
+        taxOnTripCost: 0,
+        pvrtCost: 0,
+        taxOnPvrt: 0,
+        accessFeeCost: 0,
+        taxOnAccessFee: 0,
+      }
     }
   },
 
   methods: {
+    openModal() {
+      this.modalIsVisible = true;
+    },
+
+    closeModal() {
+      this.modalIsVisible = false;
+    },
+
     copyTicketInfo() {
       copyText();
     },
@@ -205,15 +256,10 @@ export default {
       this.originalTotalCost = 0;
       this.adjustedTotalCost = 0;
 
-      const originalCost = calculateTripCost(this.rates, this.taxes, this.form.startDate, this.form.startTime, this.form.originalEndDate, this.form.originalEndTime);
-      for (let key in originalCost) {
-        this.originalTotalCost += originalCost[key]
-      }
+      this.originalTotalCost = calculateTripCost(this.rates, this.taxes, this.form.startDate, this.form.startTime, this.form.originalEndDate, this.form.originalEndTime);
 
-      const adjustedCost = calculateTripCost(this.rates, this.taxes, this.form.startDate, this.form.startTime, this.form.adjustedEndDate, this.form.adjustedEndTime);
-      for (let key in adjustedCost) {
-        this.adjustedTotalCost += adjustedCost[key]
-      }
+
+      this.adjustedTotalCost = calculateTripCost(this.rates, this.taxes, this.form.startDate, this.form.startTime, this.form.adjustedEndDate, this.form.adjustedEndTime);
       
     },
     highlightTotals({rowIndex}) {
@@ -248,16 +294,29 @@ export default {
       return this.getTripDuration(this.form.startDate, this.form.startTime, this.form.adjustedEndDate, this.form.adjustedEndTime);
     },
 
+    originalTotalCostSum: function() {
+      return Object.values(this.originalTotalCost).reduce((a, b) => a + b);
+    },
+
+    adjustedTotalCostSum: function() {
+      return Object.values(this.adjustedTotalCost).reduce((a, b) => a + b);
+    },
+
+    costDifference: function() {
+      return (this.adjustedTotalCostSum.toFixed(2) - this.originalTotalCostSum.toFixed(2)).toFixed(2)
+    },
+
+
     tableData: function() {
       let tableData = [{
           name: 'Total Cost Before Adjustment',
-          value: this.originalTotalCost > 0 ? '$' + this.originalTotalCost.toFixed(2) : '$0.00'
+          value: this.originalTotalCostSum > 0 ? '$' + this.originalTotalCostSum.toFixed(2) : '$0.00'
         }, {
           name: 'Total Cost After Adjustment',
-          value: this.adjustedTotalCost > 0 ? '$' + this.adjustedTotalCost.toFixed(2) : '$0.00'
+          value: this.adjustedTotalCostSum > 0 ? '$' + this.adjustedTotalCostSum.toFixed(2) : '$0.00'
         }, {
           name: 'Adjustment',
-          value: '$' + (this.adjustedTotalCost.toFixed(2) - this.originalTotalCost.toFixed(2)).toFixed(2)
+          value: '$' + this.costDifference
         }]
 
       return tableData;
@@ -275,10 +334,11 @@ h3 {
   display: inline;
 }
 
-#adjustment-breakdown-header {
+#action-buttons {
+  float: right; 
+  padding: 3px 0;
   margin-bottom: 10px;
 }
-
 .el-descriptions {
   margin-bottom: 15px
 }
@@ -296,5 +356,6 @@ h3 {
   font-weight: bold;
   background: #b9e79f;
 }
+
 
 </style>

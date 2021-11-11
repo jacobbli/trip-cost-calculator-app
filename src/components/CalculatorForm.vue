@@ -86,29 +86,19 @@
         }}
       </el-descriptions-item>
     </el-descriptions>
-      
-    <el-table
-      :data="tableData"
-      :show-header='showHeader'
-      class="cost-table"
-      :row-class-name="highlightTotals">
-      <el-table-column
-        prop="name">
-      </el-table-column>
-      <el-table-column
-        prop="value"
-        align="right">
-      </el-table-column>
-    </el-table>
-
+    <breakdown-table :tableData="tableData"/>
   </el-card>
 </template>
 
 <script>
 import { calculateTripCost, calculateTripDuration } from '../helpers/tripCalculationHelper';
+import BreakdownTable from './BreakdownTable.vue'
 
 export default {
   name: 'CalculatorForm',
+  components: {
+    BreakdownTable
+  },
   props: {
     rates: {
       minuteRate: Number,
@@ -188,40 +178,63 @@ export default {
 
     tableData: function() {
       let tableData = [{
-          name: 'Trip Cost',
-          value: this.totalCost.tripCost > 0 ? '$' + this.totalCost.tripCost.toFixed(2) : '$0.00'
-        }, {
-          name: 'Tax on trip cost',
-          value: this.totalCost.tripCost > 0 ? '$' + this.totalCost.taxOnTripCost.toFixed(2) : '$0.00'
-        }, {
-          name: 'Subtotal',
-          value: this.totalCost.tripCost > 0 ? '$' + (this.totalCost.tripCost + this.totalCost.taxOnTripCost).toFixed(2) : '$0.00'
-        }, {
-          name: 'PVRT',
-          value: this.totalCost.tripCost > 0 ? '$' + this.totalCost.pvrtCost.toFixed(2) : '$0.00'
-        }, {
-          name: 'Tax on PVRT',
-          value: this.totalCost.tripCost > 0 ? '$' + this.totalCost.taxOnPvrt.toFixed(2) : '$0.00'
-        }, {
-          name: 'Access Fee',
-          value: this.totalCost.tripCost > 0 ? '$' + this.totalCost.accessFeeCost.toFixed(2) : '$0.00'
-        },{
-          name: 'Tax on Access Fee',
-          value: this.totalCost.tripCost > 0 ? '$' + this.totalCost.taxOnAccessFee.toFixed(2) : '$0.00'
-        }, {
-          name: 'Total Cost',
-          value: (
-            this.totalCost.tripCost > 0 
-            ? '$' + (
-              this.totalCost.tripCost 
-              + this.totalCost.taxOnTripCost 
-              + this.totalCost.pvrtCost 
-              + this.totalCost.taxOnPvrt 
-              + this.totalCost.accessFeeCost 
-              + this.totalCost.taxOnAccessFee).toFixed(2) 
-            : '$0.00'
-          )
-      }]
+            id: 0,
+            name: 'Trip Cost',
+            value: this.totalCost.tripCost > 0 ? '$' + this.totalCost.tripCost.toFixed(2) : '$0.00',
+            tooltip: 
+              `${this.tripDuration.days} day(s) x $${this.rates.dayRate}
+              + ${this.tripDuration.hours} hour(s) x $${this.rates.hourRate}
+              + ${this.tripDuration.minutes} minute(s) x $${this.rates.minuteRate}`
+          },
+          {
+            id: 1,
+            name: 'Tax on Trip Cost',
+            value: this.totalCost.tripCost > 0 ? '$' + this.totalCost.taxOnTripCost.toFixed(2) : '$0.00',
+            tooltip: 
+              `$${(this.totalCost.tripCost * (this.taxes.gst / 100)).toFixed(2)} GST
+              + $${(this.totalCost.tripCost * (this.taxes.pst / 100)).toFixed(2)} PST`
+          },
+          {
+            id: 2,
+            name: 'Subtotal',
+            value: this.totalCost.tripCost > 0 ? '$' + (this.totalCost.tripCost + this.totalCost.taxOnTripCost).toFixed(2) : '$0.00',
+            tooltip: `$${this.totalCost.tripCost.toFixed(2)} + $${this.totalCost.taxOnTripCost.toFixed(2)}`
+          },
+          {
+            id: 3,
+            name: 'PVRT',
+            value: this.totalCost.tripCost > 0 ? '$' + this.totalCost.pvrtCost.toFixed(2) : '$0.00',
+            tooltip: `${this.tripDuration.pvrtDays} calendar days x $${this.rates.pvrtRate}`
+          },
+          {
+            id: 4,
+            name: 'Tax on PVRT',
+            value: this.totalCost.tripCost > 0 ? '$' + this.totalCost.taxOnPvrt.toFixed(2) : '$0.00',
+            tooltip: `$${this.totalCost.pvrtCost.toFixed(2)} x ${this.taxes.gst}% GST`
+          },
+          {
+            id: 5,
+            name: 'Access Fee',
+            value: this.totalCost.tripCost > 0 ? '$' + this.totalCost.accessFeeCost.toFixed(2) : '$0.00'
+          },
+          {
+            id: 6,
+            name: 'Tax on Access Fee',
+            value: this.totalCost.tripCost > 0 ? '$' + this.totalCost.taxOnAccessFee.toFixed(2) : '$0.00',
+            tooltip:
+              `$${(this.totalCost.accessFeeCost * (this.taxes.gst / 100)).toFixed(2)} GST
+              + $${(this.totalCost.accessFeeCost * (this.taxes.pst / 100)).toFixed(2)} PST`
+          },
+          {
+            id: 7,
+            name: 'Total Cost',
+            value: (
+              this.totalCost.tripCost > 0 
+              ? '$' + Object.values(this.totalCost).reduce((a, b) => a + b).toFixed(2) 
+              : '$0.00'
+            )
+          }
+      ]
 
       return tableData;
     }

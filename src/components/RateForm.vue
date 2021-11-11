@@ -1,11 +1,9 @@
 <template>
-  <el-dialog
-    title="Change Default Values"
-    :visible="isVisible"
-    width="30%"
-    @close="cancel">
-    <span>
-      <el-row type="flex" class="row-bg" justify="center">
+  <el-card class="box-card">
+      <div class="tip">
+        Don't forget to click "Save changes" to apply any changes you've made to the rates!
+      </div>
+      <el-row type="flex" class="row-bg">
         <el-form 
           ref="form" 
           id='rates-form'
@@ -57,7 +55,7 @@
           <el-divider></el-divider>
           
           <h3>Taxes</h3>
-          <el-form-item label="GST">
+          <el-form-item label="GST (%)">
             <el-col :span="11">
               <el-input-number 
                 v-model="form.gst" 
@@ -65,7 +63,7 @@
                 :step="0.1"></el-input-number>
             </el-col>
           </el-form-item>
-          <el-form-item label="PST">
+          <el-form-item label="PST (%)">
             <el-col :span="11">
               <el-input-number 
                 v-model="form.pst" 
@@ -73,27 +71,25 @@
                 :step="0.1"></el-input-number>
             </el-col>
           </el-form-item>
+          <el-button @click="reset">Reset rates</el-button>
+          <el-button type="primary" @click="confirm">Save changes</el-button>
         </el-form>
+
       </el-row>
-    </span>
-    <span slot="footer" class="dialog-footer">
-      <el-button @click="cancel">Cancel</el-button>
-      <el-button type="primary" @click="confirm">Confirm</el-button>
-    </span>
-  </el-dialog>
+
+  </el-card>
 </template>
 
 <script>
 export default {
-  name: 'RateOptionsModal',
+  name: 'RateForm',
   props: {
-    isVisible: Boolean,
     rates: {
-        minuteRate: Number,
-        hourRate: Number,
-        dayRate: Number,
-        pvrtRate: Number,
-        accessFee: Number
+      minuteRate: Number,
+      hourRate: Number,
+      dayRate: Number,
+      pvrtRate: Number,
+      accessFee: Number
     },
     taxes: {
       gst: Number,
@@ -116,16 +112,22 @@ export default {
   },
 
   methods: {
-    cancel() {
-      this.$emit('closeDialog');
+    reset() {
+      this.form.gst = parseFloat(process.env.VUE_APP_DEFAULT_GST)
+      this.form.pst = parseFloat(process.env.VUE_APP_DEFAULT_PST)
+      this.form.minuteRate = parseFloat(process.env.VUE_APP_DEFAULT_MINUTE_RATE)
+      this.form.hourRate = parseFloat(process.env.VUE_APP_DEFAULT_HOUR_RATE)
+      this.form.dayRate = parseFloat(process.env.VUE_APP_DEFAULT_DAY_RATE)
+      this.form.pvrtRate = parseFloat(process.env.VUE_APP_DEFAULT_PVRT)
+      this.form.accessFee = parseFloat(process.env.VUE_APP_DEFAULT_ACCESS_FEE)
+      this.updateRates(true);
     },
 
     confirm() {
       this.updateRates();
-      this.$emit('closeDialog');
     },
 
-    updateRates() {
+    updateRates(isReset) {
       const data = {
         taxes: {
           gst: this.form.gst,
@@ -138,7 +140,9 @@ export default {
           dayRate: this.form.dayRate,
           pvrtRate: this.form.pvrtRate,
           accessFee: this.form.accessFee
-        }
+        },
+
+        isReset: isReset
       }
       this.$emit('updateRates', data)
     }
@@ -146,6 +150,12 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+.tip {
+  padding: 16px 16px;
+  background-color: #ecf8ff;
+  border-radius: 4px;
+  border-left: 5px solid #50bfff;
+  margin-bottom: 15px;
+}
 </style>
