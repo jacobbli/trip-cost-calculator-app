@@ -8,7 +8,7 @@
             v-if="row.tooltip"
             effect="dark"
             :content="row.tooltip"
-            placement="top">
+            placement="right">
           <td>{{ row.value }}</td>
           </el-tooltip>
           <td v-else>{{ row.value }}</td>
@@ -21,7 +21,7 @@
             v-if="row.tooltip"
             effect="dark"
             :content="row.tooltip"
-            placement="top">
+            placement="right">
           <td>{{ row.value }}</td>
           </el-tooltip>
           <td v-else>{{ row.value }}</td>
@@ -34,7 +34,7 @@
             v-if="row.tooltip"
             effect="dark"
             :content="row.tooltip"
-            placement="top">
+            placement="right">
           <td>{{ row.value }}</td>
           </el-tooltip>
           <td v-else>{{ row.value }}</td>
