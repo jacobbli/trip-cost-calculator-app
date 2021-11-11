@@ -180,7 +180,7 @@ export default {
       let tableData = [{
             id: 0,
             name: 'Trip Cost',
-            value: this.totalCost.tripCost > 0 ? '$' + this.totalCost.tripCost.toFixed(2) : '$0.00',
+            value: '$' + this.totalCost.tripCost.toFixed(2),
             tooltip:
               `${this.tripDuration.days} day(s) x $${this.rates.dayRate}
               + ${this.tripDuration.hours} hour(s) x $${this.rates.hourRate}
@@ -189,7 +189,7 @@ export default {
           {
             id: 1,
             name: 'Tax on Trip Cost',
-            value: this.totalCost.tripCost > 0 ? '$' + this.totalCost.taxOnTripCost.toFixed(2) : '$0.00',
+            value: '$' + this.totalCost.taxOnTripCost.toFixed(2),
             tooltip:
               `$${(this.totalCost.tripCost * (this.taxes.gst / 100)).toFixed(2)} GST
               + $${(this.totalCost.tripCost * (this.taxes.pst / 100)).toFixed(2)} PST`
@@ -197,30 +197,30 @@ export default {
           {
             id: 2,
             name: 'Subtotal',
-            value: this.totalCost.tripCost > 0 ? '$' + (this.totalCost.tripCost + this.totalCost.taxOnTripCost).toFixed(2) : '$0.00',
+            value: '$' + (this.totalCost.tripCost + this.totalCost.taxOnTripCost).toFixed(2),
             tooltip: `$${this.totalCost.tripCost.toFixed(2)} + $${this.totalCost.taxOnTripCost.toFixed(2)}`
           },
           {
             id: 3,
             name: 'PVRT',
-            value: this.totalCost.tripCost > 0 ? '$' + this.totalCost.pvrtCost.toFixed(2) : '$0.00',
+            value: '$' + this.totalCost.pvrtCost.toFixed(2),
             tooltip: `${this.tripDuration.pvrtDays} calendar days x $${this.rates.pvrtRate}`
           },
           {
             id: 4,
             name: 'Tax on PVRT',
-            value: this.totalCost.tripCost > 0 ? '$' + this.totalCost.taxOnPvrt.toFixed(2) : '$0.00',
+            value: '$' + this.totalCost.taxOnPvrt.toFixed(2),
             tooltip: `$${this.totalCost.pvrtCost.toFixed(2)} x ${this.taxes.gst}% GST`
           },
           {
             id: 5,
             name: 'Access Fee',
-            value: this.totalCost.tripCost > 0 ? '$' + this.totalCost.accessFeeCost.toFixed(2) : '$0.00'
+            value: '$' + this.totalCost.accessFeeCost.toFixed(2)
           },
           {
             id: 6,
             name: 'Tax on Access Fee',
-            value: this.totalCost.tripCost > 0 ? '$' + this.totalCost.taxOnAccessFee.toFixed(2) : '$0.00',
+            value: '$' + this.totalCost.taxOnAccessFee.toFixed(2),
             tooltip:
               `$${(this.totalCost.accessFeeCost * (this.taxes.gst / 100)).toFixed(2)} GST
               + $${(this.totalCost.accessFeeCost * (this.taxes.pst / 100)).toFixed(2)} PST`
@@ -228,11 +228,7 @@ export default {
           {
             id: 7,
             name: 'Total Cost',
-            value: (
-              this.totalCost.tripCost > 0
-              ? '$' + Object.values(this.totalCost).reduce((a, b) => a + b).toFixed(2)
-              : '$0.00'
-            )
+            value: '$' + Object.values(this.totalCost).reduce((a, b) => a + b).toFixed(2)
           }
       ]
 

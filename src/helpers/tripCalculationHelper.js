@@ -66,6 +66,14 @@ function calculateTax(costBeforeTaxes, applicableTaxes) {
 }
 
 function calculateTripDuration(startDate, startTime, endDate, endTime) {
+
+  var tripDuration = {
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    pvrtDays: 0
+  }
+
   let startDateTime = new Date(startDate)
   startDateTime.setHours(parseInt(startTime.slice(0,2)), parseInt(startTime.slice(3)), 0, 0);
 
@@ -74,17 +82,18 @@ function calculateTripDuration(startDate, startTime, endDate, endTime) {
 
   let timeDifference = endDateTime - startDateTime
 
+  if (timeDifference < 0) {
+    return tripDuration;
+  }
+
   let dayDifference = Math.floor(timeDifference / 86400000)
   let hourDifference = (Math.floor(timeDifference / 3600000)) - (dayDifference * 24)
   let minuteDifference = (Math.floor(timeDifference / 60000)) - (dayDifference * 24 * 60) - (hourDifference * 60)
-  var tripDuration = {
-    days: dayDifference,
-    hours: hourDifference,
-    minutes: minuteDifference
-  }
-
   let pvrtDays = calculatePvrtDays(tripDuration, startDate, endDate)
 
+  tripDuration['days'] = dayDifference;
+  tripDuration['hours'] = hourDifference;
+  tripDuration['minutes'] = minuteDifference;
   tripDuration['pvrtDays'] = pvrtDays;
 
   return tripDuration;

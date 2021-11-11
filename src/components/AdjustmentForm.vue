@@ -310,13 +310,13 @@ export default {
     tableData: function() {
       let tableData = [{
           name: 'Total Cost Before Adjustment',
-          value: this.originalTotalCostSum > 0 ? '$' + this.originalTotalCostSum.toFixed(2) : '$0.00'
+          value: '$' + this.originalTotalCostSum.toFixed(2)
         }, {
           name: 'Total Cost After Adjustment',
-          value: this.adjustedTotalCostSum > 0 ? '$' + this.adjustedTotalCostSum.toFixed(2) : '$0.00'
+          value: '$' + this.adjustedTotalCostSum.toFixed(2)
         }, {
           name: 'Adjustment',
-          value: '$' + this.costDifference
+          value: this.costDifference > 0 ? '$' + this.costDifference : '-$' + Math.abs(this.costDifference).toFixed(2)
         }]
 
       return tableData;

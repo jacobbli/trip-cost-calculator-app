@@ -16,6 +16,7 @@ export default {
 
     props: {
         isVisible: Boolean,
+        
         rates: {
             minuteRate: Number,
             hourRate: Number,
@@ -71,8 +72,8 @@ export default {
             let tableData = [{
                     id: 0,
                     name: 'Trip Cost',
-                    original: this.originalCosts.tripCost > 0 ? '$' + this.originalCosts.tripCost.toFixed(2) : '$0.00',
-                    adjusted: this.adjustedCosts.tripCost > 0 ? '$' + this.adjustedCosts.tripCost.toFixed(2) : '$0.00',
+                    original: '$' + this.originalCosts.tripCost.toFixed(2),
+                    adjusted: '$' + this.adjustedCosts.tripCost.toFixed(2),
                     originalTooltip:
                     `${this.originalDuration.days} day(s) x $${this.rates.dayRate}
                     + ${this.originalDuration.hours} hour(s) x $${this.rates.hourRate}
@@ -85,8 +86,8 @@ export default {
                 {
                     id: 1,
                     name: 'Tax on Trip Cost',
-                    original: this.originalCosts.tripCost > 0 ? '$' + this.originalCosts.taxOnTripCost.toFixed(2) : '$0.00',
-                    adjusted: this.adjustedCosts.tripCost > 0 ? '$' + this.adjustedCosts.taxOnTripCost.toFixed(2) : '$0.00',
+                    original: '$' + this.originalCosts.taxOnTripCost.toFixed(2),
+                    adjusted: '$' + this.adjustedCosts.taxOnTripCost.toFixed(2),
                     originalTooltip:
                     `$${(this.originalCosts.tripCost * (this.taxes.gst / 100)).toFixed(2)} GST
                     + $${(this.originalCosts.tripCost * (this.taxes.pst / 100)).toFixed(2)} PST`,
@@ -97,8 +98,8 @@ export default {
                 {
                     id: 2,
                     name: 'Subtotal',
-                    original: this.originalCosts.tripCost > 0 ? '$' + (this.originalCosts.tripCost + this.originalCosts.taxOnTripCost).toFixed(2) : '$0.00',
-                    adjusted: this.adjustedCosts.tripCost > 0 ? '$' + (this.adjustedCosts.tripCost + this.adjustedCosts.taxOnTripCost).toFixed(2) : '$0.00',
+                    original: '$' + (this.originalCosts.tripCost + this.originalCosts.taxOnTripCost).toFixed(2),
+                    adjusted: '$' + (this.adjustedCosts.tripCost + this.adjustedCosts.taxOnTripCost).toFixed(2),
                     originalTooltip: `$${this.originalCosts.tripCost.toFixed(2)} + $${this.originalCosts.taxOnTripCost.toFixed(2)}`,
                     adjustedTooltip: `$${this.adjustedCosts.tripCost.toFixed(2)} + $${this.adjustedCosts.taxOnTripCost.toFixed(2)}`
 
@@ -106,30 +107,30 @@ export default {
                 {
                     id: 3,
                     name: 'PVRT',
-                    original: this.originalCosts.tripCost > 0 ? '$' + this.originalCosts.pvrtCost.toFixed(2) : '$0.00',
-                    adjusted: this.adjustedCosts.tripCost > 0 ? '$' + this.adjustedCosts.pvrtCost.toFixed(2) : '$0.00',
+                    original: '$' + this.originalCosts.pvrtCost.toFixed(2),
+                    adjusted: '$' + this.adjustedCosts.pvrtCost.toFixed(2),
                     originalTooltip: `${this.originalDuration.pvrtDays} calendar days x $${this.rates.pvrtRate}`,
                     adjustedTooltip: `${this.adjustedDuration.pvrtDays} calendar days x $${this.rates.pvrtRate}`
                 },
                 {
                     id: 4,
                     name: 'Tax on PVRT',
-                    original: this.originalCosts.tripCost > 0 ? '$' + this.originalCosts.taxOnPvrt.toFixed(2) : '$0.00',
-                    adjusted: this.adjustedCosts.tripCost > 0 ? '$' + this.adjustedCosts.taxOnPvrt.toFixed(2) : '$0.00',
+                    original: '$' + this.originalCosts.taxOnPvrt.toFixed(2),
+                    adjusted: '$' + this.adjustedCosts.taxOnPvrt.toFixed(2),
                     originalTooltip: `$${this.originalCosts.pvrtCost.toFixed(2)} x ${this.taxes.gst}% GST`,
                     adjustedTooltip: `$${this.adjustedCosts.pvrtCost.toFixed(2)} x ${this.taxes.gst}% GST`
                 },
                 {
                     id: 5,
                     name: 'Access Fee',
-                    original: this.originalCosts.tripCost > 0 ? '$' + this.originalCosts.accessFeeCost.toFixed(2) : '$0.00',
-                    adjusted: this.adjustedCosts.tripCost > 0 ? '$' + this.adjustedCosts.accessFeeCost.toFixed(2) : '$0.00'
+                    original: '$' + this.originalCosts.accessFeeCost.toFixed(2),
+                    adjusted: '$' + this.adjustedCosts.accessFeeCost.toFixed(2)
                 },
                 {
                     id: 6,
                     name: 'Tax on Access Fee',
-                    original: this.originalCosts.tripCost > 0 ? '$' + this.originalCosts.taxOnAccessFee.toFixed(2) : '$0.00',
-                    adjusted: this.adjustedCosts.tripCost > 0 ? '$' + this.adjustedCosts.taxOnAccessFee.toFixed(2) : '$0.00',
+                    original: '$' + this.originalCosts.taxOnAccessFee.toFixed(2),
+                    adjusted: '$' + this.adjustedCosts.taxOnAccessFee.toFixed(2),
                     originalTooltip:
                     `$${(this.originalCosts.accessFeeCost * (this.taxes.gst / 100)).toFixed(2)} GST
                     + $${(this.originalCosts.accessFeeCost * (this.taxes.pst / 100)).toFixed(2)} PST`,
@@ -140,16 +141,8 @@ export default {
                 {
                     id: 7,
                     name: 'Total Cost',
-                    original: (
-                        this.originalCosts.tripCost > 0
-                        ? '$' + Object.values(this.originalCosts).reduce((a, b) => a + b).toFixed(2)
-                        : '$0.00'
-                    ),
-                    adjusted: (
-                        this.adjustedCosts.tripCost > 0
-                        ? '$' + Object.values(this.adjustedCosts).reduce((a, b) => a + b).toFixed(2)
-                        : '$0.00'
-                    )
+                    original: '$' + Object.values(this.originalCosts).reduce((a, b) => a + b).toFixed(2),
+                    adjusted: '$' + Object.values(this.adjustedCosts).reduce((a, b) => a + b).toFixed(2)
                 }
             ]
 
