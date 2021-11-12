@@ -316,7 +316,7 @@ export default {
           value: '$' + this.adjustedTotalCostSum.toFixed(2)
         }, {
           name: 'Adjustment',
-          value: this.costDifference > 0 ? '$' + this.costDifference : '-$' + Math.abs(this.costDifference).toFixed(2)
+          value: this.costDifference >= 0 ? '$' + this.costDifference : '-$' + Math.abs(this.costDifference).toFixed(2)
         }]
 
       return tableData;
