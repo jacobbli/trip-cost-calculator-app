@@ -2,8 +2,8 @@
   <table id="comparison-table">
     <tr>
       <th></th>
-      <th>Original Cost Breakdown</th>
-      <th>Adjusted Cost Breakdown</th>
+      <th>Original Trip</th>
+      <th>Adjusted Trip</th>
     </tr>
     <template v-for="row in tableData" >
         <template v-if="row.name=='Subtotal'">

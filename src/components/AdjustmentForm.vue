@@ -128,9 +128,9 @@
           Original Duration
         </template>
         {{
-          originalTripDuration.days + (originalTripDuration.days == 1 ? ' Day, ' : ' Days, ') +
-          originalTripDuration.hours + (originalTripDuration.hours == 1 ? ' Hour, ' : ' Hours, ') +
-          originalTripDuration.minutes + (originalTripDuration.minutes == 1 ? ' Minute' : ' Minutes')
+          originalTrip.days + (originalTrip.days == 1 ? ' Day, ' : ' Days, ') +
+          originalTrip.hours + (originalTrip.hours == 1 ? ' Hour, ' : ' Hours, ') +
+          originalTrip.minutes + (originalTrip.minutes == 1 ? ' Minute' : ' Minutes')
         }}
       </el-descriptions-item>
       <el-descriptions-item>
@@ -139,9 +139,9 @@
           Adjusted Duration
         </template>
         {{
-          adjustedTripDuration.days + (adjustedTripDuration.days == 1 ? ' Day, ' : ' Days, ') +
-          adjustedTripDuration.hours + (adjustedTripDuration.hours == 1 ? ' Hour, ' : ' Hours, ') +
-          adjustedTripDuration.minutes + (adjustedTripDuration.minutes == 1 ? ' Minute' : ' Minutes')
+          adjustedTrip.days + (adjustedTrip.days == 1 ? ' Day, ' : ' Days, ') +
+          adjustedTrip.hours + (adjustedTrip.hours == 1 ? ' Hour, ' : ' Hours, ') +
+          adjustedTrip.minutes + (adjustedTrip.minutes == 1 ? ' Minute' : ' Minutes')
         }}
       </el-descriptions-item>
     </el-descriptions>
@@ -162,9 +162,9 @@
     <comparison-modal
       :isVisible="modalIsVisible"
       :originalCosts="originalTotalCost"
-      :originalDuration="originalTripDuration"
+      :originalDuration="originalTrip"
       :adjustedCosts="adjustedTotalCost"
-      :adjustedDuration="adjustedTripDuration"
+      :adjustedDuration="adjustedTrip"
       :rates="rates"
       :taxes="taxes"
       @closeModal="closeModal" />
@@ -203,7 +203,6 @@ export default {
   data() {
     return {
       showHeader: false,
-
       modalIsVisible: false,
 
       form: {
@@ -248,18 +247,13 @@ export default {
       copyText();
     },
 
-    getTripDuration(startDate, startTime, endDate, endTime) {
-      return calculateTripDuration(startDate, startTime, endDate, endTime);
-    },
-
     updateCosts() {
       this.originalTotalCost = 0;
       this.adjustedTotalCost = 0;
 
-      this.originalTotalCost = calculateTripCost(this.rates, this.taxes, this.form.startDate, this.form.startTime, this.form.originalEndDate, this.form.originalEndTime);
+      this.originalTotalCost = calculateTripCost(this.rates, this.taxes, this.originalTrip);
 
-
-      this.adjustedTotalCost = calculateTripCost(this.rates, this.taxes, this.form.startDate, this.form.startTime, this.form.adjustedEndDate, this.form.adjustedEndTime);
+      this.adjustedTotalCost = calculateTripCost(this.rates, this.taxes, this.adjustedTrip);
 
     },
     highlightTotals({rowIndex}) {
@@ -283,15 +277,36 @@ export default {
       }
       this.updateCosts();
     },
+
+    setTrip(startDate, startTime, endDate, endTime) {
+      let startDateTime = new Date(startDate)
+      startDateTime.setHours(parseInt(startTime.slice(0,2)), parseInt(startTime.slice(3)), 0, 0);
+
+      let endDateTime = new Date(endDate)
+      endDateTime.setHours(parseInt(endTime.slice(0,2)), parseInt(endTime.slice(3)), 0, 0);
+
+      let trip = {
+        startTime: startDateTime,
+        endTime: endDateTime,
+        days: 0,
+        hours: 0,
+        minutes: 0,
+        pvrtDays: 0
+      }
+
+      trip = calculateTripDuration(trip);
+
+      return trip;
+    }
   },
 
   computed: {
-    originalTripDuration: function() {
-      return this.getTripDuration(this.form.startDate, this.form.startTime, this.form.originalEndDate, this.form.originalEndTime);
+    originalTrip: function() {
+      return this.setTrip(this.form.startDate, this.form.startTime, this.form.originalEndDate, this.form.originalEndTime);
     },
 
-    adjustedTripDuration: function() {
-      return this.getTripDuration(this.form.startDate, this.form.startTime, this.form.adjustedEndDate, this.form.adjustedEndTime);
+    adjustedTrip: function() {
+      return this.setTrip(this.form.startDate, this.form.startTime, this.form.adjustedEndDate, this.form.adjustedEndTime);
     },
 
     originalTotalCostSum: function() {

@@ -80,9 +80,9 @@
           Trip Duration
         </template>
         {{
-          tripDuration.days + (tripDuration.days == 1 ? ' Day, ' : ' Days, ') +
-          tripDuration.hours + (tripDuration.hours == 1 ? ' Hour, ' : ' Hours, ') +
-          tripDuration.minutes + (tripDuration.minutes == 1 ? ' Minute' : ' Minutes')
+          trip.days + (trip.days == 1 ? ' Day, ' : ' Days, ') +
+          trip.hours + (trip.hours == 1 ? ' Hour, ' : ' Hours, ') +
+          trip.minutes + (trip.minutes == 1 ? ' Minute' : ' Minutes')
         }}
       </el-descriptions-item>
     </el-descriptions>
@@ -114,17 +114,13 @@ export default {
   },
   watch: {
     rates: function() {
-      this.totalCost = calculateTripCost(this.rates, this.taxes, this.form.startDate, this.form.startTime, this.form.endDate, this.form.endTime);
+      this.totalCost = calculateTripCost(this.rates, this.taxes, this.trip);
     }
   },
 
   data() {
     return {
       showHeader: false,
-
-      dayDifference: 0,
-      hourDifference: 0,
-      minuteDifference: 0,
 
       form: {
         startDate: Date(),
@@ -146,7 +142,7 @@ export default {
 
   methods: {
     getTripCost() {
-      this.totalCost = calculateTripCost(this.rates, this.taxes, this.form.startDate, this.form.startTime, this.form.endDate, this.form.endTime);
+      this.totalCost = calculateTripCost(this.rates, this.taxes, this.trip);
     },
 
     resetTime(dateCategory) {
@@ -158,7 +154,7 @@ export default {
         this.form.endTime = currentDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         this.form.endDate = currentDate
       }
-      this.totalCost = calculateTripCost(this.rates, this.taxes, this.form.startDate, this.form.startTime, this.form.endDate, this.form.endTime);
+      this.totalCost = calculateTripCost(this.rates, this.taxes, this.trip);
     },
 
     highlightTotals({rowIndex}) {
@@ -172,8 +168,25 @@ export default {
   },
 
   computed: {
-    tripDuration: function() {
-      return calculateTripDuration(this.form.startDate, this.form.startTime, this.form.endDate, this.form.endTime);
+    trip: function() {
+      let startDateTime = new Date(this.form.startDate)
+      startDateTime.setHours(parseInt(this.form.startTime.slice(0,2)), parseInt(this.form.startTime.slice(3)), 0, 0);
+
+      let endDateTime = new Date(this.form.endDate)
+      endDateTime.setHours(parseInt(this.form.endTime.slice(0,2)), parseInt(this.form.endTime.slice(3)), 0, 0);
+
+      let trip = {
+        startTime: startDateTime,
+        endTime: endDateTime,
+        days: 0,
+        hours: 0,
+        minutes: 0,
+        pvrtDays: 0
+      }
+
+      trip = calculateTripDuration(trip);
+
+      return trip;
     },
 
     tableData: function() {
@@ -182,9 +195,9 @@ export default {
             name: 'Trip Cost',
             value: '$' + this.totalCost.tripCost.toFixed(2),
             tooltip:
-              `${this.tripDuration.days} day(s) x $${this.rates.dayRate}
-              + ${this.tripDuration.hours} hour(s) x $${this.rates.hourRate}
-              + ${this.tripDuration.minutes} minute(s) x $${this.rates.minuteRate}`
+              `${this.trip.days} day(s) x $${this.rates.dayRate}
+              + ${this.trip.hours} hour(s) x $${this.rates.hourRate}
+              + ${this.trip.minutes} minute(s) x $${this.rates.minuteRate}`
           },
           {
             id: 1,
@@ -204,7 +217,7 @@ export default {
             id: 3,
             name: 'PVRT',
             value: '$' + this.totalCost.pvrtCost.toFixed(2),
-            tooltip: `${this.tripDuration.pvrtDays} calendar days x $${this.rates.pvrtRate}`
+            tooltip: `${this.trip.pvrtDays} calendar days x $${this.rates.pvrtRate}`
           },
           {
             id: 4,
