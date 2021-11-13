@@ -29,10 +29,15 @@ jobs:
       # build project
       - name: Build project
         run: npm run build
-      
+        
+      # checkout gh-pages branch
+      - name: Checkout gh-pages branch
+        uses: actions/checkout@v2
+        with:
+          ref: gh-pages
+          
       # push to gh-pages branch
       - name: Push to gh-pages branch
         run:
-          git checkout gh-pages
-          git commit -m "Build project"
-          git push origin gh-pages
+          git commit -m "Automated build"
+          git push
