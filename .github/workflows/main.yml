@@ -20,15 +20,15 @@ jobs:
     steps:
       # install dependencies
       - name: Install dependencies
-      - run: npm install
+        run: npm install
       
       # build project
       - name: Build project
-      - run: npm run build
+        run: npm run build
       
       # push to gh-pages branch
       - name: Push to gh-pages branch
-      - run:
+        run:
           git checkout gh-pages
           git commit -m "Build project"
           git push origin gh-pages
