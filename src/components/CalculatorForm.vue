@@ -91,7 +91,7 @@
 </template>
 
 <script>
-import { calculateTripCost, calculateTripDuration } from '../helpers/tripCalculationHelper';
+import { calculateTripCost, calculateTripDuration, getCurrentTime } from '../helpers/tripCalculationHelper';
 import BreakdownTable from './BreakdownTable.vue'
 
 export default {
@@ -124,9 +124,9 @@ export default {
 
       form: {
         startDate: Date(),
-        startTime: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        startTime: getCurrentTime(),
         endDate: Date(),
-        endTime: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        endTime: getCurrentTime(),
       },
 
       totalCost: {
@@ -148,10 +148,10 @@ export default {
     resetTime(dateCategory) {
       const currentDate = new Date();
       if (dateCategory == 'start') {
-        this.form.startTime = currentDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        this.form.startTime = getCurrentTime();
         this.form.startDate = currentDate
       } else {
-        this.form.endTime = currentDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        this.form.endTime = getCurrentTime();
         this.form.endDate = currentDate
       }
       this.totalCost = calculateTripCost(this.rates, this.taxes, this.trip);

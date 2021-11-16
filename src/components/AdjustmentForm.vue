@@ -172,7 +172,7 @@
 </template>
 
 <script>
-import { calculateTripCost, calculateTripDuration } from '../helpers/tripCalculationHelper';
+import { calculateTripCost, calculateTripDuration, getCurrentTime } from '../helpers/tripCalculationHelper';
 import { copyText } from '../helpers/ticketHelper';
 import ComparisonModal from './ComparisonModal.vue'
 
@@ -207,11 +207,11 @@ export default {
 
       form: {
         startDate: Date(),
-        startTime: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        startTime: getCurrentTime(),
         originalEndDate: Date(),
-        originalEndTime: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        originalEndTime: getCurrentTime(),
         adjustedEndDate: Date(),
-        adjustedEndTime: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        adjustedEndTime: getCurrentTime()
       },
 
       originalTotalCost: {
@@ -266,13 +266,13 @@ export default {
     resetTime(dateCategory) {
       const currentDate = new Date();
       if (dateCategory == 'start') {
-        this.form.startTime = currentDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        this.form.startTime = getCurrentTime();
         this.form.startDate = currentDate
       } else if (dateCategory == 'original') {
-        this.form.originalEndTime = currentDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        this.form.originalEndTime = getCurrentTime();
         this.form.originalEndDate = currentDate
       } else if (dateCategory == 'adjusted') {
-        this.form.adjustedEndTime = currentDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        this.form.adjustedEndTime = getCurrentTime();
         this.form.adjustedEndDate = currentDate
       }
       this.updateCosts();

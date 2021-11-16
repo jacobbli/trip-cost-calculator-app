@@ -1,3 +1,10 @@
+function getCurrentTime() {
+  const currentDate = new Date();
+  const currentHour = currentDate.getHours().toString();
+  const currentMinute = currentDate.getMinutes().toString();
+  return `${currentHour.padStart(2, '0')}:${currentMinute.padStart(2, '0')}`;
+}
+
 function calculateTripCost(rates, taxes, trip) {
   let tripCost = 0.0;
   let accessFeeCost = 0.0;
@@ -82,5 +89,6 @@ function calculateTripDuration(trip) {
 
 module.exports = {
   calculateTripCost,
-  calculateTripDuration
+  calculateTripDuration,
+  getCurrentTime
 }
