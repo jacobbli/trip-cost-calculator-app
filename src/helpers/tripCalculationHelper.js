@@ -50,7 +50,7 @@ function calculatePvrt(rates, trip) {
 
 function calculatePvrtDays(trip) {
   let pvrtDays = 0
-  console.log(trip)
+
   if (trip.hours >= 8 || trip.days > 0) {
     const tempStartDate = trip.startTime.setHours(0, 0, 0);
 
@@ -59,7 +59,7 @@ function calculatePvrtDays(trip) {
     let dayDifference = Math.floor((tempEndDate - tempStartDate) / 86400000)
     pvrtDays = (dayDifference + 1)
   }
-  console.log(pvrtDays)
+
   return pvrtDays;
 }
 
@@ -83,7 +83,6 @@ function calculateTripDuration(trip) {
   trip['hours'] = hours;
   trip['minutes'] = minutes;
 
-  
   let pvrtDays = calculatePvrtDays(trip)
   trip['pvrtDays'] = pvrtDays;
 
