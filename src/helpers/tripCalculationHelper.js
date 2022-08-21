@@ -51,13 +51,10 @@ function calculatePvrt(rates, trip) {
 function calculatePvrtDays(trip) {
   let pvrtDays = 0
 
-  if (trip.hours >= 8 || trip.days > 0) {
-    const tempStartDate = trip.startTime.setHours(0, 0, 0);
+  const totalMinutes = trip.days * 1440 + trip.hours * 60 + trip.minutes
 
-    const tempEndDate = trip.endTime.setHours(0, 0, 0);
-
-    let dayDifference = Math.floor((tempEndDate - tempStartDate) / 86400000)
-    pvrtDays = (dayDifference + 1)
+  if (totalMinutes > 480) {
+    pvrtDays = Math.ceil(totalMinutes / 1440);
   }
 
   return pvrtDays;
