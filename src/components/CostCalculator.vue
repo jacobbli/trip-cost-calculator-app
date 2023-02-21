@@ -102,6 +102,13 @@ const totalCost = computed(() => {
 });
 
 const durationText = computed(() => {
+  if (
+    Object.values(tripDuration.value).some(
+      (duration) => duration < 0 || isNaN(duration)
+    )
+  )
+    return "Invalid time range";
+
   const dayLabel = tripDuration.value.days == 1 ? "day" : "days";
   const hourLabel = tripDuration.value.hours == 1 ? "hour" : "hours";
   const minuteLabel = tripDuration.value.minutes == 1 ? "minute" : "minutes";
@@ -194,7 +201,7 @@ const costSummaryItems = computed(() => [
   flex-direction: column;
   gap: 10px;
   width: 50%;
-  max-width: 600px;
+  max-width: 400px;
 
   .costCalculator__heading {
     font-size: 20px;
