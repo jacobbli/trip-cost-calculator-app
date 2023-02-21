@@ -113,6 +113,13 @@ const adjustedTotalCost = computed(() => {
 });
 
 const durationText = computed(() => {
+  if (
+    Object.values(tripDuration.value).some(
+      (duration) => duration < 0 || isNaN(duration)
+    )
+  )
+    return "Invalid time range";
+
   const dayLabel = tripDuration.value.days == 1 ? "day" : "days";
   const hourLabel = tripDuration.value.hours == 1 ? "hour" : "hours";
   const minuteLabel = tripDuration.value.minutes == 1 ? "minute" : "minutes";
