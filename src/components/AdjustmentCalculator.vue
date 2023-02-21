@@ -9,7 +9,7 @@
       />
     </trip-input-item>
 
-    <trip-input-item label="BCAA member">
+    <trip-input-item label="BCAA member discount">
       <input
         id="is-bcaa-member"
         type="checkbox"
