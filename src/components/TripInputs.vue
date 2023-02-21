@@ -1,36 +1,51 @@
 <template>
-  <div class="trip-inputs-container">
-    <div class="trip-inputs-item">
-      <label>Start time</label>
+  <div class="tripInputs__container">
+    <trip-input-item label="Start time">
       <datetime-input
-        :datetime="startDateTime"
+        :datetime="startDatetime"
         :on-change="(newTime) => changeDatetime(newTime, 1)"
       />
-    </div>
-    <div class="trip-inputs-item">
-      <label>End time</label>
+    </trip-input-item>
+
+    <trip-input-item label="End time">
       <datetime-input
-        :datetime="endDateTime"
+        :datetime="endDatetime"
         :on-change="(newTime) => changeDatetime(newTime, 0)"
       />
-    </div>
-    <div class="trip-inputs-item">
-      <label for="is-bcaa-member">BCAA member?</label>
+    </trip-input-item>
+
+    <trip-input-item label="BCAA member">
       <input
         id="is-bcaa-member"
         type="checkbox"
-        value="isBcaaMember"
+        :checked="isBcaaMember"
         @change="toggleBcaaMember"
       />
-    </div>
+    </trip-input-item>
+
+    <trip-input-item label="Include access fee">
+      <input
+        id="include-access-fee"
+        type="checkbox"
+        :checked="includeAccessFee"
+        @change="toggleAccessFee"
+      />
+    </trip-input-item>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, defineProps } from "vue";
+import { defineProps } from "vue";
 import DatetimeInput from "./DatetimeInput.vue";
+import TripInputItem from "./TripInputItem.vue";
 
 const props = defineProps({
+  startDatetime: {
+    type: Date,
+  },
+  endDatetime: {
+    type: Date,
+  },
   onChange: {
     type: Function,
   },
@@ -38,41 +53,29 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  includeAccessFee: {
+    type: Boolean,
+    default: true,
+  },
   toggleBcaaMember: {
     type: Function,
   },
-});
-const startDateTime = ref(new Date());
-const endDateTime = ref(new Date());
-
-onMounted(() => {
-  if (props.onChange) props.onChange(startDateTime.value, endDateTime.value);
+  toggleAccessFee: {
+    type: Function,
+  },
 });
 
-function changeDatetime(newTime, start = 1) {
-  start ? (startDateTime.value = newTime) : (endDateTime.value = newTime);
-
-  props.onChange(startDateTime.value, endDateTime.value);
+function changeDatetime(newTime, changeStart = 1) {
+  changeStart
+    ? props.onChange(newTime, props.endDatetime)
+    : props.onChange(props.startDatetime, newTime);
 }
 </script>
 
 <style scoped lang="scss">
-.trip-inputs-container {
+.tripInputs__container {
   display: flex;
   flex-direction: column;
   row-gap: 18px;
-
-  .trip-inputs-item {
-    display: grid;
-    grid-template-columns: 0.5fr 1fr;
-
-    input[type="datetime-local"] {
-      max-width: 180px;
-    }
-
-    input[type="checkbox"] {
-      justify-self: left;
-    }
-  }
 }
 </style>

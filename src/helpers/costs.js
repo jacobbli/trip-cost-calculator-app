@@ -28,7 +28,7 @@ function calculateTripCost(tripDuration) {
 }
 
 function calculatePvrtCost(pvrtDays) {
-  return pvrtDays * process.env.VUE_APP_DEFAULT_PVRT;
+  return pvrtDays * parseFloat(process.env.VUE_APP_DEFAULT_PVRT);
 }
 
 function calculateDiscounts(isBcaaMember, tripCost) {
@@ -37,13 +37,17 @@ function calculateDiscounts(isBcaaMember, tripCost) {
   };
 }
 
-function calculateTax(totalCost, pvrtCost) {
-  console.log(totalCost);
+function calculateTax(totalCost, pvrtCost, accessFeeCost) {
   return {
-    gst:
+    tripGst:
       ((totalCost + pvrtCost) * parseFloat(process.env.VUE_APP_DEFAULT_GST)) /
       100,
-    pst: (totalCost * parseFloat(process.env.VUE_APP_DEFAULT_PST)) / 100,
+    tripPst: (totalCost * parseFloat(process.env.VUE_APP_DEFAULT_PST)) / 100,
+    pvrtGst: (pvrtCost * parseFloat(process.env.VUE_APP_DEFAULT_GST)) / 100,
+    accessFeeGst:
+      (accessFeeCost * parseFloat(process.env.VUE_APP_DEFAULT_GST)) / 100,
+    accessFeePst:
+      (accessFeeCost * parseFloat(process.env.VUE_APP_DEFAULT_PST)) / 100,
   };
 }
 
