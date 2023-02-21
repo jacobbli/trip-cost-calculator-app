@@ -157,4 +157,8 @@ const costSummaryItems = computed(() => [
     align-self: center;
   }
 }
+
+.adjustmentCalculator__duration {
+  text-align: center;
+}
 </style>
