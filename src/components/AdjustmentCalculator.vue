@@ -11,6 +11,7 @@
 
     <trip-input-item label="BCAA member discount">
       <input
+        class="adjustmentsCalculator__checkbox"
         id="is-bcaa-member"
         type="checkbox"
         :checked="isBcaaMember"
@@ -20,6 +21,7 @@
 
     <trip-input-item label="Include access fee">
       <input
+        class="adjustmentsCalculator__checkbox"
         id="include-access-fee"
         type="checkbox"
         :checked="includeAccessFee"
@@ -147,6 +149,12 @@ const costSummaryItems = computed(() => [
   .adjustmentCalculator__heading {
     font-size: 20px;
     font-weight: bold;
+  }
+
+  .adjustmentsCalculator__checkbox {
+    width: 14px;
+    height: 14px;
+    align-self: center;
   }
 }
 </style>

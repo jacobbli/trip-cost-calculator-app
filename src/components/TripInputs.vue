@@ -16,6 +16,7 @@
 
     <trip-input-item label="BCAA member discount">
       <input
+        class="tripInputs__checkbox"
         id="is-bcaa-member"
         type="checkbox"
         :checked="isBcaaMember"
@@ -25,6 +26,7 @@
 
     <trip-input-item label="Include access fee">
       <input
+        class="tripInputs__checkbox"
         id="include-access-fee"
         type="checkbox"
         :checked="includeAccessFee"
@@ -77,5 +79,11 @@ function changeDatetime(newTime, changeStart = 1) {
   display: flex;
   flex-direction: column;
   row-gap: 18px;
+
+  .tripInputs__checkbox {
+    width: 14px;
+    height: 14px;
+    align-self: center;
+  }
 }
 </style>

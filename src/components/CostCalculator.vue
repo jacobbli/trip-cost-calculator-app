@@ -193,7 +193,8 @@ const costSummaryItems = computed(() => [
   display: flex;
   flex-direction: column;
   gap: 10px;
-  // min-width: 70%;
+  width: 50%;
+  max-width: 600px;
 
   .costCalculator__heading {
     font-size: 20px;
