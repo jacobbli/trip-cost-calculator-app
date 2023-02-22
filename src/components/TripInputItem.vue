@@ -1,0 +1,23 @@
+<template>
+  <div class="tripInputItem__container">
+    <div>{{ label }}</div>
+    <slot></slot>
+  </div>
+</template>
+
+<script setup>
+import { defineProps } from "vue";
+
+defineProps({
+  label: {
+    type: String,
+  },
+});
+</script>
+
+<style scoped lang="scss">
+.tripInputItem__container {
+  display: grid;
+  grid-template-columns: 0.75fr 1fr;
+}
+</style>

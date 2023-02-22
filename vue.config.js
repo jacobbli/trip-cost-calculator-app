@@ -1,3 +1,4 @@
-module.exports = {
-  publicPath: '/trip-cost-calculator-app/'
-}
+const { defineConfig } = require("@vue/cli-service");
+module.exports = defineConfig({
+  transpileDependencies: true,
+});
