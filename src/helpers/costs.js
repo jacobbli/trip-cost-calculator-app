@@ -9,7 +9,7 @@ function calculateTripCost(tripDuration) {
     (tripDuration.hours < 6
       ? parseFloat(process.env.VUE_APP_DEFAULT_HOUR_RATE) * tripDuration.hours
       : 0) +
-    (tripDuration.minutes >= 36
+    (tripDuration.minutes >= 36 && tripDuration.hours < 6
       ? parseFloat(process.env.VUE_APP_DEFAULT_HOUR_RATE)
       : 0);
 
