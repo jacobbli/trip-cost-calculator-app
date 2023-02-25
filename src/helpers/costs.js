@@ -14,7 +14,7 @@ function calculateTripCost(tripDuration) {
       : 0);
 
   const minuteCost =
-    tripDuration.minutes < 36
+    tripDuration.minutes < 36 && tripDuration.hours < 6
       ? parseFloat(process.env.VUE_APP_DEFAULT_MINUTE_RATE) *
         tripDuration.minutes
       : 0;
