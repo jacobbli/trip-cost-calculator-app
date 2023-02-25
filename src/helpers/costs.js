@@ -14,7 +14,6 @@ function calculateTripCost(tripDuration) {
     tripDuration.days +
     (tripDuration.hours + Math.floor(tripDuration.minutes / 36) < 6 ? 0 : 1);
 
-  console.log(billableDays, billableHours, billableMinutes);
   const dayCost =
     parseFloat(process.env.VUE_APP_DEFAULT_DAY_RATE) * billableDays;
 
