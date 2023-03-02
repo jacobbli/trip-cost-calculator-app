@@ -1,5 +1,6 @@
 <template>
   <nav-bar />
+	hi
   <cost-calculator />
 </template>
 
