@@ -1,8 +1,12 @@
 <template>
-  <div class="costItem__container" :class="costItemClass">
+  <div class="costSummaryItem__container" :class="costSummaryItemClass">
     <div>{{ label }}</div>
-    <div class="costItem__value">{{ value }}</div>
-    <cost-details v-if="tooltip" class="costItem__tooltip" :items="tooltip" />
+    <div class="costSummaryItem__value">{{ value }}</div>
+    <cost-details
+      v-if="tooltip"
+      class="costSummaryItem__tooltip"
+      :items="tooltip"
+    />
   </div>
 </template>
 
@@ -26,43 +30,36 @@ const props = defineProps({
   },
 });
 
-const costItemClass = computed(() => (props.isTotal ? "costItem__total" : ""));
+const costSummaryItemClass = computed(() =>
+  props.isTotal ? "costSummaryItem__total" : ""
+);
 </script>
 
 <style scoped lang="scss">
-.costItem__container {
+.costSummaryItem__container {
   display: grid;
   grid-template-columns: 1fr 1fr;
   position: relative;
 
   padding: 5px 0;
 
-  .costItem__value {
+  .costSummaryItem__value {
     text-align: right;
   }
 
   &:hover {
     background-color: rgb(235, 235, 235);
 
-    & .costItem__tooltip {
+    & .costSummaryItem__tooltip {
       visibility: visible;
     }
   }
 }
-.costItem__tooltip {
+.costSummaryItem__tooltip {
   visibility: hidden;
-
-  &:hover {
-    background-color: rgb(235, 235, 235);
-    visibility: visible;
-
-    & .costItem__tooltip {
-      visibility: visible;
-    }
-  }
 }
 
-.costItem__total {
+.costSummaryItem__total {
   font-weight: bold;
   background-color: rgb(228, 243, 228);
 }

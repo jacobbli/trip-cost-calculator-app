@@ -71,6 +71,7 @@ function calculateHourCost(tripDuration, minuteCost, hourRateCutOff) {
     overflow: 0,
   };
 }
+
 function calculatePvrtCost(pvrtDays) {
   return pvrtDays * parseFloat(process.env.VUE_APP_PVRT);
 }

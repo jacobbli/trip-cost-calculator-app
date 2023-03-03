@@ -29,16 +29,43 @@ defineProps({
 
   min-width: 140px;
   position: absolute;
-  left: 105%;
+  right: 20%;
   z-index: 1;
   border: 1px rgb(175, 175, 175) solid;
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgb(255, 255, 255);
+  // color: rgb(15, 156, 15);
   .costDetails__item {
     display: grid;
     grid-template-columns: 1fr 1fr;
 
     div:nth-child(2) {
       text-align: right;
+    }
+  }
+}
+
+@media only screen and (min-width: 600px) {
+  .costDetails__container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    padding: 4px;
+    font-size: 12px;
+
+    border-radius: 5px;
+
+    min-width: 140px;
+    position: absolute;
+    left: 105%;
+    z-index: 1;
+    .costDetails__item {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+
+      div:nth-child(2) {
+        text-align: right;
+      }
     }
   }
 }

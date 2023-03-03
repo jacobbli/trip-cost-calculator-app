@@ -200,8 +200,6 @@ const costSummaryItems = computed(() => [
   display: flex;
   flex-direction: column;
   gap: 10px;
-  width: 50%;
-  max-width: 400px;
 
   .costCalculator__heading {
     font-size: 20px;
@@ -214,6 +212,13 @@ const costSummaryItems = computed(() => [
 
   .costCalculator__duration {
     text-align: center;
+  }
+}
+
+@media only screen and (min-width: 600px) {
+  .costCalculator__container {
+    width: 50%;
+    max-width: 400px;
   }
 }
 </style>
