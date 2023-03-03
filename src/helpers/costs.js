@@ -1,18 +1,31 @@
 function calculateTripCost(tripDuration) {
+  const minuteRateCutOff = Math.ceil(
+    process.env.VUE_APP_DEFAULT_HOUR_RATE /
+      process.env.VUE_APP_DEFAULT_MINUTE_RATE
+  );
+
+  const hourRateCutOff = Math.ceil(
+    process.env.VUE_APP_DEFAULT_DAY_RATE / process.env.VUE_APP_DEFAULT_HOUR_RATE
+  );
+
   const billableMinutes =
-    tripDuration.hours + Math.floor(tripDuration.minutes / 36) < 6 &&
-    tripDuration.minutes < 36
+    tripDuration.hours + Math.floor(tripDuration.minutes / minuteRateCutOff) <
+      hourRateCutOff && tripDuration.minutes < minuteRateCutOff
       ? tripDuration.minutes
       : 0;
 
   const billableHours =
-    tripDuration.hours + Math.floor(tripDuration.minutes / 36) < 6
-      ? tripDuration.hours + Math.floor(tripDuration.minutes / 36)
+    tripDuration.hours + Math.floor(tripDuration.minutes / minuteRateCutOff) <
+    hourRateCutOff
+      ? tripDuration.hours + Math.floor(tripDuration.minutes / minuteRateCutOff)
       : 0;
 
   const billableDays =
     tripDuration.days +
-    (tripDuration.hours + Math.floor(tripDuration.minutes / 36) < 6 ? 0 : 1);
+    (tripDuration.hours + Math.floor(tripDuration.minutes / minuteRateCutOff) <
+    hourRateCutOff
+      ? 0
+      : 1);
 
   const dayCost =
     parseFloat(process.env.VUE_APP_DEFAULT_DAY_RATE) * billableDays;
