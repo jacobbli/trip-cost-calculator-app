@@ -1,51 +1,78 @@
 function calculateTripCost(tripDuration) {
   const minuteRateCutOff = Math.ceil(
-    process.env.VUE_APP_DEFAULT_HOUR_RATE /
-      process.env.VUE_APP_DEFAULT_MINUTE_RATE
+    process.env.VUE_APP_HOUR_RATE / process.env.VUE_APP_MINUTE_RATE
   );
 
   const hourRateCutOff = Math.ceil(
-    process.env.VUE_APP_DEFAULT_DAY_RATE / process.env.VUE_APP_DEFAULT_HOUR_RATE
+    process.env.VUE_APP_DAY_RATE / process.env.VUE_APP_HOUR_RATE
   );
 
-  const billableMinutes =
-    tripDuration.hours + Math.floor(tripDuration.minutes / minuteRateCutOff) <
-      hourRateCutOff && tripDuration.minutes < minuteRateCutOff
-      ? tripDuration.minutes
-      : 0;
+  const minuteCost = calculateMinuteCost(tripDuration, minuteRateCutOff);
 
-  const billableHours =
-    tripDuration.hours + Math.floor(tripDuration.minutes / minuteRateCutOff) <
-    hourRateCutOff
-      ? tripDuration.hours + Math.floor(tripDuration.minutes / minuteRateCutOff)
-      : 0;
+  const hourCost = calculateHourCost(tripDuration, minuteCost, hourRateCutOff);
 
-  const billableDays =
-    tripDuration.days +
-    (tripDuration.hours + Math.floor(tripDuration.minutes / minuteRateCutOff) <
-    hourRateCutOff
-      ? 0
-      : 1);
+  const billableDays = hourCost.overflow
+    ? tripDuration.days + 1
+    : tripDuration.days;
 
-  const dayCost =
-    parseFloat(process.env.VUE_APP_DEFAULT_DAY_RATE) * billableDays;
-
-  const hourCost =
-    parseFloat(process.env.VUE_APP_DEFAULT_HOUR_RATE) * billableHours;
-
-  const minuteCost =
-    parseFloat(process.env.VUE_APP_DEFAULT_MINUTE_RATE) * billableMinutes;
+  const dayCost = parseFloat(process.env.VUE_APP_DAY_RATE) * billableDays;
 
   return {
     days: dayCost,
-    hours: hourCost,
-    minutes: minuteCost,
-    tripCost: dayCost + hourCost + minuteCost,
+    hours: hourCost.hourCost,
+    minutes: minuteCost.minuteCost,
+    tripCost: dayCost + hourCost.hourCost + minuteCost.minuteCost,
   };
 }
 
+function calculateMinuteCost(tripDuration, minuteRateCutOff) {
+  const minuteCost =
+    parseFloat(process.env.VUE_APP_MINUTE_RATE) * tripDuration.minutes;
+
+  const hourCost =
+    parseFloat(process.env.VUE_APP_HOUR_RATE) * tripDuration.hours;
+
+  if (
+    tripDuration.minutes >= minuteRateCutOff ||
+    minuteCost + hourCost >= process.env.VUE_APP_DAY_RATE
+  ) {
+    return {
+      minuteCost: 0,
+      billableMinutes: 0,
+      overflow: 1,
+    };
+  }
+
+  return {
+    minuteCost: minuteCost,
+    billableMinutes: tripDuration.minutes,
+    overflow: 0,
+  };
+}
+
+function calculateHourCost(tripDuration, minuteCost, hourRateCutOff) {
+  const billableHours = tripDuration.hours + minuteCost.overflow;
+  const hourCost = parseFloat(process.env.VUE_APP_HOUR_RATE) * billableHours;
+
+  if (
+    billableHours >= hourRateCutOff ||
+    minuteCost.minuteCost + hourCost >= process.env.VUE_APP_DAY_RATE
+  ) {
+    return {
+      hourCost: 0,
+      billableHours: 0,
+      overflow: 1,
+    };
+  }
+
+  return {
+    hourCost: hourCost,
+    billableHours: billableHours,
+    overflow: 0,
+  };
+}
 function calculatePvrtCost(pvrtDays) {
-  return pvrtDays * parseFloat(process.env.VUE_APP_DEFAULT_PVRT);
+  return pvrtDays * parseFloat(process.env.VUE_APP_PVRT);
 }
 
 function calculateDiscounts(isBcaaMember, tripCost) {
@@ -56,13 +83,11 @@ function calculateDiscounts(isBcaaMember, tripCost) {
 
 function calculateTax(totalCost, pvrtCost, accessFeeCost) {
   return {
-    tripGst: (totalCost * parseFloat(process.env.VUE_APP_DEFAULT_GST)) / 100,
-    tripPst: (totalCost * parseFloat(process.env.VUE_APP_DEFAULT_PST)) / 100,
-    pvrtGst: (pvrtCost * parseFloat(process.env.VUE_APP_DEFAULT_GST)) / 100,
-    accessFeeGst:
-      (accessFeeCost * parseFloat(process.env.VUE_APP_DEFAULT_GST)) / 100,
-    accessFeePst:
-      (accessFeeCost * parseFloat(process.env.VUE_APP_DEFAULT_PST)) / 100,
+    tripGst: totalCost * parseFloat(process.env.VUE_APP_GST),
+    tripPst: totalCost * parseFloat(process.env.VUE_APP_PST),
+    pvrtGst: pvrtCost * parseFloat(process.env.VUE_APP_GST),
+    accessFeeGst: accessFeeCost * parseFloat(process.env.VUE_APP_GST),
+    accessFeePst: accessFeeCost * parseFloat(process.env.VUE_APP_PST),
   };
 }
 
