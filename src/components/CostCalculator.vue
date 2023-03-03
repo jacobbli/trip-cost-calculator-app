@@ -144,7 +144,7 @@ const pvrtDetails = computed(() => {
     },
     {
       label: "PVRT rate",
-      value: `$${process.env.VUE_APP_DEFAULT_PVRT}`,
+      value: `$${process.env.VUE_APP_PVRT}`,
     },
   ];
 });
