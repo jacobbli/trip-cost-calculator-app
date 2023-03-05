@@ -85,7 +85,9 @@ const tripDuration = computed(() =>
 const adjustedTotalCost = computed(() => {
   const adjustedTripCost = calculateTripCost(tripDuration.value);
 
-  const adjustedAccessFee = includeAccessFee.value ? 1 : 0;
+  const adjustedAccessFee = includeAccessFee.value
+    ? parseFloat(process.env.VUE_APP_ACCESS_FEE)
+    : 0;
 
   const adjustedPvrtCost = calculatePvrtCost(
     calculatePvrtDays(tripDuration.value)
