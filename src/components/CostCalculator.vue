@@ -74,7 +74,9 @@ const tripCost = computed(() => calculateTripCost(tripDuration.value));
 const discounts = computed(() =>
   calculateDiscounts(isBcaaMember.value, tripCost.value.tripCost)
 );
-const accessFee = computed(() => (includeAccessFee.value ? 1 : 0));
+const accessFee = computed(() =>
+  includeAccessFee.value ? process.env.VUE_APP_ACCESS_FEE : 0
+);
 const pvrtDays = computed(() => calculatePvrtDays(tripDuration.value));
 const pvrtCost = computed(() => calculatePvrtCost(pvrtDays.value));
 
