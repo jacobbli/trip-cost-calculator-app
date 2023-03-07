@@ -18,7 +18,7 @@ body {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: red;
+  color: #7a7a7a;
 
   display: flex;
   flex-direction: column;
