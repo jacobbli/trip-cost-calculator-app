@@ -16,7 +16,7 @@ const EBIKE_SHARE = {
 
     isPvrtCharged: false
 }
-export const ServiceTypes = Object.freeze({
+export const Services = Object.freeze({
     CAR_SHARE:   CAR_SHARE,
     EBIKE_SHARE:  EBIKE_SHARE
 });

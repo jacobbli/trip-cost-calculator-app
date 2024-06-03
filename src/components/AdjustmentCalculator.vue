@@ -53,7 +53,7 @@ import {
   calculateTax,
 } from "@/helpers/costs.js";
 
-import { ServiceTypes } from "@/models/services";
+import { Services } from "@/models/services";
 
 const props = defineProps({
   startDatetime: {
@@ -62,7 +62,7 @@ const props = defineProps({
   originalCost: {
     type: Number,
   },
-  selectedService: ServiceTypes
+  selectedService: Services
 });
 const adjustedEndDatetime = ref(new Date());
 

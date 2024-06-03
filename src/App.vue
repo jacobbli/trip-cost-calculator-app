@@ -8,9 +8,9 @@ import { ref } from "vue";
 import CostCalculator from "./components/CostCalculator.vue";
 import ServiceSelector from "./components/ServiceSelector.vue";
 
-import { ServiceTypes } from "@/models/services";
+import { Services } from "@/models/services";
 
-const selectedService = ref(ServiceTypes.CAR_SHARE);
+const selectedService = ref(Services.CAR_SHARE);
 
 function selectService(service) {
   selectedService.value = service

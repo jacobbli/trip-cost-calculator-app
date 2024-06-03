@@ -1,11 +1,11 @@
 <template>
     <form class="serviceSelector__container">
-      <div class="serviceSelector__option" @click="selectService(ServiceTypes.CAR_SHARE)">
+      <div class="serviceSelector__option" @click="selectService(Services.CAR_SHARE)">
         <input type="radio" id="serviceSelector__carShare" :checked="selectedService.name == 'CAR_SHARE'" />
         <label for="serviceSelector__carShare">Car Share</label>
       </div>
 
-      <div id="serviceSelector__option" @click="selectService(ServiceTypes.EBIKE_SHARE)">
+      <div id="serviceSelector__option" @click="selectService(Services.EBIKE_SHARE)">
         <input type="radio" id="serviceSelector__ebikeShare" :checked="selectedService.name == 'EBIKE_SHARE'"/>
         <label for="serviceSelector__ebikeShare">E-Bike Share</label>
       </div>
@@ -15,10 +15,10 @@
 <script setup>
 
 import { defineProps } from "vue";
-import { ServiceTypes } from "@/models/services";
+import { Services } from "@/models/services";
 
 defineProps({
-  selectedService: ServiceTypes,
+  selectedService: Services,
   selectService: Function
 })
 
