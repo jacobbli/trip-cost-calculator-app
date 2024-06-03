@@ -3,18 +3,13 @@ import { Taxes } from "@/models/taxes";
 export function calculateTripCost(tripDuration, service) {
   const minuteCost = calculateMinuteCost(tripDuration, service);
   const hourCost = calculateHourCost(tripDuration, minuteCost, service);
-
-  const billableDays = service.dayRate && hourCost.overflow
-    ? tripDuration.days + 1
-    : tripDuration.days;
-
-  const dayCost = calculateDayCost(billableDays, service)
+  const dayCost = calculateDayCost(tripDuration, hourCost, service);
 
   return {
-    days: dayCost,
+    days: dayCost.dayCost,
     hours: hourCost.hourCost,
     minutes: minuteCost.minuteCost,
-    tripCost: dayCost + hourCost.hourCost + minuteCost.minuteCost,
+    tripCost: dayCost.dayCost + hourCost.hourCost + minuteCost.minuteCost,
   };
 }
 
@@ -81,9 +76,22 @@ function calculateHourCost(tripDuration, minuteCost, service) {
   };
 }
 
-function calculateDayCost(billableDays, service) {
-  if (!service.dayRate) return 0
-  return parseFloat(service.dayRate) * billableDays;
+function calculateDayCost(tripDuration, hourCost, service) {
+  if (!service.dayRate) return {
+    dayCost: 0,
+    billableDays: 0,
+    overflow: 0
+  };
+
+  const billableDays = hourCost.overflow
+    ? tripDuration.days + 1
+    : tripDuration.days;
+
+  return {
+    dayCost: parseFloat(service.dayRate) * billableDays,
+    billableDays: 0,
+    overflow: 0
+  };
 }
 
 
