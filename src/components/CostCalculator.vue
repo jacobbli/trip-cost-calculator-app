@@ -52,7 +52,7 @@ const endDatetime = ref(new Date());
 
 const isBcaaMember = ref(false);
 const includeAccessFee = ref(true);
-const hasSubscription = ref(true);
+const hasSubscription = ref(false);
 
 function toggleBcaaMember() {
   if (!isBcaaMember.value) {
