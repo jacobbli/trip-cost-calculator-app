@@ -49,6 +49,7 @@ import {
 } from "@/helpers/costs.js";
 
 import { Services } from "@/models/services";
+import { Taxes } from "@/models/taxes";
 
 const props = defineProps({
   selectedService: Services
@@ -82,7 +83,7 @@ const discounts = computed(() =>
   calculateDiscounts(isBcaaMember.value, tripCost.value.tripCost)
 );
 const accessFee = computed(() =>
-  includeAccessFee.value ? parseFloat(process.env.VUE_APP_ACCESS_FEE) : 0
+  includeAccessFee.value ? parseFloat(props.selectedService.accessFee) : 0
 );
 const pvrtDays = computed(() => calculatePvrtDays(tripDuration.value));
 const pvrtCost = computed(() => calculatePvrtCost(pvrtDays.value, props.selectedService));
@@ -153,7 +154,7 @@ const pvrtDetails = computed(() => {
     },
     {
       label: "PVRT rate",
-      value: `$${process.env.VUE_APP_PVRT}`,
+      value: `$${Taxes.PVRT}`,
     },
   ];
 });

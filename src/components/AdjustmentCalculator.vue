@@ -89,7 +89,7 @@ const adjustedTotalCost = computed(() => {
   const adjustedTripCost = calculateTripCost(tripDuration.value, props.selectedService);
 
   const adjustedAccessFee = includeAccessFee.value
-    ? parseFloat(process.env.VUE_APP_ACCESS_FEE)
+    ? parseFloat(props.selectedService.accessFee)
     : 0;
 
   const adjustedPvrtCost = calculatePvrtCost(
