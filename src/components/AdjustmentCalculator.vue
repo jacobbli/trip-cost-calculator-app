@@ -62,6 +62,9 @@ const props = defineProps({
   originalCost: {
     type: Number,
   },
+  hasSubscription: {
+    type: Boolean
+  },
   selectedService: Services
 });
 const adjustedEndDatetime = ref(new Date());
@@ -86,7 +89,7 @@ const tripDuration = computed(() =>
 );
 
 const adjustedTotalCost = computed(() => {
-  const adjustedTripCost = calculateTripCost(tripDuration.value, props.selectedService);
+  const adjustedTripCost = calculateTripCost(tripDuration.value, props.selectedService, props.hasSubscription);
 
   const adjustedAccessFee = includeAccessFee.value
     ? parseFloat(props.selectedService.accessFee)

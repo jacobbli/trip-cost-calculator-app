@@ -11,6 +11,7 @@ const CAR_SHARE = {
 const EBIKE_SHARE = {
     name: 'EBIKE_SHARE',
     minuteRate: 0.35,
+    subscriptionMinuteRate: 0.1,
     hourRate: 12.99,
     accessFee: 1.25,
 

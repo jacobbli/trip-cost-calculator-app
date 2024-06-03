@@ -33,6 +33,16 @@
         @change="toggleAccessFee"
       />
     </trip-input-item>
+
+    <trip-input-item label="Has subscription" v-if="selectedService.name == 'EBIKE_SHARE'">
+      <input
+        class="tripInputs__checkbox"
+        id="has subscription"
+        type="checkbox"
+        :checked="hasSubscription"
+        @change="toggleSubscription"
+      />
+    </trip-input-item>
   </div>
 </template>
 
@@ -40,6 +50,8 @@
 import { defineProps } from "vue";
 import DatetimeInput from "./DatetimeInput.vue";
 import TripInputItem from "./TripInputItem.vue";
+
+import { Services } from "@/models/services";
 
 const props = defineProps({
   startDatetime: {
@@ -59,12 +71,20 @@ const props = defineProps({
     type: Boolean,
     default: true,
   },
+  hasSubscription: {
+    type: Boolean,
+    default: true
+  },
   toggleBcaaMember: {
     type: Function,
   },
   toggleAccessFee: {
     type: Function,
   },
+  toggleSubscription: {
+    type: Function,
+  },
+  selectedService:Services
 });
 
 function changeDatetime(newTime, changeStart = 1) {

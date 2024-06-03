@@ -2,15 +2,10 @@
   <div class="costCalculator__container">
     <div class="costCalculator__heading">Cost summary</div>
     <div class="costCalculator__inputs">
-      <trip-inputs
-        :start-datetime="startDatetime"
-        :end-datetime="endDatetime"
-        :on-change="updateTripDuration"
-        :is-bcaa-member="isBcaaMember"
-        :include-access-fee="includeAccessFee"
-        :toggle-bcaa-member="toggleBcaaMember"
-        :toggle-access-fee="toggleAccessFee"
-      />
+      <trip-inputs :start-datetime="startDatetime" :end-datetime="endDatetime" :on-change="updateTripDuration"
+        :is-bcaa-member="isBcaaMember" :include-access-fee="includeAccessFee" :has-subscription="hasSubscription"
+        :toggle-bcaa-member="toggleBcaaMember" :toggle-access-fee="toggleAccessFee"
+        :toggle-subscription="toggleSubscription" :selected-service="selectedService" />
     </div>
 
     <hr class="costCalculator__divider" />
@@ -23,11 +18,8 @@
 
     <hr class="costCalculator__divider" />
 
-    <adjustment-calculator
-      :start-datetime="startDatetime"
-      :original-cost="totalCost"
-      :selected-service="selectedService"
-    />
+    <adjustment-calculator :start-datetime="startDatetime" :original-cost="totalCost"
+      :selected-service="selectedService" :has-subscription="hasSubscription"/>
   </div>
 </template>
 
@@ -60,13 +52,24 @@ const endDatetime = ref(new Date());
 
 const isBcaaMember = ref(false);
 const includeAccessFee = ref(true);
+const hasSubscription = ref(true);
 
 function toggleBcaaMember() {
+  if (!isBcaaMember.value) {
+    hasSubscription.value = false
+  }
   isBcaaMember.value = !isBcaaMember.value;
 }
 
 function toggleAccessFee() {
   includeAccessFee.value = !includeAccessFee.value;
+}
+
+function toggleSubscription() {
+  if (!hasSubscription.value) {
+    isBcaaMember.value = false
+  }
+  hasSubscription.value = !hasSubscription.value;
 }
 
 function updateTripDuration(newStartDatetime, nweEndDatetime) {
@@ -78,7 +81,7 @@ const tripDuration = computed(() =>
   calculateTripDuration(startDatetime.value, endDatetime.value)
 );
 
-const tripCost = computed(() => calculateTripCost(tripDuration.value, props.selectedService));
+const tripCost = computed(() => calculateTripCost(tripDuration.value, props.selectedService, hasSubscription.value));
 const discounts = computed(() =>
   calculateDiscounts(isBcaaMember.value, tripCost.value.tripCost)
 );
