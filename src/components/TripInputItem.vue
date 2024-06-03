@@ -18,6 +18,6 @@ defineProps({
 <style scoped lang="scss">
 .tripInputItem__container {
   display: grid;
-  grid-template-columns: 0.75fr 1fr;
+  grid-template-columns: 1fr 1fr;
 }
 </style>

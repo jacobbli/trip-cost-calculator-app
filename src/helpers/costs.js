@@ -1,6 +1,16 @@
 import { Taxes } from "@/models/taxes";
 
 export function calculateTripCost(tripDuration, service, hasSubscription) {
+  if (service.subscriptionMinuteRate && hasSubscription) {
+    const totalCost = parseFloat(service.subscriptionMinuteRate) * (tripDuration.minutes + tripDuration.hours * 60 + tripDuration.days * 24 * 60);
+    return {
+      days: 0,
+      hours: 0,
+      minutes: totalCost,
+      tripCost: totalCost
+    }
+  }
+
   const minuteCost = calculateMinuteCost(tripDuration, service, hasSubscription);
   const hourCost = calculateHourCost(tripDuration, minuteCost, service);
   const dayCost = calculateDayCost(tripDuration, hourCost, service);
@@ -13,15 +23,13 @@ export function calculateTripCost(tripDuration, service, hasSubscription) {
   };
 }
 
-function calculateMinuteCost(tripDuration, service, hasSubscription) {
-  const appliedMinuteRate = service.subscriptionMinuteRate && hasSubscription? service.subscriptionMinuteRate : service.minuteRate;
-
+function calculateMinuteCost(tripDuration, service) {
   const minuteRateCutOff = Math.ceil(
-    service.hourRate / appliedMinuteRate
+    service.hourRate / service.minuteRate
   );
 
   const minuteCost =
-    parseFloat(appliedMinuteRate) * tripDuration.minutes;
+    parseFloat(service.minuteRate) * tripDuration.minutes;
 
   const hourCost =
     parseFloat(service.hourRate) * tripDuration.hours;

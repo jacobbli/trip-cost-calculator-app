@@ -34,7 +34,7 @@
       />
     </trip-input-item>
 
-    <trip-input-item label="Has subscription" v-if="selectedService.name == 'EBIKE_SHARE'">
+    <trip-input-item label="Has BCAA Mobility Plan Subscription" v-if="selectedService.name == 'EBIKE_SHARE'">
       <input
         class="tripInputs__checkbox"
         id="has subscription"
