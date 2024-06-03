@@ -53,6 +53,8 @@ import {
   calculateTax,
 } from "@/helpers/costs.js";
 
+import { ServiceTypes } from "@/models/services";
+
 const props = defineProps({
   startDatetime: {
     type: Date,
@@ -60,6 +62,7 @@ const props = defineProps({
   originalCost: {
     type: Number,
   },
+  selectedService: ServiceTypes
 });
 const adjustedEndDatetime = ref(new Date());
 
@@ -83,14 +86,15 @@ const tripDuration = computed(() =>
 );
 
 const adjustedTotalCost = computed(() => {
-  const adjustedTripCost = calculateTripCost(tripDuration.value);
+  const adjustedTripCost = calculateTripCost(tripDuration.value, props.selectedService);
 
   const adjustedAccessFee = includeAccessFee.value
     ? parseFloat(process.env.VUE_APP_ACCESS_FEE)
     : 0;
 
   const adjustedPvrtCost = calculatePvrtCost(
-    calculatePvrtDays(tripDuration.value)
+    calculatePvrtDays(tripDuration.value),
+    props.selectedService
   );
 
   const adjustedTotalDiscounts = Object.values(

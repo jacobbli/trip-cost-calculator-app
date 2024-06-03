@@ -1,21 +1,14 @@
-function calculateTripCost(tripDuration) {
-  const minuteRateCutOff = Math.ceil(
-    process.env.VUE_APP_HOUR_RATE / process.env.VUE_APP_MINUTE_RATE
-  );
+import { Taxes } from "@/models/taxes";
 
-  const hourRateCutOff = Math.ceil(
-    process.env.VUE_APP_DAY_RATE / process.env.VUE_APP_HOUR_RATE
-  );
+export function calculateTripCost(tripDuration, service) {
+  const minuteCost = calculateMinuteCost(tripDuration, service);
+  const hourCost = calculateHourCost(tripDuration, minuteCost, service);
 
-  const minuteCost = calculateMinuteCost(tripDuration, minuteRateCutOff);
-
-  const hourCost = calculateHourCost(tripDuration, minuteCost, hourRateCutOff);
-
-  const billableDays = hourCost.overflow
+  const billableDays = service.dayRate && hourCost.overflow
     ? tripDuration.days + 1
     : tripDuration.days;
 
-  const dayCost = parseFloat(process.env.VUE_APP_DAY_RATE) * billableDays;
+  const dayCost = calculateDayCost(billableDays, service)
 
   return {
     days: dayCost,
@@ -25,16 +18,20 @@ function calculateTripCost(tripDuration) {
   };
 }
 
-function calculateMinuteCost(tripDuration, minuteRateCutOff) {
+function calculateMinuteCost(tripDuration, service) {
+  const minuteRateCutOff = Math.ceil(
+    service.hourRate / service.minuteRate
+  );
+
   const minuteCost =
-    parseFloat(process.env.VUE_APP_MINUTE_RATE) * tripDuration.minutes;
+    parseFloat(service.minuteRate) * tripDuration.minutes;
 
   const hourCost =
-    parseFloat(process.env.VUE_APP_HOUR_RATE) * tripDuration.hours;
+    parseFloat(service.hourRate) * tripDuration.hours;
 
   if (
     tripDuration.minutes >= minuteRateCutOff ||
-    minuteCost + hourCost >= process.env.VUE_APP_DAY_RATE
+    (service.dayRate && minuteCost + hourCost >= service.dayRate)
   ) {
     return {
       minuteCost: 0,
@@ -50,13 +47,25 @@ function calculateMinuteCost(tripDuration, minuteRateCutOff) {
   };
 }
 
-function calculateHourCost(tripDuration, minuteCost, hourRateCutOff) {
+function calculateHourCost(tripDuration, minuteCost, service) {
   const billableHours = tripDuration.hours + minuteCost.overflow;
-  const hourCost = parseFloat(process.env.VUE_APP_HOUR_RATE) * billableHours;
+  const hourCost = parseFloat(service.hourRate) * billableHours;
+
+  if (!service.dayRate) {
+    return {
+      hourCost: hourCost + (tripDuration.days * 24 * service.hourRate),
+      billableHours: billableHours + (tripDuration.days * 24),
+      overflow: 0,
+    }
+  }
+
+  const hourRateCutOff = Math.ceil(
+    service.dayRate / service.hourRate
+  )
 
   if (
     billableHours >= hourRateCutOff ||
-    minuteCost.minuteCost + hourCost >= process.env.VUE_APP_DAY_RATE
+    minuteCost.minuteCost + hourCost >= service.dayRate
   ) {
     return {
       hourCost: 0,
@@ -72,29 +81,29 @@ function calculateHourCost(tripDuration, minuteCost, hourRateCutOff) {
   };
 }
 
-function calculatePvrtCost(pvrtDays) {
-  return pvrtDays * parseFloat(process.env.VUE_APP_PVRT);
+function calculateDayCost(billableDays, service) {
+  if (!service.dayRate) return 0
+  return parseFloat(service.dayRate) * billableDays;
 }
 
-function calculateDiscounts(isBcaaMember, tripCost) {
+
+export function calculatePvrtCost(pvrtDays, service) {
+  if (!service.isPvrtCharged) return 0
+  return pvrtDays * parseFloat(Taxes.PVRT);
+}
+
+export function calculateDiscounts(isBcaaMember, tripCost) {
   return {
     bcaa: isBcaaMember ? tripCost * 0.1 : 0,
   };
 }
 
-function calculateTax(totalCost, pvrtCost, accessFeeCost) {
+export function calculateTax(totalCost, pvrtCost, accessFeeCost) {
   return {
-    tripGst: totalCost * parseFloat(process.env.VUE_APP_GST),
-    tripPst: totalCost * parseFloat(process.env.VUE_APP_PST),
-    pvrtGst: pvrtCost * parseFloat(process.env.VUE_APP_GST),
-    accessFeeGst: accessFeeCost * parseFloat(process.env.VUE_APP_GST),
-    accessFeePst: accessFeeCost * parseFloat(process.env.VUE_APP_PST),
+    tripGst: totalCost * parseFloat(Taxes.GST),
+    tripPst: totalCost * parseFloat(Taxes.PST),
+    pvrtGst: pvrtCost * parseFloat(Taxes.GST),
+    accessFeeGst: accessFeeCost * parseFloat(Taxes.GST),
+    accessFeePst: accessFeeCost * parseFloat(Taxes.PST),
   };
 }
-
-module.exports = {
-  calculateTripCost,
-  calculateDiscounts,
-  calculatePvrtCost,
-  calculateTax,
-};

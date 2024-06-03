@@ -26,12 +26,13 @@
     <adjustment-calculator
       :start-datetime="startDatetime"
       :original-cost="totalCost"
+      :selected-service="selectedService"
     />
   </div>
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, defineProps } from "vue";
 import TripInputs from "./TripInputs.vue";
 import AdjustmentCalculator from "./AdjustmentCalculator.vue";
 import CostSummary from "./CostSummary.vue";
@@ -46,6 +47,12 @@ import {
   calculatePvrtCost,
   calculateTax,
 } from "@/helpers/costs.js";
+
+import { ServiceTypes } from "@/models/services";
+
+const props = defineProps({
+  selectedService: ServiceTypes
+})
 
 const startDatetime = ref(new Date());
 const endDatetime = ref(new Date());
@@ -70,7 +77,7 @@ const tripDuration = computed(() =>
   calculateTripDuration(startDatetime.value, endDatetime.value)
 );
 
-const tripCost = computed(() => calculateTripCost(tripDuration.value));
+const tripCost = computed(() => calculateTripCost(tripDuration.value, props.selectedService));
 const discounts = computed(() =>
   calculateDiscounts(isBcaaMember.value, tripCost.value.tripCost)
 );
@@ -78,7 +85,7 @@ const accessFee = computed(() =>
   includeAccessFee.value ? parseFloat(process.env.VUE_APP_ACCESS_FEE) : 0
 );
 const pvrtDays = computed(() => calculatePvrtDays(tripDuration.value));
-const pvrtCost = computed(() => calculatePvrtCost(pvrtDays.value));
+const pvrtCost = computed(() => calculatePvrtCost(pvrtDays.value, props.selectedService));
 
 const taxes = computed(() => {
   const taxableCost = tripCost.value.tripCost - totalDiscounts.value;

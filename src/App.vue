@@ -1,11 +1,21 @@
 <template>
-  <nav-bar />
-  <cost-calculator />
+  <service-selector :selected-service="selectedService" :select-service="selectService" />
+  <cost-calculator :selected-service="selectedService"/>
 </template>
 
 <script setup>
+import { ref } from "vue";
 import CostCalculator from "./components/CostCalculator.vue";
-import NavBar from "./components/NavBar.vue";
+import ServiceSelector from "./components/ServiceSelector.vue";
+
+import { ServiceTypes } from "@/models/services";
+
+const selectedService = ref(ServiceTypes.CAR_SHARE);
+
+function selectService(service) {
+  selectedService.value = service
+}
+
 </script>
 
 <style>
