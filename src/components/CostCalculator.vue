@@ -19,7 +19,7 @@
     <hr class="costCalculator__divider" />
 
     <adjustment-calculator :start-datetime="startDatetime" :original-cost="totalCost"
-      :selected-service="selectedService" :has-subscription="hasSubscription"/>
+      :selected-service="selectedService" :has-subscription="hasSubscription" />
   </div>
 </template>
 
@@ -93,7 +93,7 @@ const pvrtCost = computed(() => calculatePvrtCost(pvrtDays.value, props.selected
 
 const taxes = computed(() => {
   const taxableCost = tripCost.value.tripCost - totalDiscounts.value;
-  return calculateTax(taxableCost, pvrtCost.value, accessFee.value);
+  return calculateTax(taxableCost, pvrtCost.value, accessFee.value, props.selectedService);
 });
 
 const totalDiscounts = computed(() => {
@@ -178,34 +178,41 @@ const taxDetails = computed(() => {
   });
 });
 
-const costSummaryItems = computed(() => [
-  {
-    label: "Trip cost",
-    value: `$${tripCost.value.tripCost.toFixed(2)}`,
-    tooltip: tripCostDetails.value,
-  },
-  {
-    label: "Discounts",
-    value: `-$${totalDiscounts.value.toFixed(2)}`,
-    tooltip: discountDetails.value,
-  },
-  { label: "Access fee", value: `$${accessFee.value.toFixed(2)}` },
-  {
+const costSummaryItems = computed(() => {
+  const items = [
+    {
+      label: "Trip cost",
+      value: `$${tripCost.value.tripCost.toFixed(2)}`,
+      tooltip: tripCostDetails.value,
+    },
+    {
+      label: "Discounts",
+      value: `-$${totalDiscounts.value.toFixed(2)}`,
+      tooltip: discountDetails.value,
+    },
+    { label: "Access fee", value: `$${accessFee.value.toFixed(2)}` },
+  ]
+
+  if (props.selectedService.isPvrtCharged) items.push({
     label: "PVRT",
     value: `$${pvrtCost.value.toFixed(2)}`,
     tooltip: pvrtDetails.value,
-  },
-  {
-    label: "Tax",
-    value: `$${totalTax.value.toFixed(2)}`,
-    tooltip: taxDetails.value,
-  },
-  {
-    label: "Total cost",
-    value: `$${totalCost.value.toFixed(2)}`,
-    isTotal: true,
-  },
-]);
+  })
+
+  return [
+    ...items,
+    {
+      label: "Tax",
+      value: `$${totalTax.value.toFixed(2)}`,
+      tooltip: taxDetails.value,
+    },
+    {
+      label: "Total cost",
+      value: `$${totalCost.value.toFixed(2)}`,
+      isTotal: true,
+    }
+  ]
+});
 </script>
 
 <style scoped lang="scss">

@@ -116,12 +116,18 @@ export function calculateDiscounts(isBcaaMember, tripCost) {
   };
 }
 
-export function calculateTax(totalCost, pvrtCost, accessFeeCost) {
-  return {
+export function calculateTax(totalCost, pvrtCost, accessFeeCost, service) {
+  const taxes = {
     tripGst: totalCost * parseFloat(Taxes.GST),
     tripPst: totalCost * parseFloat(Taxes.PST),
-    pvrtGst: pvrtCost * parseFloat(Taxes.GST),
     accessFeeGst: accessFeeCost * parseFloat(Taxes.GST),
     accessFeePst: accessFeeCost * parseFloat(Taxes.PST),
+  }
+
+  if (!service.isPvrtCharged) return taxes
+
+  return {
+    ...taxes,
+    pvrtGst: pvrtCost * parseFloat(Taxes.GST),
   };
 }

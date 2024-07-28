@@ -108,7 +108,8 @@ const adjustedTotalCost = computed(() => {
     calculateTax(
       adjustedTripCost.tripCost - adjustedTotalDiscounts,
       adjustedPvrtCost,
-      adjustedAccessFee
+      adjustedAccessFee,
+      props.selectedService
     )
   ).reduce((prev, cur) => prev + cur);
 

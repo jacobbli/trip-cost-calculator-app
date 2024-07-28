@@ -13,6 +13,7 @@ const EBIKE_SHARE = {
     minuteRate: 0.35,
     subscriptionMinuteRate: 0.1,
     hourRate: 12.99,
+    dayRate: 149.99,
     accessFee: 1.25,
 
     isPvrtCharged: false
