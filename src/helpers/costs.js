@@ -118,8 +118,8 @@ export function calculateDiscounts(isBcaaMember, tripCost) {
 
 export function calculateTax(totalCost, pvrtCost, accessFeeCost, service) {
   const taxes = {
-    tripGst: totalCost * parseFloat(Taxes.GST),
-    tripPst: totalCost * parseFloat(Taxes.PST),
+    tripGst: service.isGstCharged ? totalCost * parseFloat(Taxes.GST) : 0,
+    tripPst: service.isPstCharged ? totalCost * parseFloat(Taxes.PST) : 0,
     accessFeeGst: accessFeeCost * parseFloat(Taxes.GST),
     accessFeePst: accessFeeCost * parseFloat(Taxes.PST),
   }

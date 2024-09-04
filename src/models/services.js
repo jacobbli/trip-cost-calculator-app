@@ -5,7 +5,9 @@ const CAR_SHARE = {
     dayRate: 104.99,
     accessFee: 1.25,
 
-    isPvrtCharged: true
+    isPvrtCharged: true,
+    isGstCharged: true,
+    isPstCharged: true
 }
 
 const EBIKE_SHARE = {
@@ -16,7 +18,9 @@ const EBIKE_SHARE = {
     dayRate: 149.99,
     accessFee: 1.25,
 
-    isPvrtCharged: false
+    isPvrtCharged: false,
+    isGstCharged: true,
+    isPstCharged: false
 }
 export const Services = Object.freeze({
     CAR_SHARE:   CAR_SHARE,
