@@ -3,7 +3,7 @@ const CAR_SHARE = {
     minuteRate: 0.49,
     hourRate: 17.99,
     dayRate: 104.99,
-    accessFee: 1.25,
+    accessFee: 1.85,
 
     isPvrtCharged: true,
     isGstCharged: true,
@@ -16,7 +16,7 @@ const EBIKE_SHARE = {
     subscriptionMinuteRate: 0.1,
     hourRate: 12.99,
     dayRate: 149.99,
-    accessFee: 1.25,
+    accessFee: 1.85,
 
     isPvrtCharged: false,
     isGstCharged: true,
