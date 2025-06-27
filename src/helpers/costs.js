@@ -120,8 +120,8 @@ export function calculateTax(totalCost, pvrtCost, accessFeeCost, service) {
   const taxes = {
     tripGst: service.isGstCharged ? totalCost * parseFloat(Taxes.GST) : 0,
     tripPst: service.isPstCharged ? totalCost * parseFloat(Taxes.PST) : 0,
-    accessFeeGst: accessFeeCost * parseFloat(Taxes.GST),
-    accessFeePst: accessFeeCost * parseFloat(Taxes.PST),
+    accessFeeGst: service.isGstCharged ? accessFeeCost * parseFloat(Taxes.GST) : 0,
+    accessFeePst: service.isPstCharged ? accessFeeCost * parseFloat(Taxes.PST) : 0,
   }
 
   if (!service.isPvrtCharged) return taxes
