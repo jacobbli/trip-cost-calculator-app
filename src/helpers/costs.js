@@ -1,4 +1,4 @@
-import { Taxes } from "@/models/taxes";
+import { Taxes } from "../models/taxes";
 
 export function calculateTripCost(tripDuration, pricingScheme, hasSubscription) {
   if (pricingScheme.subscriptionMinuteRate && hasSubscription) {
@@ -11,7 +11,7 @@ export function calculateTripCost(tripDuration, pricingScheme, hasSubscription) 
     }
   }
 
-  if (pricingScheme.label == "Summer Rates") return getTripCostBasedOnSummerRates(tripDuration, pricingScheme )
+  if (pricingScheme.label == "Summer Rates") return getTripCostBasedOnSummerRates(tripDuration, pricingScheme)
 
   const minuteCost = calculateMinuteCost(tripDuration, pricingScheme, hasSubscription);
   const hourCost = calculateHourCost(tripDuration, minuteCost, pricingScheme);
@@ -21,7 +21,7 @@ export function calculateTripCost(tripDuration, pricingScheme, hasSubscription) 
     days: dayCost.dayCost,
     hours: hourCost.hourCost,
     minutes: minuteCost.minuteCost,
-    tripCost: dayCost.dayCost + hourCost.hourCost + minuteCost.minuteCost,
+    tripCost: Math.round((dayCost.dayCost + hourCost.hourCost + minuteCost.minuteCost) * 100) / 100,
   };
 }
 
@@ -138,16 +138,18 @@ export function getTripCostBasedOnSummerRates(tripDuration, pricingScheme) {
   const numberOfFiveDays = Math.floor(tripDuration.days / 5)
   const numberOfThreeDays = numberOfFiveDays + (tripDuration.days % 5 >= 3 ? 1 : 0)
   const regularRateDays = tripDuration.days - numberOfFiveDays - numberOfThreeDays
-  console.log(regularRateDays)
 
   const hourCost = getHourCost(tripDuration.hours, getMinuteCost(tripDuration.minutes, pricingScheme), pricingScheme)
   const lastDayCost = (((tripDuration.days + 1) % 5 == 0) || ((tripDuration.days + 1) - 3 % 5 == 0)) ? Math.min(pricingScheme.discountedDayRate, hourCost) : Math.min(pricingScheme.dayRate, hourCost)
+
 
   return {
     days: 0,
     hours: 0,
     minutes: 0,
-    tripCost: lastDayCost + regularRateDays * pricingScheme.dayRate + pricingScheme.discountedDayRate * (numberOfFiveDays + numberOfThreeDays),
+    tripCost: Math.round((lastDayCost + regularRateDays * pricingScheme.dayRate + pricingScheme.discountedDayRate * (numberOfFiveDays + numberOfThreeDays)) * 100) / 100,
+
+
   };
 }
 
