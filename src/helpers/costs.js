@@ -11,6 +11,8 @@ export function calculateTripCost(tripDuration, pricingScheme, hasSubscription) 
     }
   }
 
+  if (pricingScheme.label == "Summer Rates") return getTripCostBasedOnSummerRates(tripDuration, pricingScheme )
+
   const minuteCost = calculateMinuteCost(tripDuration, pricingScheme, hasSubscription);
   const hourCost = calculateHourCost(tripDuration, minuteCost, pricingScheme);
   const dayCost = calculateDayCost(tripDuration, hourCost, pricingScheme);
@@ -130,4 +132,33 @@ export function calculateTax(totalCost, pvrtCost, accessFeeCost, pricingScheme) 
     ...taxes,
     pvrtGst: pvrtCost * parseFloat(Taxes.GST),
   };
+}
+
+export function getTripCostBasedOnSummerRates(tripDuration, pricingScheme) {
+  const numberOfFiveDays = Math.floor(tripDuration.days / 5)
+  const numberOfThreeDays = numberOfFiveDays + (tripDuration.days % 5 >= 3 ? 1 : 0)
+  const regularRateDays = tripDuration.days - numberOfFiveDays - numberOfThreeDays
+  console.log(regularRateDays)
+
+  const hourCost = getHourCost(tripDuration.hours, getMinuteCost(tripDuration.minutes, pricingScheme), pricingScheme)
+  const lastDayCost = (((tripDuration.days + 1) % 5 == 0) || ((tripDuration.days + 1) - 3 % 5 == 0)) ? Math.min(pricingScheme.discountedDayRate, hourCost) : Math.min(pricingScheme.dayRate, hourCost)
+
+  return {
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    tripCost: lastDayCost + regularRateDays * pricingScheme.dayRate + pricingScheme.discountedDayRate * (numberOfFiveDays + numberOfThreeDays),
+  };
+}
+
+export function getMinuteCost(minutes, pricingScheme) {
+  return Math.min(pricingScheme.hourRate, minutes * pricingScheme.minuteRate)
+}
+
+export function getHourCost(hours, minuteCost, pricingScheme) {
+  return Math.min(pricingScheme.dayRate, (hours * pricingScheme.hourRate) + minuteCost)
+}
+
+export function getDayCost(days, hourCost, minuteCost, pricingScheme) {
+  return Math.min(pricingScheme.dayRate * (days + 1), pricingScheme.dayRate * days + hourCost + minuteCost)
 }

@@ -106,9 +106,18 @@ const durationText = computed(() => {
 
 const tripCostDetails = computed(() => {
   return [
-    { label: "Day rate", value: `$${tripCost.value.days.toFixed(2)}` },
-    { label: "Hour rate", value: `$${tripCost.value.hours.toFixed(2)}` },
-    { label: "Minute rate", value: `$${tripCost.value.minutes.toFixed(2)}` },
+    { label: "Day rate", value: `$ ${tripCost.value.days.toLocaleString("en-CA", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      })}` },
+    { label: "Hour rate", value: `$ ${tripCost.value.hours.toLocaleString("en-CA", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      })}` },
+    { label: "Minute rate", value: `$ ${tripCost.value.minutes.toLocaleString("en-CA", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      })}` },
   ];
 });
 
@@ -119,7 +128,10 @@ const discountDetails = computed(() => {
   return Object.keys(discounts.value).map((discount) => {
     return {
       label: discountLabelMap[discount],
-      value: `$${discounts.value[discount].toFixed(2)}`,
+      value: `$ ${discounts.value[discount].toLocaleString("en-CA", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      })}`,
     };
   });
 });
@@ -132,7 +144,7 @@ const pvrtDetails = computed(() => {
     },
     {
       label: "PVRT rate",
-      value: `$${Taxes.PVRT}`,
+      value: `$ ${Taxes.PVRT}`,
     },
   ];
 });
@@ -148,7 +160,10 @@ const taxDetails = computed(() => {
   return Object.keys(taxes.value).map((tax) => {
     return {
       label: taxLabelMap[tax],
-      value: `$${taxes.value[tax].toFixed(2)}`,
+      value: `$ ${taxes.value[tax].toLocaleString("en-CA", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      })}`,
     };
   });
 });
@@ -157,20 +172,32 @@ const costSummaryItems = computed(() => {
   const items = [
     {
       label: "Trip cost",
-      value: `$${tripCost.value.tripCost.toFixed(2)}`,
+      value: `$ ${tripCost.value.tripCost.toLocaleString("en-CA", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      })}`,
       tooltip: tripCostDetails.value,
     },
     {
       label: "Discounts",
-      value: `-$${totalDiscounts.value.toFixed(2)}`,
+      value: `-$ ${totalDiscounts.value.toLocaleString("en-CA", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      })}`,
       tooltip: discountDetails.value,
     },
-    { label: "Access fee", value: `$${accessFee.value.toFixed(2)}` },
+    { label: "Access fee", value: `$ ${accessFee.value.toLocaleString("en-CA", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      })}` },
   ]
 
   if (props.pricingScheme.isPvrtCharged) items.push({
     label: "PVRT",
-    value: `$${pvrtCost.value.toFixed(2)}`,
+    value: `$ ${pvrtCost.value.toLocaleString("en-CA", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      })}`,
     tooltip: pvrtDetails.value,
   })
 
@@ -178,12 +205,18 @@ const costSummaryItems = computed(() => {
     ...items,
     {
       label: "Tax",
-      value: `$${totalTax.value.toFixed(2)}`,
+      value: `$ ${totalTax.value.toLocaleString("en-CA", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      })}`,
       tooltip: taxDetails.value,
     },
     {
       label: "Total cost",
-      value: `$${totalCost.value.toFixed(2)}`,
+      value: `$ ${totalCost.value.toLocaleString("en-CA", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      })}`,
       isTotal: true,
     }
   ]
@@ -210,8 +243,8 @@ const costSummaryItems = computed(() => {
 
     <hr class="costCalculator__divider" />
 
-    <adjustment-calculator :start-datetime="startDatetime" :original-cost="totalCost"
-      :pricing-scheme="pricingScheme" :has-subscription="hasSubscription" />
+    <adjustment-calculator :start-datetime="startDatetime" :original-cost="totalCost" :pricing-scheme="pricingScheme"
+      :has-subscription="hasSubscription" />
   </div>
 </template>
 

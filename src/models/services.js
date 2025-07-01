@@ -3,10 +3,21 @@ const CAR_SHARE = {
   pricingSchemes:
     [
       {
-        label: "Regular",
+        label: "Regular Rates",
         minuteRate: 0.49,
         hourRate: 17.99,
         dayRate: 104.99,
+        accessFee: 1.85,
+        isPvrtCharged: true,
+        isGstCharged: true,
+        isPstCharged: true,
+      },
+      {
+        label: "Summer Rates",
+        minuteRate: 0.49,
+        hourRate: 17.99,
+        dayRate: 104.99,
+        discountedDayRate: 55.01,
         accessFee: 1.85,
         isPvrtCharged: true,
         isGstCharged: true,
@@ -20,7 +31,7 @@ const EBIKE_SHARE = {
   pricingSchemes:
     [
       {
-        label: "Regular",
+        label: "Regular Rates",
         minuteRate: 0.35,
         subscriptionMinuteRate: 0.1,
         hourRate: 12.99,
