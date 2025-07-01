@@ -1,28 +1,3 @@
-<template>
-  <div class="costCalculator__container">
-    <div class="costCalculator__heading">Cost summary</div>
-    <div class="costCalculator__inputs">
-      <trip-inputs :start-datetime="startDatetime" :end-datetime="endDatetime" :on-change="updateTripDuration"
-        :is-bcaa-member="isBcaaMember" :include-access-fee="includeAccessFee" :has-subscription="hasSubscription"
-        :toggle-bcaa-member="toggleBcaaMember" :toggle-access-fee="toggleAccessFee"
-        :toggle-subscription="toggleSubscription" :selected-service="selectedService" />
-    </div>
-
-    <hr class="costCalculator__divider" />
-
-    <div class="costCalculator__duration">
-      Trip duration: {{ durationText }}
-    </div>
-
-    <cost-summary :cost-items="costSummaryItems" />
-
-    <hr class="costCalculator__divider" />
-
-    <adjustment-calculator :start-datetime="startDatetime" :original-cost="totalCost"
-      :selected-service="selectedService" :has-subscription="hasSubscription" />
-  </div>
-</template>
-
 <script setup>
 import { ref, computed, defineProps } from "vue";
 import TripInputs from "./TripInputs.vue";
@@ -40,11 +15,11 @@ import {
   calculateTax,
 } from "@/helpers/costs.js";
 
-import { Services } from "@/models/services";
+
 import { Taxes } from "@/models/taxes";
 
 const props = defineProps({
-  selectedService: Services
+  pricingScheme: Object
 })
 
 const startDatetime = ref(new Date());
@@ -81,19 +56,19 @@ const tripDuration = computed(() =>
   calculateTripDuration(startDatetime.value, endDatetime.value)
 );
 
-const tripCost = computed(() => calculateTripCost(tripDuration.value, props.selectedService, hasSubscription.value));
+const tripCost = computed(() => calculateTripCost(tripDuration.value, props.pricingScheme, hasSubscription.value));
 const discounts = computed(() =>
   calculateDiscounts(isBcaaMember.value, tripCost.value.tripCost)
 );
 const accessFee = computed(() =>
-  includeAccessFee.value ? parseFloat(props.selectedService.accessFee) : 0
+  includeAccessFee.value ? parseFloat(props.pricingScheme.accessFee) : 0
 );
 const pvrtDays = computed(() => calculatePvrtDays(tripDuration.value));
-const pvrtCost = computed(() => calculatePvrtCost(pvrtDays.value, props.selectedService));
+const pvrtCost = computed(() => calculatePvrtCost(pvrtDays.value, props.pricingScheme));
 
 const taxes = computed(() => {
   const taxableCost = tripCost.value.tripCost - totalDiscounts.value;
-  return calculateTax(taxableCost, pvrtCost.value, accessFee.value, props.selectedService);
+  return calculateTax(taxableCost, pvrtCost.value, accessFee.value, props.pricingScheme);
 });
 
 const totalDiscounts = computed(() => {
@@ -193,7 +168,7 @@ const costSummaryItems = computed(() => {
     { label: "Access fee", value: `$${accessFee.value.toFixed(2)}` },
   ]
 
-  if (props.selectedService.isPvrtCharged) items.push({
+  if (props.pricingScheme.isPvrtCharged) items.push({
     label: "PVRT",
     value: `$${pvrtCost.value.toFixed(2)}`,
     tooltip: pvrtDetails.value,
@@ -214,6 +189,31 @@ const costSummaryItems = computed(() => {
   ]
 });
 </script>
+
+<template>
+  <div class="costCalculator__container">
+    <div class="costCalculator__heading">Cost summary</div>
+    <div class="costCalculator__inputs">
+      <trip-inputs :start-datetime="startDatetime" :end-datetime="endDatetime" :on-change="updateTripDuration"
+        :is-bcaa-member="isBcaaMember" :include-access-fee="includeAccessFee" :has-subscription="hasSubscription"
+        :toggle-bcaa-member="toggleBcaaMember" :toggle-access-fee="toggleAccessFee"
+        :toggle-subscription="toggleSubscription" :pricing-scheme="pricingScheme" />
+    </div>
+
+    <hr class="costCalculator__divider" />
+
+    <div class="costCalculator__duration">
+      Trip duration: {{ durationText }}
+    </div>
+
+    <cost-summary :cost-items="costSummaryItems" />
+
+    <hr class="costCalculator__divider" />
+
+    <adjustment-calculator :start-datetime="startDatetime" :original-cost="totalCost"
+      :pricing-scheme="pricingScheme" :has-subscription="hasSubscription" />
+  </div>
+</template>
 
 <style scoped lang="scss">
 .costCalculator__container {

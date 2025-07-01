@@ -1,8 +1,8 @@
 import { Taxes } from "@/models/taxes";
 
-export function calculateTripCost(tripDuration, service, hasSubscription) {
-  if (service.subscriptionMinuteRate && hasSubscription) {
-    const totalCost = parseFloat(service.subscriptionMinuteRate) * (tripDuration.minutes + tripDuration.hours * 60 + tripDuration.days * 24 * 60);
+export function calculateTripCost(tripDuration, pricingScheme, hasSubscription) {
+  if (pricingScheme.subscriptionMinuteRate && hasSubscription) {
+    const totalCost = parseFloat(pricingScheme.subscriptionMinuteRate) * (tripDuration.minutes + tripDuration.hours * 60 + tripDuration.days * 24 * 60);
     return {
       days: 0,
       hours: 0,
@@ -11,9 +11,9 @@ export function calculateTripCost(tripDuration, service, hasSubscription) {
     }
   }
 
-  const minuteCost = calculateMinuteCost(tripDuration, service, hasSubscription);
-  const hourCost = calculateHourCost(tripDuration, minuteCost, service);
-  const dayCost = calculateDayCost(tripDuration, hourCost, service);
+  const minuteCost = calculateMinuteCost(tripDuration, pricingScheme, hasSubscription);
+  const hourCost = calculateHourCost(tripDuration, minuteCost, pricingScheme);
+  const dayCost = calculateDayCost(tripDuration, hourCost, pricingScheme);
 
   return {
     days: dayCost.dayCost,
@@ -23,20 +23,20 @@ export function calculateTripCost(tripDuration, service, hasSubscription) {
   };
 }
 
-function calculateMinuteCost(tripDuration, service) {
+function calculateMinuteCost(tripDuration, pricingScheme) {
   const minuteRateCutOff = Math.ceil(
-    service.hourRate / service.minuteRate
+    pricingScheme.hourRate / pricingScheme.minuteRate
   );
 
   const minuteCost =
-    parseFloat(service.minuteRate) * tripDuration.minutes;
+    parseFloat(pricingScheme.minuteRate) * tripDuration.minutes;
 
   const hourCost =
-    parseFloat(service.hourRate) * tripDuration.hours;
+    parseFloat(pricingScheme.hourRate) * tripDuration.hours;
 
   if (
     tripDuration.minutes >= minuteRateCutOff ||
-    (service.dayRate && minuteCost + hourCost >= service.dayRate)
+    (pricingScheme.dayRate && minuteCost + hourCost >= pricingScheme.dayRate)
   ) {
     return {
       minuteCost: 0,
@@ -52,25 +52,25 @@ function calculateMinuteCost(tripDuration, service) {
   };
 }
 
-function calculateHourCost(tripDuration, minuteCost, service) {
+function calculateHourCost(tripDuration, minuteCost, pricingScheme) {
   const billableHours = tripDuration.hours + minuteCost.overflow;
-  const hourCost = parseFloat(service.hourRate) * billableHours;
+  const hourCost = parseFloat(pricingScheme.hourRate) * billableHours;
 
-  if (!service.dayRate) {
+  if (!pricingScheme.dayRate) {
     return {
-      hourCost: hourCost + (tripDuration.days * 24 * service.hourRate),
+      hourCost: hourCost + (tripDuration.days * 24 * pricingScheme.hourRate),
       billableHours: billableHours + (tripDuration.days * 24),
       overflow: 0,
     }
   }
 
   const hourRateCutOff = Math.ceil(
-    service.dayRate / service.hourRate
+    pricingScheme.dayRate / pricingScheme.hourRate
   )
 
   if (
     billableHours >= hourRateCutOff ||
-    minuteCost.minuteCost + hourCost >= service.dayRate
+    minuteCost.minuteCost + hourCost >= pricingScheme.dayRate
   ) {
     return {
       hourCost: 0,
@@ -86,8 +86,8 @@ function calculateHourCost(tripDuration, minuteCost, service) {
   };
 }
 
-function calculateDayCost(tripDuration, hourCost, service) {
-  if (!service.dayRate) return {
+function calculateDayCost(tripDuration, hourCost, pricingScheme) {
+  if (!pricingScheme.dayRate) return {
     dayCost: 0,
     billableDays: 0,
     overflow: 0
@@ -98,15 +98,15 @@ function calculateDayCost(tripDuration, hourCost, service) {
     : tripDuration.days;
 
   return {
-    dayCost: parseFloat(service.dayRate) * billableDays,
+    dayCost: parseFloat(pricingScheme.dayRate) * billableDays,
     billableDays: 0,
     overflow: 0
   };
 }
 
 
-export function calculatePvrtCost(pvrtDays, service) {
-  if (!service.isPvrtCharged) return 0
+export function calculatePvrtCost(pvrtDays, pricingScheme) {
+  if (!pricingScheme.isPvrtCharged) return 0
   return pvrtDays * parseFloat(Taxes.PVRT);
 }
 
@@ -116,15 +116,15 @@ export function calculateDiscounts(isBcaaMember, tripCost) {
   };
 }
 
-export function calculateTax(totalCost, pvrtCost, accessFeeCost, service) {
+export function calculateTax(totalCost, pvrtCost, accessFeeCost, pricingScheme) {
   const taxes = {
-    tripGst: service.isGstCharged ? totalCost * parseFloat(Taxes.GST) : 0,
-    tripPst: service.isPstCharged ? totalCost * parseFloat(Taxes.PST) : 0,
-    accessFeeGst: service.isGstCharged ? accessFeeCost * parseFloat(Taxes.GST) : 0,
-    accessFeePst: service.isPstCharged ? accessFeeCost * parseFloat(Taxes.PST) : 0,
+    tripGst: pricingScheme.isGstCharged ? totalCost * parseFloat(Taxes.GST) : 0,
+    tripPst: pricingScheme.isPstCharged ? totalCost * parseFloat(Taxes.PST) : 0,
+    accessFeeGst: pricingScheme.isGstCharged ? accessFeeCost * parseFloat(Taxes.GST) : 0,
+    accessFeePst: pricingScheme.isPstCharged ? accessFeeCost * parseFloat(Taxes.PST) : 0,
   }
 
-  if (!service.isPvrtCharged) return taxes
+  if (!pricingScheme.isPvrtCharged) return taxes
 
   return {
     ...taxes,

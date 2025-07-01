@@ -1,41 +1,3 @@
-<template>
-  <div class="adjustmentCalculator__container">
-    <div class="adjustmentCalculator__heading">Trip adjustment</div>
-
-    <trip-input-item label="Adjusted end time">
-      <datetime-input
-        :datetime="adjustedEndDatetime"
-        :on-change="updateTripDuration"
-      />
-    </trip-input-item>
-
-    <trip-input-item label="BCAA member discount">
-      <input
-        class="adjustmentsCalculator__checkbox"
-        id="is-bcaa-member"
-        type="checkbox"
-        :checked="isBcaaMember"
-        @change="toggleBcaaMember"
-      />
-    </trip-input-item>
-
-    <trip-input-item label="Include access fee">
-      <input
-        class="adjustmentsCalculator__checkbox"
-        id="include-access-fee"
-        type="checkbox"
-        :checked="includeAccessFee"
-        @change="toggleAccessFee"
-      />
-    </trip-input-item>
-  </div>
-  <div class="adjustmentCalculator__duration">
-    Adjusted trip duration: {{ durationText }}
-  </div>
-
-  <cost-summary :cost-items="costSummaryItems" />
-</template>
-
 <script setup>
 import { ref, defineProps, computed } from "vue";
 import DatetimeInput from "./DatetimeInput.vue";
@@ -53,8 +15,6 @@ import {
   calculateTax,
 } from "@/helpers/costs.js";
 
-import { Services } from "@/models/services";
-
 const props = defineProps({
   startDatetime: {
     type: Date,
@@ -65,7 +25,7 @@ const props = defineProps({
   hasSubscription: {
     type: Boolean
   },
-  selectedService: Services
+  pricingScheme: Object
 });
 const adjustedEndDatetime = ref(new Date());
 
@@ -89,15 +49,15 @@ const tripDuration = computed(() =>
 );
 
 const adjustedTotalCost = computed(() => {
-  const adjustedTripCost = calculateTripCost(tripDuration.value, props.selectedService, props.hasSubscription);
+  const adjustedTripCost = calculateTripCost(tripDuration.value, props.pricingScheme, props.hasSubscription);
 
   const adjustedAccessFee = includeAccessFee.value
-    ? parseFloat(props.selectedService.accessFee)
+    ? parseFloat(props.pricingScheme.accessFee)
     : 0;
 
   const adjustedPvrtCost = calculatePvrtCost(
     calculatePvrtDays(tripDuration.value),
-    props.selectedService
+    props.pricingScheme
   );
 
   const adjustedTotalDiscounts = Object.values(
@@ -109,7 +69,7 @@ const adjustedTotalCost = computed(() => {
       adjustedTripCost.tripCost - adjustedTotalDiscounts,
       adjustedPvrtCost,
       adjustedAccessFee,
-      props.selectedService
+      props.pricingScheme
     )
   ).reduce((prev, cur) => prev + cur);
 
@@ -156,6 +116,44 @@ const costSummaryItems = computed(() => [
   { label: "Adjustment amount", value: adjustment.value, isTotal: true },
 ]);
 </script>
+
+<template>
+  <div class="adjustmentCalculator__container">
+    <div class="adjustmentCalculator__heading">Trip adjustment</div>
+
+    <trip-input-item label="Adjusted end time">
+      <datetime-input
+        :datetime="adjustedEndDatetime"
+        :on-change="updateTripDuration"
+      />
+    </trip-input-item>
+
+    <trip-input-item label="BCAA member discount">
+      <input
+        class="adjustmentsCalculator__checkbox"
+        id="is-bcaa-member"
+        type="checkbox"
+        :checked="isBcaaMember"
+        @change="toggleBcaaMember"
+      />
+    </trip-input-item>
+
+    <trip-input-item label="Include access fee">
+      <input
+        class="adjustmentsCalculator__checkbox"
+        id="include-access-fee"
+        type="checkbox"
+        :checked="includeAccessFee"
+        @change="toggleAccessFee"
+      />
+    </trip-input-item>
+  </div>
+  <div class="adjustmentCalculator__duration">
+    Adjusted trip duration: {{ durationText }}
+  </div>
+
+  <cost-summary :cost-items="costSummaryItems" />
+</template>
 
 <style scoped lang="scss">
 .adjustmentCalculator__container {
