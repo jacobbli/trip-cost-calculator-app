@@ -3,107 +3,16 @@ import { Taxes } from "../models/taxes";
 export function calculateTripCost(tripDuration, pricingScheme, hasSubscription) {
   if (pricingScheme.subscriptionMinuteRate && hasSubscription) {
     const totalCost = parseFloat(pricingScheme.subscriptionMinuteRate) * (tripDuration.minutes + tripDuration.hours * 60 + tripDuration.days * 24 * 60);
-    return {
-      days: 0,
-      hours: 0,
-      minutes: totalCost,
-      tripCost: totalCost
-    }
+    return totalCost
   }
 
   if (pricingScheme.label == "Summer Rates") return getTripCostBasedOnSummerRates(tripDuration, pricingScheme)
 
-  const minuteCost = calculateMinuteCost(tripDuration, pricingScheme, hasSubscription);
-  const hourCost = calculateHourCost(tripDuration, minuteCost, pricingScheme);
-  const dayCost = calculateDayCost(tripDuration, hourCost, pricingScheme);
+  const minuteCost = getMinuteCost(tripDuration.minutes, pricingScheme)
+  const hourCost = getHourCost(tripDuration.hours, minuteCost, pricingScheme)
+  const dayCost = getDayCost(tripDuration.days, hourCost, pricingScheme)
 
-  return {
-    days: dayCost.dayCost,
-    hours: hourCost.hourCost,
-    minutes: minuteCost.minuteCost,
-    tripCost: Math.round((dayCost.dayCost + hourCost.hourCost + minuteCost.minuteCost) * 100) / 100,
-  };
-}
-
-function calculateMinuteCost(tripDuration, pricingScheme) {
-  const minuteRateCutOff = Math.ceil(
-    pricingScheme.hourRate / pricingScheme.minuteRate
-  );
-
-  const minuteCost =
-    parseFloat(pricingScheme.minuteRate) * tripDuration.minutes;
-
-  const hourCost =
-    parseFloat(pricingScheme.hourRate) * tripDuration.hours;
-
-  if (
-    tripDuration.minutes >= minuteRateCutOff ||
-    (pricingScheme.dayRate && minuteCost + hourCost >= pricingScheme.dayRate)
-  ) {
-    return {
-      minuteCost: 0,
-      billableMinutes: 0,
-      overflow: 1,
-    };
-  }
-
-  return {
-    minuteCost: minuteCost,
-    billableMinutes: tripDuration.minutes,
-    overflow: 0,
-  };
-}
-
-function calculateHourCost(tripDuration, minuteCost, pricingScheme) {
-  const billableHours = tripDuration.hours + minuteCost.overflow;
-  const hourCost = parseFloat(pricingScheme.hourRate) * billableHours;
-
-  if (!pricingScheme.dayRate) {
-    return {
-      hourCost: hourCost + (tripDuration.days * 24 * pricingScheme.hourRate),
-      billableHours: billableHours + (tripDuration.days * 24),
-      overflow: 0,
-    }
-  }
-
-  const hourRateCutOff = Math.ceil(
-    pricingScheme.dayRate / pricingScheme.hourRate
-  )
-
-  if (
-    billableHours >= hourRateCutOff ||
-    minuteCost.minuteCost + hourCost >= pricingScheme.dayRate
-  ) {
-    return {
-      hourCost: 0,
-      billableHours: 0,
-      overflow: 1,
-    };
-  }
-
-  return {
-    hourCost: hourCost,
-    billableHours: billableHours,
-    overflow: 0,
-  };
-}
-
-function calculateDayCost(tripDuration, hourCost, pricingScheme) {
-  if (!pricingScheme.dayRate) return {
-    dayCost: 0,
-    billableDays: 0,
-    overflow: 0
-  };
-
-  const billableDays = hourCost.overflow
-    ? tripDuration.days + 1
-    : tripDuration.days;
-
-  return {
-    dayCost: parseFloat(pricingScheme.dayRate) * billableDays,
-    billableDays: 0,
-    overflow: 0
-  };
+  return Math.round(dayCost * 100) / 100
 }
 
 
@@ -143,14 +52,7 @@ export function getTripCostBasedOnSummerRates(tripDuration, pricingScheme) {
   const lastDayCost = (((tripDuration.days + 1) % 5 == 0) || ((tripDuration.days + 1) - 3 % 5 == 0)) ? Math.min(pricingScheme.discountedDayRate, hourCost) : Math.min(pricingScheme.dayRate, hourCost)
 
 
-  return {
-    days: 0,
-    hours: 0,
-    minutes: 0,
-    tripCost: Math.round((lastDayCost + regularRateDays * pricingScheme.dayRate + pricingScheme.discountedDayRate * (numberOfFiveDays + numberOfThreeDays)) * 100) / 100,
-
-
-  };
+  return Math.round((lastDayCost + regularRateDays * pricingScheme.dayRate + pricingScheme.discountedDayRate * (numberOfFiveDays + numberOfThreeDays)) * 100) / 100
 }
 
 export function getMinuteCost(minutes, pricingScheme) {
@@ -161,6 +63,6 @@ export function getHourCost(hours, minuteCost, pricingScheme) {
   return Math.min(pricingScheme.dayRate, (hours * pricingScheme.hourRate) + minuteCost)
 }
 
-export function getDayCost(days, hourCost, minuteCost, pricingScheme) {
-  return Math.min(pricingScheme.dayRate * (days + 1), pricingScheme.dayRate * days + hourCost + minuteCost)
+export function getDayCost(days, hourCost, pricingScheme) {
+  return Math.min(pricingScheme.dayRate * (days + 1), pricingScheme.dayRate * days + hourCost)
 }

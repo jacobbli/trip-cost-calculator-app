@@ -61,12 +61,12 @@ const adjustedTotalCost = computed(() => {
   );
 
   const adjustedTotalDiscounts = Object.values(
-    calculateDiscounts(isBcaaMember.value, adjustedTripCost.tripCost)
+    calculateDiscounts(isBcaaMember.value, adjustedTripCost)
   ).reduce((prev, cur) => prev + cur);
 
   const adjustedTotalTax = Object.values(
     calculateTax(
-      adjustedTripCost.tripCost - adjustedTotalDiscounts,
+      adjustedTripCost - adjustedTotalDiscounts,
       adjustedPvrtCost,
       adjustedAccessFee,
       props.pricingScheme
@@ -74,7 +74,7 @@ const adjustedTotalCost = computed(() => {
   ).reduce((prev, cur) => prev + cur);
 
   return (
-    adjustedTripCost.tripCost -
+    adjustedTripCost -
     adjustedTotalDiscounts +
     adjustedAccessFee +
     adjustedPvrtCost +

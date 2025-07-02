@@ -58,7 +58,7 @@ const tripDuration = computed(() =>
 
 const tripCost = computed(() => calculateTripCost(tripDuration.value, props.pricingScheme, hasSubscription.value));
 const discounts = computed(() =>
-  calculateDiscounts(isBcaaMember.value, tripCost.value.tripCost)
+  calculateDiscounts(isBcaaMember.value, tripCost.value)
 );
 const accessFee = computed(() =>
   includeAccessFee.value ? parseFloat(props.pricingScheme.accessFee) : 0
@@ -67,7 +67,7 @@ const pvrtDays = computed(() => calculatePvrtDays(tripDuration.value));
 const pvrtCost = computed(() => calculatePvrtCost(pvrtDays.value, props.pricingScheme));
 
 const taxes = computed(() => {
-  const taxableCost = tripCost.value.tripCost - totalDiscounts.value;
+  const taxableCost = tripCost.value - totalDiscounts.value;
   return calculateTax(taxableCost, pvrtCost.value, accessFee.value, props.pricingScheme);
 });
 
@@ -81,7 +81,7 @@ const totalTax = computed(() => {
 
 const totalCost = computed(() => {
   return (
-    tripCost.value.tripCost -
+    tripCost.value -
     totalDiscounts.value +
     accessFee.value +
     pvrtCost.value +
@@ -102,23 +102,6 @@ const durationText = computed(() => {
   const minuteLabel = tripDuration.value.minutes == 1 ? "minute" : "minutes";
 
   return `${tripDuration.value.days} ${dayLabel} ${tripDuration.value.hours} ${hourLabel} ${tripDuration.value.minutes} ${minuteLabel}`;
-});
-
-const tripCostDetails = computed(() => {
-  return [
-    { label: "Day rate", value: `$ ${tripCost.value.days.toLocaleString("en-CA", {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-      })}` },
-    { label: "Hour rate", value: `$ ${tripCost.value.hours.toLocaleString("en-CA", {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-      })}` },
-    { label: "Minute rate", value: `$ ${tripCost.value.minutes.toLocaleString("en-CA", {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-      })}` },
-  ];
 });
 
 const discountDetails = computed(() => {
@@ -172,11 +155,10 @@ const costSummaryItems = computed(() => {
   const items = [
     {
       label: "Trip cost",
-      value: `$ ${tripCost.value.tripCost.toLocaleString("en-CA", {
+      value: `$ ${tripCost.value.toLocaleString("en-CA", {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
-      })}`,
-      tooltip: tripCostDetails.value,
+      })}`
     },
     {
       label: "Discounts",
