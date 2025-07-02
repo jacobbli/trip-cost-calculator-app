@@ -19,7 +19,7 @@
 }
 
 .baseSection__content {
-    width: 500px;
+    width: 100%;
     display: flex;
     flex-direction: column;
     row-gap: 18px;
@@ -29,7 +29,7 @@
 
 @media only screen and (min-width: 600px) {
     .baseSection__content {
-        width: 100%;
+        width: 500px;
     }
 }
 </style>
