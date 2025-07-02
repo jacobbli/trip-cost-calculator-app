@@ -21,9 +21,3 @@ defineProps({
   },
 });
 </script>
-
-<style scoped lang="scss">
-.costSummary__container {
-  padding: 12px;
-}
-</style>

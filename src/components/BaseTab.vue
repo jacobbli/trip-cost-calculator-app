@@ -29,21 +29,27 @@ const isSelectedClass = computed(() => props.isSelected ? 'baseTab__isSelected' 
 <style lang="scss" scoped>
 .baseTab__container {
     display: flex;
+    position: relative;
     column-gap: 8px;
 
     font-size: 1.2rem;
     color: gray;
-    border-bottom: 2px solid transparent;
     cursor: pointer;
 
-    transition: border-bottom 0.5s, color 0.5s;
-
     &:hover {
-        border-bottom: 2px solid black;
         color: black;
+        ::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 0;
+            border-bottom: solid 2px #000;
+            animation: border_anim 0.2s linear forwards;
+        }
     }
 
-    .baseTab__icons{
+    .baseTab__icons {
         display: flex;
         align-items: center;
     }
@@ -51,6 +57,24 @@ const isSelectedClass = computed(() => props.isSelected ? 'baseTab__isSelected' 
 
 .baseTab__isSelected {
     color: black;
-    border-bottom: 2px solid black;
+    ::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        border-bottom: solid 2px #000;
+        animation: border_anim 0.2s linear forwards;
+    }
+}
+
+@keyframes border_anim {
+    0% {
+        width: 0%;
+    }
+
+    100% {
+        width: 100%;
+    }
 }
 </style>

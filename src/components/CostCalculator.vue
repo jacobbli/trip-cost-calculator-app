@@ -3,6 +3,8 @@ import { ref, computed, defineProps } from "vue";
 import TripInputs from "./TripInputs.vue";
 import AdjustmentCalculator from "./AdjustmentCalculator.vue";
 import CostSummary from "./CostSummary.vue";
+import BaseDivider from "./base/BaseDivider.vue";
+import BaseSection from "./base/BaseSection.vue";
 
 import {
   calculateTripDuration,
@@ -168,18 +170,20 @@ const costSummaryItems = computed(() => {
       })}`,
       tooltip: discountDetails.value,
     },
-    { label: "Access fee", value: `$ ${accessFee.value.toLocaleString("en-CA", {
+    {
+      label: "Access fee", value: `$ ${accessFee.value.toLocaleString("en-CA", {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
-      })}` },
+      })}`
+    },
   ]
 
   if (props.pricingScheme.isPvrtCharged) items.push({
     label: "PVRT",
     value: `$ ${pvrtCost.value.toLocaleString("en-CA", {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-      })}`,
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    })}`,
     tooltip: pvrtDetails.value,
   })
 
@@ -207,26 +211,33 @@ const costSummaryItems = computed(() => {
 
 <template>
   <div class="costCalculator__container">
-    <div class="costCalculator__heading">Cost summary</div>
-    <div class="costCalculator__inputs">
-      <trip-inputs :start-datetime="startDatetime" :end-datetime="endDatetime" :on-change="updateTripDuration"
-        :is-bcaa-member="isBcaaMember" :include-access-fee="includeAccessFee" :has-subscription="hasSubscription"
-        :toggle-bcaa-member="toggleBcaaMember" :toggle-access-fee="toggleAccessFee"
-        :toggle-subscription="toggleSubscription" :pricing-scheme="pricingScheme" />
+    <div class="costCalculator__tripSummary">
+      <base-section>
+        <template #title>Trip Inputs</template>
+        <template #content>
+          <div class="costCalculator__inputs">
+            <trip-inputs :start-datetime="startDatetime" :end-datetime="endDatetime" :on-change="updateTripDuration"
+              :is-bcaa-member="isBcaaMember" :include-access-fee="includeAccessFee" :has-subscription="hasSubscription"
+              :toggle-bcaa-member="toggleBcaaMember" :toggle-access-fee="toggleAccessFee"
+              :toggle-subscription="toggleSubscription" :pricing-scheme="pricingScheme" />
+          </div>
+        </template>
+      </base-section>
+      <base-divider />
+      <base-section>
+        <template #title>Trip Summary</template>
+        <template #content>
+          <div class="costCalculator__duration">
+            Trip duration: {{ durationText }}
+          </div>
+          <cost-summary :cost-items="costSummaryItems" />
+        </template>
+      </base-section>
     </div>
-
-    <hr class="costCalculator__divider" />
-
-    <div class="costCalculator__duration">
-      Trip duration: {{ durationText }}
+    <div class="costCalculator__adjustmentSummary">
+      <adjustment-calculator :start-datetime="startDatetime" :original-cost="totalCost" :pricing-scheme="pricingScheme"
+        :has-subscription="hasSubscription" />
     </div>
-
-    <cost-summary :cost-items="costSummaryItems" />
-
-    <hr class="costCalculator__divider" />
-
-    <adjustment-calculator :start-datetime="startDatetime" :original-cost="totalCost" :pricing-scheme="pricingScheme"
-      :has-subscription="hasSubscription" />
   </div>
 </template>
 
@@ -234,22 +245,13 @@ const costSummaryItems = computed(() => {
 .costCalculator__container {
   width: 100%;
   display: flex;
-  flex-direction: column;
-  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 40px;
 
   .costCalculator__heading {
     font-size: 20px;
     font-weight: bold;
   }
-
-  .costCalculator__divider {
-    width: 80%;
-  }
-
-  .costCalculator__duration {
-    text-align: center;
-  }
 }
-
-
 </style>

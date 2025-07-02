@@ -2,7 +2,7 @@
 import { ref } from "vue";
 import CostCalculator from "./components/CostCalculator.vue";
 import ServiceTabs from "./components/ServiceTabs.vue";
-import BaseSelector from "./components/BaseSelector.vue";
+import PricingSchemeSelector from "./components/PricingSchemeSelector.vue";
 
 import { Services } from "@/models/services";
 
@@ -21,7 +21,7 @@ function selectPricingScheme(pricingScheme) {
 </script>
 <template>
   <service-tabs :selected-service="selectedService" :select-service="selectService" />
-  <base-selector :is-visible="selectedService.pricingSchemes.length > 1" :options="selectedService.pricingSchemes"
+  <pricing-scheme-selector :is-visible="selectedService.pricingSchemes.length > 1" :options="selectedService.pricingSchemes"
     :selected-option="selectedPricingScheme" :on-click="selectPricingScheme" />
   <cost-calculator :pricing-scheme="selectedPricingScheme" />
 </template>
@@ -43,11 +43,5 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-@media only screen and (min-width: 600px) {
-  #app {
-    max-width: 500px;
-  }
 }
 </style>

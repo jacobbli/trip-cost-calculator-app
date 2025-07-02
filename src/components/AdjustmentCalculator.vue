@@ -3,6 +3,8 @@ import { ref, defineProps, computed } from "vue";
 import DatetimeInput from "./DatetimeInput.vue";
 import TripInputItem from "./TripInputItem.vue";
 import CostSummary from "./CostSummary.vue";
+import BaseDivider from "./base/BaseDivider.vue";
+import BaseSection from "./base/BaseSection.vue";
 
 import {
   calculateTripDuration,
@@ -118,62 +120,41 @@ const costSummaryItems = computed(() => [
 </script>
 
 <template>
-  <div class="adjustmentCalculator__container">
-    <div class="adjustmentCalculator__heading">Trip adjustment</div>
+  <base-section>
+    <template #title>Adjustment Inputs</template>
+    <template #content>
+      <trip-input-item label="Adjusted end time">
+        <datetime-input :datetime="adjustedEndDatetime" :on-change="updateTripDuration" />
+      </trip-input-item>
 
-    <trip-input-item label="Adjusted end time">
-      <datetime-input
-        :datetime="adjustedEndDatetime"
-        :on-change="updateTripDuration"
-      />
-    </trip-input-item>
+      <trip-input-item label="BCAA member discount">
+        <input class="adjustmentsCalculator__checkbox" id="is-bcaa-member" type="checkbox" :checked="isBcaaMember"
+          @change="toggleBcaaMember" />
+      </trip-input-item>
 
-    <trip-input-item label="BCAA member discount">
-      <input
-        class="adjustmentsCalculator__checkbox"
-        id="is-bcaa-member"
-        type="checkbox"
-        :checked="isBcaaMember"
-        @change="toggleBcaaMember"
-      />
-    </trip-input-item>
+      <trip-input-item label="Include access fee">
+        <input class="adjustmentsCalculator__checkbox" id="include-access-fee" type="checkbox"
+          :checked="includeAccessFee" @change="toggleAccessFee" />
+      </trip-input-item>
+    </template>
+  </base-section>
+  <base-divider />
 
-    <trip-input-item label="Include access fee">
-      <input
-        class="adjustmentsCalculator__checkbox"
-        id="include-access-fee"
-        type="checkbox"
-        :checked="includeAccessFee"
-        @change="toggleAccessFee"
-      />
-    </trip-input-item>
-  </div>
-  <div class="adjustmentCalculator__duration">
-    Adjusted trip duration: {{ durationText }}
-  </div>
-
-  <cost-summary :cost-items="costSummaryItems" />
+  <base-section>
+    <template #title>Adjustment Summary</template>
+    <template #content>
+      <div class="adjustmentCalculator__duration">
+        Adjusted trip duration: {{ durationText }}
+      </div>
+      <cost-summary :cost-items="costSummaryItems" />
+    </template>
+  </base-section>
 </template>
 
 <style scoped lang="scss">
-.adjustmentCalculator__container {
-  display: flex;
-  flex-direction: column;
-  row-gap: 18px;
-
-  .adjustmentCalculator__heading {
-    font-size: 20px;
-    font-weight: bold;
-  }
-
-  .adjustmentsCalculator__checkbox {
-    width: 14px;
-    height: 14px;
-    align-self: center;
-  }
-}
-
-.adjustmentCalculator__duration {
-  text-align: center;
+.adjustmentsCalculator__checkbox {
+  width: 14px;
+  height: 14px;
+  align-self: center;
 }
 </style>
