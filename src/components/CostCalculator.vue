@@ -232,6 +232,7 @@ const costSummaryItems = computed(() => {
 
 <style scoped lang="scss">
 .costCalculator__container {
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -250,10 +251,5 @@ const costSummaryItems = computed(() => {
   }
 }
 
-@media only screen and (min-width: 600px) {
-  .costCalculator__container {
-    width: 50%;
-    max-width: 400px;
-  }
-}
+
 </style>

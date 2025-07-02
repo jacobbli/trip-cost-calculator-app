@@ -21,23 +21,33 @@ function selectPricingScheme(pricingScheme) {
 </script>
 <template>
   <service-tabs :selected-service="selectedService" :select-service="selectService" />
-  <base-selector v-if="selectedService.pricingSchemes.length > 1" :options="selectedService.pricingSchemes" :selected-option="selectedPricingScheme" :on-click="selectPricingScheme" />
-  <cost-calculator :pricing-scheme="selectedPricingScheme"/>
+  <base-selector :is-visible="selectedService.pricingSchemes.length > 1" :options="selectedService.pricingSchemes"
+    :selected-option="selectedPricingScheme" :on-click="selectPricingScheme" />
+  <cost-calculator :pricing-scheme="selectedPricingScheme" />
 </template>
 <style>
 body {
-  padding: 0 0 24px 0;
   margin: 0;
+  display: flex;
+  justify-content: center;
 }
 
 #app {
+  padding: 24px 0 24px 0;
+
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: #7a7a7a;
+  color: black;
 
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+@media only screen and (min-width: 600px) {
+  #app {
+    max-width: 500px;
+  }
 }
 </style>
