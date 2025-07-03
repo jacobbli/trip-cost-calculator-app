@@ -51,7 +51,6 @@ export function getTripCostUsingSummerRates(tripDuration, pricingScheme) {
   const costOfMinutesDriven = getCostOfMinutesDriven(tripDuration.minutes, pricingScheme)
   const costOfHoursAndMinutesDriven = getCostOfHoursAndMinutesDriven(tripDuration.hours, costOfMinutesDriven, pricingScheme)
   const lastDayCost = (((tripDuration.days + 1) % 5 == 0) || (((tripDuration.days + 1) - 3) % 5 == 0)) ? Math.min(pricingScheme.discountedDayRate, costOfHoursAndMinutesDriven) : Math.min(pricingScheme.dayRate, costOfHoursAndMinutesDriven)
-  console.log(lastDayCost)
 
   return Math.round((lastDayCost + regularRateDays * pricingScheme.dayRate + pricingScheme.discountedDayRate * (numberOfFiveDays + numberOfThreeDays)) * 100) / 100
 }
