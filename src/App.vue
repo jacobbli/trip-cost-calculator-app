@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from "vue";
-import CostCalculator from "./components/CostCalculator.vue";
+import CalculatorController from "./components/CalculatorController.vue";
 import ServiceTabs from "./components/ServiceTabs.vue";
 import PricingSchemeSelector from "./components/PricingSchemeSelector.vue";
 
@@ -23,7 +23,7 @@ function selectPricingScheme(pricingScheme) {
   <service-tabs :selected-service="selectedService" :select-service="selectService" />
   <pricing-scheme-selector :is-visible="selectedService.pricingSchemes.length > 1" :options="selectedService.pricingSchemes"
     :selected-option="selectedPricingScheme" :on-click="selectPricingScheme" />
-  <cost-calculator :pricing-scheme="selectedPricingScheme" />
+   <calculator-controller :pricing-scheme="selectedPricingScheme" />
 </template>
 <style>
 body {
