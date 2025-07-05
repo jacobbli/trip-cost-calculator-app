@@ -21,9 +21,10 @@ function selectPricingScheme(pricingScheme) {
 </script>
 <template>
   <service-tabs :selected-service="selectedService" :select-service="selectService" />
-  <pricing-scheme-selector :is-visible="selectedService.pricingSchemes.length > 1" :options="selectedService.pricingSchemes"
-    :selected-option="selectedPricingScheme" :on-click="selectPricingScheme" />
-   <calculator-controller :pricing-scheme="selectedPricingScheme" />
+  <pricing-scheme-selector :is-visible="selectedService.pricingSchemes.length > 1"
+    :options="selectedService.pricingSchemes" :selected-option="selectedPricingScheme"
+    :on-click="selectPricingScheme" />
+  <calculator-controller :pricing-scheme="selectedPricingScheme" />
 </template>
 <style>
 body {
@@ -46,8 +47,8 @@ body {
 }
 
 @media only screen and (min-width: 600px) {
-#app {
-  padding: 48px 8px;
-}
+  #app {
+    padding: 48px 8px;
+  }
 }
 </style>

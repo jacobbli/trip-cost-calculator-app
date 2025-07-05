@@ -17,7 +17,14 @@ defineProps({
 
 <style scoped lang="scss">
 .tripInputItem__container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  flex-direction: column;
+}
+
+@media only screen and (min-width: 600px) {
+  .tripInputItem__container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
 }
 </style>
