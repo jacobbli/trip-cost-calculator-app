@@ -35,13 +35,12 @@ function toggleBreakdown() {
 <template>
   <div class="summaryItem__container" :class="costSummaryItemClass">
     <div class="summaryItem__content">
-      <div>
-        {{ label }} 
-        <div v-if="breakdown" class="summaryItem__breakdownToggle"
-          @click="toggleBreakdown">
-          <icon-plus v-if="!isBreakdownVisible" class="summaryItem__breakdownToggleIcon"/>
-          <icon-minus v-else class="summaryItem__breakdownToggleIcon"/>
-          Click to view details
+      <div class="summaryItem__label">
+        {{ label }}
+        <div v-if="breakdown" class="summaryItem__breakdownToggle" @click="toggleBreakdown">
+          <icon-plus v-if="!isBreakdownVisible" class="summaryItem__breakdownToggleIcon" />
+          <icon-minus v-else class="summaryItem__breakdownToggleIcon" />
+          Click here to view details
         </div>
       </div>
       <div class="summaryItem__value">{{ value }}</div>
@@ -59,14 +58,30 @@ function toggleBreakdown() {
 
   .summaryItem__content {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 50% 1fr;
 
-    padding: 5px 0;
+    padding: 5px 12px;
 
-  }
+    .summaryItem__label {
+      .summaryItem__breakdownToggle {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 0.7em;
+        padding: 8px 0;
+        cursor: pointer;
 
-  .summaryItem__value {
-    text-align: right;
+        .summaryItem__breakdownToggleIcon {
+          width: 1.3em;
+          height: 100%;
+          vertical-align: bottom;
+        }
+      }
+    }
+
+    .summaryItem__value {
+      text-align: right;
+    }
   }
 
   &:hover {
@@ -74,21 +89,7 @@ function toggleBreakdown() {
   }
 
   .summaryItem__breakdown {
-    padding: 20px 0;
-  }
-}
-
-.summaryItem__breakdownToggle {
-  display: inline-block;
-  font-size: 0.7em;
-
-  padding-left: 20px;
-  cursor: pointer;
-
-  .summaryItem__breakdownToggleIcon{
-    width: 1.3em;
-    height: 100%;
-    vertical-align: bottom;
+    padding: 4px 0 12px 0;
   }
 }
 
