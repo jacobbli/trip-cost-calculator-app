@@ -5,7 +5,7 @@ import SummaryItem from "./SummaryItem.vue";
 const props = defineProps({
   tripDuration: {
     type: Object,
-    required: true
+    required: false
   },
   originalCost: {
     type: Number,
@@ -18,12 +18,7 @@ const props = defineProps({
 });
 
 const durationText = computed(() => {
-  if (
-    Object.values(props.tripDuration).some(
-      (duration) => duration < 0 || isNaN(duration)
-    )
-  )
-    return "Invalid time range";
+  if (!props.tripDuration) return "Invalid time range";
 
   const dayLabel = props.tripDuration.days == 1 ? "day" : "days";
   const hourLabel = props.tripDuration.hours == 1 ? "hour" : "hours";
@@ -62,7 +57,7 @@ const adjustedAmmount = computed(() => adjustment.value)
   display: grid;
   grid-template-columns: 1fr 1fr;
 
-  .adjustmentSummary__durationText{
+  .adjustmentSummary__durationText {
     text-align: right
   }
 }

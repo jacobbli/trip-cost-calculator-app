@@ -2,6 +2,8 @@ import { Taxes } from "../models/taxes";
 import { round } from "./numbers";
 
 export function calculateTripCost(tripDuration, pricingScheme, hasSubscription) {
+  if (!tripDuration) return 0
+  
   if (pricingScheme.subscriptionMinuteRate && hasSubscription) {
     const totalCost = parseFloat(pricingScheme.subscriptionMinuteRate) * (tripDuration.minutes + tripDuration.hours * 60 + tripDuration.days * 24 * 60);
     return totalCost

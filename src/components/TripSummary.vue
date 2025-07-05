@@ -47,7 +47,7 @@ const props = defineProps({
   },
   tripDuration: {
     type: Object,
-    required: true
+    required: false
   }
 });
 
@@ -137,12 +137,7 @@ const totalCostSummary = computed(() => `$ ${props.totalCost.toLocaleString("en-
 })}`)
 
 const durationText = computed(() => {
-  if (
-    Object.values(props.tripDuration).some(
-      (duration) => duration < 0 || isNaN(duration)
-    )
-  )
-    return "Invalid time range";
+  if (!props.tripDuration) return "Invalid time range";
 
   const dayLabel = props.tripDuration.days == 1 ? "day" : "days";
   const hourLabel = props.tripDuration.hours == 1 ? "hour" : "hours";
@@ -173,7 +168,7 @@ const durationText = computed(() => {
   display: grid;
   grid-template-columns: 1fr 1fr;
 
-  .tripSummary__durationText{
+  .tripSummary__durationText {
     text-align: right
   }
 }
