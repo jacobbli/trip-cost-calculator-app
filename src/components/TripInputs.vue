@@ -1,51 +1,3 @@
-<template>
-  <div class="tripInputs__container">
-    <trip-input-item label="Start time">
-      <datetime-input
-        :datetime="startDatetime"
-        :on-change="(newTime) => changeDatetime(newTime, 1)"
-      />
-    </trip-input-item>
-
-    <trip-input-item label="End time">
-      <datetime-input
-        :datetime="endDatetime"
-        :on-change="(newTime) => changeDatetime(newTime, 0)"
-      />
-    </trip-input-item>
-
-    <trip-input-item label="BCAA member discount">
-      <input
-        class="tripInputs__checkbox"
-        id="is-bcaa-member"
-        type="checkbox"
-        :checked="isBcaaMember"
-        @change="toggleBcaaMember"
-      />
-    </trip-input-item>
-
-    <trip-input-item label="Include access fee">
-      <input
-        class="tripInputs__checkbox"
-        id="include-access-fee"
-        type="checkbox"
-        :checked="includeAccessFee"
-        @change="toggleAccessFee"
-      />
-    </trip-input-item>
-
-    <trip-input-item label="Has BCAA Mobility Plan Subscription" v-if="pricingScheme.subscriptionMinuteRate">
-      <input
-        class="tripInputs__checkbox"
-        id="has subscription"
-        type="checkbox"
-        :checked="hasSubscription"
-        @change="toggleSubscription"
-      />
-    </trip-input-item>
-  </div>
-</template>
-
 <script setup>
 import { defineProps } from "vue";
 import DatetimeInput from "./DatetimeInput.vue";
@@ -85,12 +37,58 @@ const props = defineProps({
   pricingScheme: Object
 });
 
-function changeDatetime(newTime, changeStart = 1) {
-  changeStart
-    ? props.onChange(newTime, props.endDatetime)
-    : props.onChange(props.startDatetime, newTime);
+function changeDatetime(newStartDatetime, newEndDatetime) {
+  props.onChange(newStartDatetime, newEndDatetime);
 }
 </script>
+
+<template>
+  <div class="tripInputs__container">
+    <trip-input-item label="Start time">
+      <datetime-input
+        :datetime="startDatetime"
+        :on-change="(newStartTime) => changeDatetime(newStartTime, endDatetime)"
+      />
+    </trip-input-item>
+
+    <trip-input-item label="End time">
+      <datetime-input
+        :datetime="endDatetime"
+        :on-change="(newEndTime) => changeDatetime(startDatetime, newEndTime)"
+      />
+    </trip-input-item>
+
+    <trip-input-item label="BCAA member discount">
+      <input
+        class="tripInputs__checkbox"
+        id="is-bcaa-member"
+        type="checkbox"
+        :checked="isBcaaMember"
+        @change="toggleBcaaMember"
+      />
+    </trip-input-item>
+
+    <trip-input-item label="Include access fee">
+      <input
+        class="tripInputs__checkbox"
+        id="include-access-fee"
+        type="checkbox"
+        :checked="includeAccessFee"
+        @change="toggleAccessFee"
+      />
+    </trip-input-item>
+
+    <trip-input-item label="Has BCAA Mobility Plan Subscription" v-if="pricingScheme.subscriptionMinuteRate">
+      <input
+        class="tripInputs__checkbox"
+        id="has subscription"
+        type="checkbox"
+        :checked="hasSubscription"
+        @change="toggleSubscription"
+      />
+    </trip-input-item>
+  </div>
+</template>
 
 <style scoped lang="scss">
 .tripInputs__container {

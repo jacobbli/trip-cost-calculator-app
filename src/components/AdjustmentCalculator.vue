@@ -1,7 +1,6 @@
 <script setup>
 import { ref, defineProps, computed } from "vue";
 import AdjustmentSummary from "./AdjustmentSummary.vue";
-import BaseDivider from "./base/BaseDivider.vue";
 import BaseSection from "./base/BaseSection.vue";
 import AdjustmentInputs from "./AdjustmentInputs.vue";
 import {
@@ -22,10 +21,12 @@ const props = defineProps({
   originalCost: {
     type: Number,
   },
-  pricingScheme: Object
+  pricingScheme: {
+    type: Object,
+    required: true
+  }
 });
 const adjustedEndDatetime = ref(new Date());
-
 const isBcaaMember = ref(false);
 const includeAccessFee = ref(true);
 const hasSubscription = ref(false);
@@ -89,36 +90,32 @@ const adjustedTotalCost = computed(() => {
 </script>
 
 <template>
-  <base-section>
-    <template #title>Adjustment Inputs</template>
-    <template #content>
-      <adjustment-inputs 
-        :adjusted-end-datetime="adjustedEndDatetime"
-        :onAdjustedEndTimeChange="updateTripDuration"
-        :is-bcaa-member="isBcaaMember"
-        :toggle-bcaa-member="toggleBcaaMember"
-        :include-access-fee="includeAccessFee"
-        :toggle-access-fee="toggleAccessFee"
-        :toggle-subscription="toggleSubscription"
-        :pricing-scheme="pricingScheme"
-        :has-subscription="hasSubscription"
-        />
-    </template>
-  </base-section>
-  <base-divider />
+  <div class="adjustmentCalculator__container">
+    <base-section>
+      <template #title>Adjustment Inputs</template>
+      <template #content>
+        <adjustment-inputs :adjusted-end-datetime="adjustedEndDatetime" :onAdjustedEndTimeChange="updateTripDuration"
+          :is-bcaa-member="isBcaaMember" :toggle-bcaa-member="toggleBcaaMember" :include-access-fee="includeAccessFee"
+          :toggle-access-fee="toggleAccessFee" :toggle-subscription="toggleSubscription" :pricing-scheme="pricingScheme"
+          :has-subscription="hasSubscription" />
+      </template>
+    </base-section>
 
-  <base-section>
-    <template #title>Adjustment Summary</template>
-    <template #content>
-      <adjustment-summary 
-        :trip-duration="tripDuration"
-        :original-cost="originalCost"
-        :adjusted-total-cost="adjustedTotalCost"
-       />
-    </template>
-  </base-section>
+    <base-section>
+      <template #title>Adjustment Summary</template>
+      <template #content>
+        <adjustment-summary :trip-duration="tripDuration" :original-cost="originalCost"
+          :adjusted-total-cost="adjustedTotalCost" />
+      </template>
+    </base-section>
+  </div>
 </template>
 
 <style scoped lang="scss">
-
+.adjustmentCalculator__container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
 </style>

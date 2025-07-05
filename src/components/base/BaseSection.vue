@@ -1,14 +1,15 @@
 <template>
+    <div class="baseSection__container">
+        <div class="baseSection__title">
+            <slot name="title">
 
-    <div class="baseSection__title">
-        <slot name="title">
+            </slot>
+        </div>
+        <div class="baseSection__content">
+            <slot name="content">
 
-        </slot>
-    </div>
-    <div class="baseSection__content">
-        <slot name="content">
-
-        </slot>
+            </slot>
+        </div>
     </div>
 </template>
 

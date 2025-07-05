@@ -17,7 +17,6 @@ const props = defineProps({
   }
 });
 
-
 const durationText = computed(() => {
   if (
     Object.values(props.tripDuration).some(
@@ -44,19 +43,6 @@ const adjustment = computed(() => {
 const originalTotalCostSummary = computed(() => `$${props.originalCost.toFixed(2)}`)
 const adjustedTotalCostSummary = computed(() => `$${props.adjustedTotalCost.toFixed(2)}`)
 const adjustedAmmount = computed(() => adjustment.value)
-
-// const costSummaryItems = computed(() => [
-//   {
-//     label: "Original total cost",
-//     value: `$${props.originalCost.toFixed(2)}`,
-//   },
-//   {
-//     label: "Adjusted total cost",
-//     value: `$${props.adjustedTotalCost.toFixed(2)}`,
-//   },
-//   { label: "Adjustment amount", value: adjustment.value, isTotal: true },
-// ]);
-
 </script>
 
 <template>
@@ -64,12 +50,8 @@ const adjustedAmmount = computed(() => adjustment.value)
     <cost-summary-item label="Adjusted trip duration" :value="durationText" />
   </div>
   <div class="adjustmentSummary__container">
-    <!-- <cost-summary-item v-for="costItem in costSummaryItems" :key="costItem.label" :label="costItem.label"
-      :value="costItem.value" :is-total="costItem.isTotal" :tooltip="costItem.tooltip" /> -->
     <cost-summary-item label="Original total cost" :value="originalTotalCostSummary" />
     <cost-summary-item label="Adjusted total cost" :value="adjustedTotalCostSummary" />
     <cost-summary-item label="Adjustment amount" :value="adjustedAmmount" :is-total="true" />
-
-
   </div>
 </template>

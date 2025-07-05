@@ -154,10 +154,10 @@ const durationText = computed(() => {
 </script>
 
 <template>
-  <div class="costCalculator__duration">
+  <div class="tripSummary__duration">
     <cost-summary-item label="Trip duration" :value="durationText" />
   </div>
-  <div class="costSummary__container">
+  <div class="tripSummary__container">
     <cost-summary-item label="Trip Cost" :value="tripCostSummary" />
     <cost-summary-item label="Discounts" :value="discountsSummary.value" :tooltip="discountDetails" />
     <cost-summary-item label="Access fee" :value="accessFeeSummary" />

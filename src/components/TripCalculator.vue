@@ -1,9 +1,7 @@
 <script setup>
-import { ref, computed, defineProps, watch } from "vue";
+import { ref, computed, defineProps } from "vue";
 import TripInputs from "./TripInputs.vue";
-// import AdjustmentCalculator from "./AdjustmentCalculator.vue";
-import CostSummary from "./CostSummary.vue";
-import BaseDivider from "./base/BaseDivider.vue";
+import TripSummary from "./TripSummary.vue";
 import BaseSection from "./base/BaseSection.vue";
 
 import {
@@ -17,18 +15,20 @@ import {
   calculateTax,
 } from "@/helpers/costs.js";
 
-
 const props = defineProps({
-  pricingScheme: Object,
+  pricingScheme: {
+    type: Object,
+    required: true
+  },
   tripCost: {
     type: Number,
     required: true
   },
-  onTotalCostChange: {
+  onInputsChange: {
     type: Function,
     required: false
   },
-    onStartDateTimeChange: {
+  onStartDateTimeChange: {
     type: Function,
     required: false
   },
@@ -49,10 +49,12 @@ function toggleBcaaMember() {
     hasSubscription.value = false
   }
   isBcaaMember.value = !isBcaaMember.value;
+  props.onInputsChange(totalCost.value)
 }
 
 function toggleAccessFee() {
   includeAccessFee.value = !includeAccessFee.value;
+  props.onInputsChange(totalCost.value)
 }
 
 function toggleSubscription() {
@@ -60,18 +62,18 @@ function toggleSubscription() {
     isBcaaMember.value = false
   }
   hasSubscription.value = !hasSubscription.value;
+  props.onInputsChange(totalCost.value)
 }
 
-function updateTripDuration(newStartDatetime, nweEndDatetime) {
+function updateTripDuration(newStartDatetime, newEndDatetime) {
   props.onStartDateTimeChange(newStartDatetime)
-  // props.startDateTime = newStartDatetime;
-  endDatetime.value = nweEndDatetime;
+  endDatetime.value = newEndDatetime;
+  props.onInputsChange(totalCost.value)
 }
 
 const tripDuration = computed(() =>
-  calculateTripDuration(props.startDateTime, endDatetime.value) 
+  calculateTripDuration(props.startDateTime, endDatetime.value)
 );
-
 const tripCost = computed(() => calculateTripCost(tripDuration.value, props.pricingScheme, hasSubscription.value));
 const discounts = computed(() =>
   calculateDiscounts(isBcaaMember.value, tripCost.value)
@@ -104,52 +106,38 @@ const totalCost = computed(() => {
     totalTax.value
   );
 });
-
-watch(totalCost, () => props.onTotalCostChange(totalCost.value))
-
 </script>
 
 <template>
-  <div class="costCalculator__container">
-    <div class="costCalculator__tripSummary">
-      <base-section>
-        <template #title>Trip Inputs</template>
-        <template #content>
-          <div class="costCalculator__inputs">
-            <trip-inputs 
-              :start-datetime="startDateTime" 
-              :end-datetime="endDatetime" 
-              :on-change="updateTripDuration"
-              :is-bcaa-member="isBcaaMember" :include-access-fee="includeAccessFee" :has-subscription="hasSubscription"
-              :toggle-bcaa-member="toggleBcaaMember" :toggle-access-fee="toggleAccessFee"
-              :toggle-subscription="toggleSubscription" :pricing-scheme="pricingScheme" />
-          </div>
-        </template>
-      </base-section>
-      <base-divider />
-      <base-section>
-        <template #title>Trip Summary</template>
-        <template #content>
-          <cost-summary :trip-duration="tripDuration" :tripCost="tripCost" :totalDiscounts="totalDiscounts"
-            :discounts="discounts" :accessFee="accessFee" :pvrtCost="pvrtCost" :pvrt-days="pvrtDays"
-            :totalTax="totalTax" :taxes="taxes" :totalCost="totalCost" :pricing-scheme="pricingScheme" />
-        </template>
-      </base-section>
-    </div>
+  <div class="tripCalculator__container">
+    <base-section>
+      <template #title>Trip Inputs</template>
+      <template #content>
+        <div class="tripCalculator__inputs">
+          <trip-inputs :start-datetime="startDateTime" :end-datetime="endDatetime" :on-change="updateTripDuration"
+            :is-bcaa-member="isBcaaMember" :include-access-fee="includeAccessFee" :has-subscription="hasSubscription"
+            :toggle-bcaa-member="toggleBcaaMember" :toggle-access-fee="toggleAccessFee"
+            :toggle-subscription="toggleSubscription" :pricing-scheme="pricingScheme" />
+        </div>
+      </template>
+    </base-section>
+
+    <base-section>
+      <template #title>Trip Summary</template>
+      <template #content>
+        <trip-summary :trip-duration="tripDuration" :tripCost="tripCost" :totalDiscounts="totalDiscounts"
+          :discounts="discounts" :accessFee="accessFee" :pvrtCost="pvrtCost" :pvrt-days="pvrtDays" :totalTax="totalTax"
+          :taxes="taxes" :totalCost="totalCost" :pricing-scheme="pricingScheme" />
+      </template>
+    </base-section>
   </div>
 </template>
 
 <style scoped lang="scss">
-// .costCalculator__container {
-//   width: 100%;
-//   display: flex;
-//   justify-content: center;
-//   flex-wrap: wrap;
-//   gap: 40px;
-
-//   .costCalculator__heading {
-//     font-size: 20px;
-//     font-weight: bold;
-//   }
-// }
+.tripCalculator__container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
 </style>
