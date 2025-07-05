@@ -33,7 +33,7 @@ body {
 }
 
 #app {
-  padding: 24px 0 24px 0;
+  padding: 48px 8px;
 
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -43,5 +43,11 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+@media only screen and (min-width: 600px) {
+#app {
+  padding: 48px 8px;
+}
 }
 </style>

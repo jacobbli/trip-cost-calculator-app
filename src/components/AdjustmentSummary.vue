@@ -1,6 +1,6 @@
 <script setup>
 import { defineProps, computed } from "vue";
-import CostSummaryItem from "./CostSummaryItem.vue";
+import SummaryItem from "./SummaryItem.vue";
 
 const props = defineProps({
   tripDuration: {
@@ -46,12 +46,24 @@ const adjustedAmmount = computed(() => adjustment.value)
 </script>
 
 <template>
-  <div class="adjustmentSummary_duration">
-    <cost-summary-item label="Adjusted trip duration" :value="durationText" />
+  <div class="adjustmentSummary__duration">
+    <div>Adjusted trip duration</div>
+    <div class="adjustmentSummary__durationText">{{ durationText }}</div>
   </div>
   <div class="adjustmentSummary__container">
-    <cost-summary-item label="Original total cost" :value="originalTotalCostSummary" />
-    <cost-summary-item label="Adjusted total cost" :value="adjustedTotalCostSummary" />
-    <cost-summary-item label="Adjustment amount" :value="adjustedAmmount" :is-total="true" />
+    <summary-item label="Original total cost" :value="originalTotalCostSummary" />
+    <summary-item label="Adjusted total cost" :value="adjustedTotalCostSummary" />
+    <summary-item label="Adjustment amount" :value="adjustedAmmount" :is-total="true" />
   </div>
 </template>
+
+<style scoped lang="scss">
+.adjustmentSummary__duration {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
+  .adjustmentSummary__durationText{
+    text-align: right
+  }
+}
+</style>

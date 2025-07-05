@@ -1,6 +1,6 @@
 <script setup>
 import { defineProps, computed } from "vue";
-import CostSummaryItem from "./CostSummaryItem.vue";
+import SummaryItem from "./SummaryItem.vue";
 
 import { Taxes } from "@/models/taxes";
 
@@ -155,14 +155,26 @@ const durationText = computed(() => {
 
 <template>
   <div class="tripSummary__duration">
-    <cost-summary-item label="Trip duration" :value="durationText" />
+    <div>Trip duration</div>
+    <div class="tripSummary__durationText">{{ durationText }}</div>
   </div>
   <div class="tripSummary__container">
-    <cost-summary-item label="Trip Cost" :value="tripCostSummary" />
-    <cost-summary-item label="Discounts" :value="discountsSummary.value" :tooltip="discountDetails" />
-    <cost-summary-item label="Access fee" :value="accessFeeSummary" />
-    <cost-summary-item label="PVRT" :value="pvrtSummary" :tooltip="pvrtDetails" />
-    <cost-summary-item label="Tax" :value="taxSummary" :tooltip="taxDetails" />
-    <cost-summary-item label="Total Cost" :value="totalCostSummary" :is-total="true" />
+    <summary-item label="Trip Cost" :value="tripCostSummary" />
+    <summary-item label="Discounts" :value="discountsSummary.value" :breakdown="discountDetails" />
+    <summary-item label="Access fee" :value="accessFeeSummary" />
+    <summary-item label="PVRT" :value="pvrtSummary" :breakdown="pvrtDetails" />
+    <summary-item label="Tax" :value="taxSummary" :breakdown="taxDetails" />
+    <summary-item label="Total Cost" :value="totalCostSummary" :is-total="true" />
   </div>
 </template>
+
+<style scoped lang="scss">
+.tripSummary__duration {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
+  .tripSummary__durationText{
+    text-align: right
+  }
+}
+</style>
