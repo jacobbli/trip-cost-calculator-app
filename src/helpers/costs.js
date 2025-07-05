@@ -1,4 +1,5 @@
 import { Taxes } from "../models/taxes";
+import { round } from "./numbers";
 
 export function calculateTripCost(tripDuration, pricingScheme, hasSubscription) {
   if (pricingScheme.subscriptionMinuteRate && hasSubscription) {
@@ -12,7 +13,7 @@ export function calculateTripCost(tripDuration, pricingScheme, hasSubscription) 
   const costOfHoursAndMinutesDriven = getCostOfHoursAndMinutesDriven(tripDuration.hours, costOfMinutesDriven, pricingScheme)
   const costOfDaysAndHoursAndMinutesDriven = getCostOfDaysAndHoursAndMinutesDriven(tripDuration.days, costOfHoursAndMinutesDriven, pricingScheme)
 
-  return Math.round(costOfDaysAndHoursAndMinutesDriven * 100) / 100
+  return round(costOfDaysAndHoursAndMinutesDriven, 2)
 }
 
 
@@ -52,7 +53,7 @@ export function getTripCostUsingSummerRates(tripDuration, pricingScheme) {
   const costOfHoursAndMinutesDriven = getCostOfHoursAndMinutesDriven(tripDuration.hours, costOfMinutesDriven, pricingScheme)
   const lastDayCost = (((tripDuration.days + 1) % 5 == 0) || (((tripDuration.days + 1) - 3) % 5 == 0)) ? Math.min(pricingScheme.discountedDayRate, costOfHoursAndMinutesDriven) : Math.min(pricingScheme.dayRate, costOfHoursAndMinutesDriven)
 
-  return Math.round((lastDayCost + regularRateDays * pricingScheme.dayRate + pricingScheme.discountedDayRate * (numberOfFiveDays + numberOfThreeDays)) * 100) / 100
+  return  round(lastDayCost + regularRateDays * pricingScheme.dayRate + pricingScheme.discountedDayRate * (numberOfFiveDays + numberOfThreeDays))
 }
 
 export function getCostOfMinutesDriven(minutes, pricingScheme) {
