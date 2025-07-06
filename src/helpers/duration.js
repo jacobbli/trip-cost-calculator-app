@@ -32,7 +32,7 @@ function calculatePvrtDays(tripDuration) {
   return totalMinutes > 480 ? Math.ceil(totalMinutes / 1440) : 0;
 }
 
-module.exports = {
+export {
   calculateTripDuration,
   calculatePvrtDays,
 };
