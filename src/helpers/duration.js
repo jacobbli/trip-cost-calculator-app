@@ -1,4 +1,6 @@
 function calculateTripDuration(startDatetime, endDatetime) {
+  if (endDatetime < startDatetime) return null
+
   startDatetime.setSeconds(0);
   endDatetime.setSeconds(0);
   startDatetime.setMilliseconds(0);
@@ -22,13 +24,15 @@ function calculateTripDuration(startDatetime, endDatetime) {
 }
 
 function calculatePvrtDays(tripDuration) {
+  if (!tripDuration) return 0
+  
   const totalMinutes =
     tripDuration.days * 1440 + tripDuration.hours * 60 + tripDuration.minutes;
 
   return totalMinutes > 480 ? Math.ceil(totalMinutes / 1440) : 0;
 }
 
-module.exports = {
+export {
   calculateTripDuration,
   calculatePvrtDays,
 };

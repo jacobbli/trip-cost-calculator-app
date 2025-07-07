@@ -1,47 +1,8 @@
-<template>
-  <div class="adjustmentCalculator__container">
-    <div class="adjustmentCalculator__heading">Trip adjustment</div>
-
-    <trip-input-item label="Adjusted end time">
-      <datetime-input
-        :datetime="adjustedEndDatetime"
-        :on-change="updateTripDuration"
-      />
-    </trip-input-item>
-
-    <trip-input-item label="BCAA member discount">
-      <input
-        class="adjustmentsCalculator__checkbox"
-        id="is-bcaa-member"
-        type="checkbox"
-        :checked="isBcaaMember"
-        @change="toggleBcaaMember"
-      />
-    </trip-input-item>
-
-    <trip-input-item label="Include access fee">
-      <input
-        class="adjustmentsCalculator__checkbox"
-        id="include-access-fee"
-        type="checkbox"
-        :checked="includeAccessFee"
-        @change="toggleAccessFee"
-      />
-    </trip-input-item>
-  </div>
-  <div class="adjustmentCalculator__duration">
-    Adjusted trip duration: {{ durationText }}
-  </div>
-
-  <cost-summary :cost-items="costSummaryItems" />
-</template>
-
 <script setup>
 import { ref, defineProps, computed } from "vue";
-import DatetimeInput from "./DatetimeInput.vue";
-import TripInputItem from "./TripInputItem.vue";
-import CostSummary from "./CostSummary.vue";
-
+import AdjustmentSummary from "./AdjustmentSummary.vue";
+import BaseSection from "./base/BaseSection.vue";
+import AdjustmentInputs from "./AdjustmentInputs.vue";
 import {
   calculateTripDuration,
   calculatePvrtDays,
@@ -53,8 +14,6 @@ import {
   calculateTax,
 } from "@/helpers/costs.js";
 
-import { Services } from "@/models/services";
-
 const props = defineProps({
   startDatetime: {
     type: Date,
@@ -62,15 +21,15 @@ const props = defineProps({
   originalCost: {
     type: Number,
   },
-  hasSubscription: {
-    type: Boolean
-  },
-  selectedService: Services
+  pricingScheme: {
+    type: Object,
+    required: true
+  }
 });
 const adjustedEndDatetime = ref(new Date());
-
 const isBcaaMember = ref(false);
 const includeAccessFee = ref(true);
+const hasSubscription = ref(false);
 
 function toggleBcaaMember() {
   isBcaaMember.value = !isBcaaMember.value;
@@ -78,6 +37,13 @@ function toggleBcaaMember() {
 
 function toggleAccessFee() {
   includeAccessFee.value = !includeAccessFee.value;
+}
+
+function toggleSubscription() {
+  if (!hasSubscription.value) {
+    isBcaaMember.value = false
+  }
+  hasSubscription.value = !hasSubscription.value;
 }
 
 function updateTripDuration(newEndDatetime) {
@@ -89,93 +55,67 @@ const tripDuration = computed(() =>
 );
 
 const adjustedTotalCost = computed(() => {
-  const adjustedTripCost = calculateTripCost(tripDuration.value, props.selectedService, props.hasSubscription);
+  const adjustedTripCost = calculateTripCost(tripDuration.value, props.pricingScheme, hasSubscription.value);
 
   const adjustedAccessFee = includeAccessFee.value
-    ? parseFloat(props.selectedService.accessFee)
+    ? parseFloat(props.pricingScheme.accessFee)
     : 0;
 
   const adjustedPvrtCost = calculatePvrtCost(
     calculatePvrtDays(tripDuration.value),
-    props.selectedService
+    props.pricingScheme
   );
 
   const adjustedTotalDiscounts = Object.values(
-    calculateDiscounts(isBcaaMember.value, adjustedTripCost.tripCost)
+    calculateDiscounts(isBcaaMember.value, adjustedTripCost)
   ).reduce((prev, cur) => prev + cur);
 
   const adjustedTotalTax = Object.values(
     calculateTax(
-      adjustedTripCost.tripCost - adjustedTotalDiscounts,
+      adjustedTripCost - adjustedTotalDiscounts,
       adjustedPvrtCost,
       adjustedAccessFee,
-      props.selectedService
+      props.pricingScheme
     )
   ).reduce((prev, cur) => prev + cur);
 
   return (
-    adjustedTripCost.tripCost -
+    adjustedTripCost -
     adjustedTotalDiscounts +
     adjustedAccessFee +
     adjustedPvrtCost +
     adjustedTotalTax
   );
 });
-
-const durationText = computed(() => {
-  if (
-    Object.values(tripDuration.value).some(
-      (duration) => duration < 0 || isNaN(duration)
-    )
-  )
-    return "Invalid time range";
-
-  const dayLabel = tripDuration.value.days == 1 ? "day" : "days";
-  const hourLabel = tripDuration.value.hours == 1 ? "hour" : "hours";
-  const minuteLabel = tripDuration.value.minutes == 1 ? "minute" : "minutes";
-
-  return `${tripDuration.value.days} ${dayLabel} ${tripDuration.value.hours} ${hourLabel} ${tripDuration.value.minutes} ${minuteLabel}`;
-});
-
-const adjustment = computed(() => {
-  const difference = adjustedTotalCost.value - props.originalCost;
-  return difference >= 0
-    ? `$${difference.toFixed(2)}`
-    : `-$${Math.abs(difference).toFixed(2)}`;
-});
-
-const costSummaryItems = computed(() => [
-  {
-    label: "Original total cost",
-    value: `$${props.originalCost.toFixed(2)}`,
-  },
-  {
-    label: "Adjusted total cost",
-    value: `$${adjustedTotalCost.value.toFixed(2)}`,
-  },
-  { label: "Adjustment amount", value: adjustment.value, isTotal: true },
-]);
 </script>
+
+<template>
+  <div class="adjustmentCalculator__container">
+    <base-section>
+      <template #title>Adjustment Inputs</template>
+      <template #content>
+        <adjustment-inputs :adjusted-end-datetime="adjustedEndDatetime" :onAdjustedEndTimeChange="updateTripDuration"
+          :is-bcaa-member="isBcaaMember" :toggle-bcaa-member="toggleBcaaMember" :include-access-fee="includeAccessFee"
+          :toggle-access-fee="toggleAccessFee" :toggle-subscription="toggleSubscription" :pricing-scheme="pricingScheme"
+          :has-subscription="hasSubscription" />
+      </template>
+    </base-section>
+
+    <base-section>
+      <template #title>Adjustment Summary</template>
+      <template #content>
+        <adjustment-summary :trip-duration="tripDuration" :original-cost="originalCost"
+          :adjusted-total-cost="adjustedTotalCost" />
+      </template>
+    </base-section>
+  </div>
+</template>
 
 <style scoped lang="scss">
 .adjustmentCalculator__container {
+  width: 100%;
   display: flex;
   flex-direction: column;
-  row-gap: 18px;
-
-  .adjustmentCalculator__heading {
-    font-size: 20px;
-    font-weight: bold;
-  }
-
-  .adjustmentsCalculator__checkbox {
-    width: 14px;
-    height: 14px;
-    align-self: center;
-  }
-}
-
-.adjustmentCalculator__duration {
-  text-align: center;
+  gap: 40px;
 }
 </style>
