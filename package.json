@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build --base=/trip-cost-calculator-app/",
     "preview": "vite preview",
     "test": "vitest"
   },
