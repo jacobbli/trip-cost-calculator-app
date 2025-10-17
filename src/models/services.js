@@ -37,7 +37,7 @@ const EBIKE_SHARE = {
         hourRate: 12.99,
         dayRate: 149.99,
         accessFee: 1.25,
-        isPvrtCharged: false,
+        isPvrtCharged: true,
         isGstCharged: true,
         isPstCharged: false,
       }
