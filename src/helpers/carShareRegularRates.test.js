@@ -207,5 +207,5 @@ const cases = [
 test.each(
     cases
 )('Calculate trip cost using Car Share regular rates', (c) => {
-    expect(calculateTripCost(c, Services.CAR_SHARE.pricingSchemes[0], false)).toBe(c.solution)
+    expect(calculateTripCost(c, Services.CAR_SHARE.pricingSchemes[0], false, Services.CAR_SHARE)).toBe(c.solution)
 })
