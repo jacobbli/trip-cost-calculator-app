@@ -16,6 +16,10 @@ import {
 } from "@/helpers/costs.js";
 
 const props = defineProps({
+  service: {
+    type: Object,
+    required: true
+  },
   pricingScheme: {
     type: Object,
     required: true
@@ -74,7 +78,8 @@ function updateTripDuration(newStartDatetime, newEndDatetime) {
 const tripDuration = computed(() =>
   calculateTripDuration(props.startDateTime, endDatetime.value)
 );
-const tripCost = computed(() => calculateTripCost(tripDuration.value, props.pricingScheme, hasSubscription.value));
+console.log(props.service)
+const tripCost = computed(() => calculateTripCost(tripDuration.value, props.pricingScheme, hasSubscription.value, props.service));
 const discounts = computed(() =>
   calculateDiscounts(isBcaaMember.value, tripCost.value)
 );
@@ -111,7 +116,7 @@ const totalCost = computed(() => {
 <template>
   <div class="tripCalculator__container">
     <base-section>
-      <template #title>Trip Inputs</template>
+      <template #title>Single Trip Cost</template>
       <template #content>
         <div class="tripCalculator__inputs">
           <trip-inputs :start-datetime="startDateTime" :end-datetime="endDatetime" :on-change="updateTripDuration"
@@ -123,7 +128,7 @@ const totalCost = computed(() => {
     </base-section>
 
     <base-section>
-      <template #title>Trip Summary</template>
+      <template #title>Cost Summary</template>
       <template #content>
         <trip-summary :trip-duration="tripDuration" :tripCost="tripCost" :totalDiscounts="totalDiscounts"
           :discounts="discounts" :accessFee="accessFee" :pvrtCost="pvrtCost" :pvrt-days="pvrtDays" :totalTax="totalTax"

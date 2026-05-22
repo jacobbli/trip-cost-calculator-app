@@ -1,7 +1,7 @@
 import { Taxes } from "../models/taxes";
 import { round } from "./numbers";
 
-export function calculateTripCost(tripDuration, pricingScheme, hasSubscription) {
+export function calculateTripCost(tripDuration, pricingScheme, hasSubscription, service) {
   if (!tripDuration) return 0
   
   if (pricingScheme.subscriptionMinuteRate && hasSubscription) {
@@ -9,7 +9,7 @@ export function calculateTripCost(tripDuration, pricingScheme, hasSubscription) 
     return totalCost
   }
 
-  if (pricingScheme.label == "Summer Rates") return getTripCostUsingSummerRates(tripDuration, pricingScheme)
+  if (pricingScheme.label == "Summer Rates" && service.name == "CAR_SHARE") return getTripCostUsingSummerRates(tripDuration, pricingScheme)
 
   const costOfMinutesDriven = getCostOfMinutesDriven(tripDuration.minutes, pricingScheme)
   const costOfHoursAndMinutesDriven = getCostOfHoursAndMinutesDriven(tripDuration.hours, costOfMinutesDriven, pricingScheme)

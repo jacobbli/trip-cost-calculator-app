@@ -3,8 +3,10 @@ import { ref, defineProps } from "vue";
 import TripCalculator from "./TripCalculator.vue";
 import AdjustmentCalculator from "./AdjustmentCalculator.vue";
 
+
 defineProps({
-  pricingScheme: Object
+  pricingScheme: Object,
+  service: Object
 })
 
 const startDatetime = ref(new Date());
@@ -24,6 +26,7 @@ function updateStartDateTime(newStartDateTime) {
     <div class="costCalculator__container">
       <trip-calculator
         :trip-cost="totalCost"
+        :service="service"
         :pricing-scheme="pricingScheme"
         :start-date-time="startDatetime"
         :on-inputs-change="updateTotalCost"
@@ -33,7 +36,7 @@ function updateStartDateTime(newStartDateTime) {
 
     <div class="costCalculator__adjustmentSummary">
       <adjustment-calculator :start-datetime="startDatetime" :original-cost="totalCost"
-        :pricing-scheme="pricingScheme" />
+        :pricing-scheme="pricingScheme" :service="service"/>
     </div>
   </div>
 </template>

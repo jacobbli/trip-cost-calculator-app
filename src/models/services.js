@@ -40,6 +40,18 @@ const EBIKE_SHARE = {
         isPvrtCharged: true,
         isGstCharged: true,
         isPstCharged: false,
+      },
+      {
+        label: "Summer Rates",
+        minuteRate: 0.20,
+        subscriptionMinuteRate: 0.1,
+        inclusiveMobilityPlan: 0.05,
+        hourRate: 12.99,
+        dayRate: 149.99,
+        accessFee: 1.00,
+        isPvrtCharged: true,
+        isGstCharged: true,
+        isPstCharged: false,
       }
     ]
 }

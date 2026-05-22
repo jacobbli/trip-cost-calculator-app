@@ -24,7 +24,7 @@ function selectPricingScheme(pricingScheme) {
   <pricing-scheme-selector :is-visible="selectedService.pricingSchemes.length > 1"
     :options="selectedService.pricingSchemes" :selected-option="selectedPricingScheme"
     :on-click="selectPricingScheme" />
-  <calculator-controller :pricing-scheme="selectedPricingScheme" />
+  <calculator-controller :pricing-scheme="selectedPricingScheme" :service="selectedService" />
 </template>
 <style>
 body {

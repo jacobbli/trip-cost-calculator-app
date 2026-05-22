@@ -24,6 +24,10 @@ const props = defineProps({
   pricingScheme: {
     type: Object,
     required: true
+  },
+  service: {
+    type: Object,
+    required: true
   }
 });
 const adjustedEndDatetime = ref(new Date());
@@ -55,7 +59,7 @@ const tripDuration = computed(() =>
 );
 
 const adjustedTotalCost = computed(() => {
-  const adjustedTripCost = calculateTripCost(tripDuration.value, props.pricingScheme, hasSubscription.value);
+  const adjustedTripCost = calculateTripCost(tripDuration.value, props.pricingScheme, hasSubscription.value, props.service);
 
   const adjustedAccessFee = includeAccessFee.value
     ? parseFloat(props.pricingScheme.accessFee)
@@ -92,7 +96,7 @@ const adjustedTotalCost = computed(() => {
 <template>
   <div class="adjustmentCalculator__container">
     <base-section>
-      <template #title>Adjustment Inputs</template>
+      <template #title>Cost Difference After Adjustment</template>
       <template #content>
         <adjustment-inputs :adjusted-end-datetime="adjustedEndDatetime" :onAdjustedEndTimeChange="updateTripDuration"
           :is-bcaa-member="isBcaaMember" :toggle-bcaa-member="toggleBcaaMember" :include-access-fee="includeAccessFee"
