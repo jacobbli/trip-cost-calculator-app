@@ -206,6 +206,6 @@ const cases = [
 
 test.each(
     cases
-)('Calculate trip cost using Evo regular rates', (c) => {
+)('Calculate trip cost using Car Share regular rates', (c) => {
     expect(calculateTripCost(c, Services.CAR_SHARE.pricingSchemes[0], false)).toBe(c.solution)
 })

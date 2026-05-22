@@ -17,12 +17,12 @@ defineProps({
 
 <template>
   <div class="serviceTabs__container">
-    <base-tab @click="selectService(Services.CAR_SHARE)" class="serviceTabs__tab" label="Evo"
+    <base-tab @click="selectService(Services.CAR_SHARE)" class="serviceTabs__tab" label="Car Share"
       :is-selected="selectedService.name == 'CAR_SHARE'">
       <icon-car />
     </base-tab>
 
-    <base-tab @click="selectService(Services.EBIKE_SHARE)" class="serviceTabs__tab" label="Evolve"
+    <base-tab @click="selectService(Services.EBIKE_SHARE)" class="serviceTabs__tab" label="Bike Share"
       :is-selected="selectedService.name == 'EBIKE_SHARE'">
       <icon-bike />
       <icon-scooter />
