@@ -38,9 +38,15 @@ function toggleBreakdown() {
       <div class="summaryItem__label">
         {{ label }}
         <div v-if="breakdown" class="summaryItem__breakdownToggle" @click="toggleBreakdown">
-          <icon-plus v-if="!isBreakdownVisible" class="summaryItem__breakdownToggleIcon" />
-          <icon-minus v-else class="summaryItem__breakdownToggleIcon" />
-          Click here to view details
+          <template v-if="!isBreakdownVisible">
+            <icon-plus class="summaryItem__breakdownToggleIcon" />
+            Click here to view details
+          </template>
+          <template v-else >
+            <icon-minus class="summaryItem__breakdownToggleIcon"/>
+            Click here to hide details
+          </template>
+
         </div>
       </div>
       <div class="summaryItem__value">{{ value }}</div>
