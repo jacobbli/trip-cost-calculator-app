@@ -23,21 +23,12 @@ function updateStartDateTime(newStartDateTime) {
 
 <template>
   <div class="calculatorController__container">
-    <div class="costCalculator__container">
-      <trip-calculator
-        :trip-cost="totalCost"
-        :service="service"
-        :pricing-scheme="pricingScheme"
-        :start-date-time="startDatetime"
-        :on-inputs-change="updateTotalCost"
-        :on-start-date-time-change="updateStartDateTime"
-      />
-    </div>
+      <trip-calculator :trip-cost="totalCost" :service="service" :pricing-scheme="pricingScheme"
+        :start-date-time="startDatetime" :on-inputs-change="updateTotalCost"
+        :on-start-date-time-change="updateStartDateTime" />
 
-    <div class="costCalculator__adjustmentSummary">
-      <adjustment-calculator :start-datetime="startDatetime" :original-cost="totalCost"
-        :pricing-scheme="pricingScheme" :service="service"/>
-    </div>
+      <adjustment-calculator :start-datetime="startDatetime" :original-cost="totalCost" :pricing-scheme="pricingScheme"
+        :service="service" />
   </div>
 </template>
 
@@ -47,6 +38,16 @@ function updateStartDateTime(newStartDateTime) {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 40px;
+  gap: 20px;
+}
+
+@media only screen and (min-width: 900px) {
+  .calculatorController__container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    // justify-content: center;
+    // flex-wrap: wrap;
+    gap: 20px;
+  }
 }
 </style>

@@ -143,6 +143,10 @@ const totalCost = computed(() => {
   width: 100%;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 40px;
+
+  padding: 8px;
+  border: 4px solid hsl(98, 44%, 68%)
 }
 </style>

@@ -96,7 +96,7 @@ const adjustedTotalCost = computed(() => {
 <template>
   <div class="adjustmentCalculator__container">
     <base-section>
-      <template #title>Cost Difference After Adjustment</template>
+      <template #title>Adjusted Trip Difference</template>
       <template #content>
         <adjustment-inputs :adjusted-end-datetime="adjustedEndDatetime" :onAdjustedEndTimeChange="updateTripDuration"
           :is-bcaa-member="isBcaaMember" :toggle-bcaa-member="toggleBcaaMember" :include-access-fee="includeAccessFee"
@@ -120,6 +120,10 @@ const adjustedTotalCost = computed(() => {
   width: 100%;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 40px;
+
+  padding: 8px;
+  border: 4px solid hsl(204, 66%, 68%)
 }
 </style>

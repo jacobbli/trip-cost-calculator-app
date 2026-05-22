@@ -14,23 +14,21 @@
 </template>
 
 <style scoped lang="scss">
-.baseSection__title {
-    font-size: 20px;
-    font-weight: bold;
-}
-
-.baseSection__content {
+.baseSection__container {
     width: 100%;
-    display: flex;
-    flex-direction: column;
-    row-gap: 18px;
 
-    padding-top: 12px;
-}
+    .baseSection__title {
+        font-size: 20px;
+        font-weight: bold;
+    }
 
-@media only screen and (min-width: 600px) {
     .baseSection__content {
-        width: 500px;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        row-gap: 18px;
+
+        padding-top: 12px;
     }
 }
 </style>

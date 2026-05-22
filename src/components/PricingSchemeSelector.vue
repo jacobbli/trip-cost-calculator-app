@@ -38,8 +38,6 @@ defineProps({
   align-items: center;
   gap: 12px;
 
-  height: 5rem;
-
   .v-enter-active,
   .v-leave-active {
     transition: opacity 0.2s ease;
