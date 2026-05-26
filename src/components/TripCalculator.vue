@@ -147,6 +147,7 @@ const totalCost = computed(() => {
   gap: 40px;
 
   padding: 8px;
-  border: 4px solid hsl(98, 44%, 68%)
+  border: 4px solid hsl(98, 44%, 68%);
+  border-radius: 10px;
 }
 </style>

@@ -47,17 +47,17 @@ const props = defineProps({
       <datetime-input :datetime="props.adjustedEndDatetime" :on-change="props.onAdjustedEndTimeChange" />
     </trip-input-item>
 
-    <trip-input-item label="BCAA member discount">
+    <trip-input-item label="Include BCAA member discount?">
       <input class="adjustmentInputs__checkbox" id="is-bcaa-member" type="checkbox" :checked="props.isBcaaMember"
         @change="props.toggleBcaaMember" />
     </trip-input-item>
 
-    <trip-input-item label="Include access fee">
+    <trip-input-item label="Include access fee?">
       <input class="adjustmentInputs__checkbox" id="include-access-fee" type="checkbox"
         :checked="props.includeAccessFee" @change="props.toggleAccessFee" />
     </trip-input-item>
     
-    <trip-input-item label="Has BCAA Mobility Plan Subscription" v-if="props.pricingScheme.subscriptionMinuteRate">
+    <trip-input-item label="Has BCAA Mobility Plan Subscription?" v-if="props.pricingScheme.subscriptionMinuteRate">
       <input class="adjustmentInputs__checkbox" id="has subscription" type="checkbox" :checked="hasSubscription"
         @change="toggleSubscription" />
     </trip-input-item>

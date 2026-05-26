@@ -118,12 +118,15 @@ const adjustedTotalCost = computed(() => {
 <style scoped lang="scss">
 .adjustmentCalculator__container {
   width: 100%;
+  height: fit-content;
+
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 40px;
 
   padding: 8px;
-  border: 4px solid hsl(204, 66%, 68%)
+  border: 4px solid hsl(204, 66%, 68%);
+  border-radius: 10px;
 }
 </style>

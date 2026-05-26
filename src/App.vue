@@ -64,6 +64,7 @@ body {
   align-items: center;
   justify-content: center;
   border: 4px solid hsl(0, 0%, 0%);
+  border-radius: 10px;
 }
 .app__pricingSchemeSelector {
   width: 100%;
@@ -73,7 +74,7 @@ body {
   align-items: center;
   justify-content: center;
   border: 4px solid hsl(0, 0%, 76%);
-
+  border-radius: 10px;
 }
 
 @media only screen and (min-width: 600px) {

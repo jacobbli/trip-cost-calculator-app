@@ -58,7 +58,7 @@ function changeDatetime(newStartDatetime, newEndDatetime) {
       />
     </trip-input-item>
 
-    <trip-input-item label="BCAA member discount">
+    <trip-input-item label="Include BCAA member discount?">
       <input
         class="tripInputs__checkbox"
         id="is-bcaa-member"
@@ -68,7 +68,7 @@ function changeDatetime(newStartDatetime, newEndDatetime) {
       />
     </trip-input-item>
 
-    <trip-input-item label="Include access fee">
+    <trip-input-item label="Include access fee?">
       <input
         class="tripInputs__checkbox"
         id="include-access-fee"
@@ -78,7 +78,7 @@ function changeDatetime(newStartDatetime, newEndDatetime) {
       />
     </trip-input-item>
 
-    <trip-input-item label="Has BCAA Mobility Plan Subscription" v-if="pricingScheme.subscriptionMinuteRate">
+    <trip-input-item label="Has BCAA Mobility Plan Subscription?" v-if="pricingScheme.subscriptionMinuteRate">
       <input
         class="tripInputs__checkbox"
         id="has subscription"
