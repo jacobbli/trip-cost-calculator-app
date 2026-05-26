@@ -6,7 +6,7 @@ The 'Adjustments' calculator is for calculating the dollar value of adjustments/
 
 This application is not affiliated with any car share company.
 
-\*Rates are up-to-date as of October 1, 2021.
+\*Rates are up-to-date as of May 26, 2026.
 
 # Installation
 
