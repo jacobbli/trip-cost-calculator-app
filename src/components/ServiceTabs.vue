@@ -22,7 +22,7 @@ defineProps({
       <icon-car />
     </base-tab>
 
-    <base-tab @click="selectService(Services.EBIKE_SHARE)" class="serviceTabs__tab" label="Bike Share"
+    <base-tab @click="selectService(Services.EBIKE_SHARE)" class="serviceTabs__tab" label="Micromobility"
       :is-selected="selectedService.name == 'EBIKE_SHARE'">
       <icon-bike />
       <icon-scooter />
