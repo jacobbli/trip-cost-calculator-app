@@ -12,6 +12,7 @@ const selectedPricingScheme = ref(selectedService.value.pricingSchemes[0]);
 function selectService(service) {
   selectedService.value = service
   selectedPricingScheme.value = service.pricingSchemes[0]
+  
 }
 
 function selectPricingScheme(pricingScheme) {
